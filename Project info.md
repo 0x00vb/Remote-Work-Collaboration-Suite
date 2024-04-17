@@ -376,7 +376,8 @@ Design Ideas
 
 Color palette:
 - RichBlack: #132027
-- Seasalt: F7F7F8
-- White: FFFFFF
-- Green Yellow: B9FF65
-- 
+- Seasalt: #F7F7F8
+- White: #FFFFFF
+- Green Yellow: #B9FF65
+- DarkBackground: #141414
+- DarkSecondary: #242424
