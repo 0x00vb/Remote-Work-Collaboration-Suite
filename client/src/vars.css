@@ -1,0 +1,12 @@
+:root{
+    --background: #F7F7F8,
+    --secondary-background: #132027,
+    --text-primary: #141414,
+    --accent: #B9FF65
+  }
+  [data-theme]{
+    --background: #141414,
+    --secondary-background: #132027,
+    --text-primary: #D9D9D9,
+    --accent: #B9FF65
+  }
