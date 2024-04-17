@@ -373,3 +373,10 @@ Design Ideas
 ![](https://cdn.dribbble.com/userupload/8188372/file/original-a4dff81db88d1656ff3856cc1559f6b1.png?resize=1200x900&vertical=center)
 ![](https://cdn.dribbble.com/userupload/8188371/file/original-c74551055e16e9a611a7c8c2febae51d.png?resize=1200x900&vertical=center)
 ![](https://cdn.dribbble.com/userupload/8188370/file/original-020772ff99a2961f160cd8d2f36e2bc8.png?resize=1200x900&vertical=center)
+
+Color palette:
+- RichBlack: #132027
+- Seasalt: F7F7F8
+- White: FFFFFF
+- Green Yellow: B9FF65
+- 
