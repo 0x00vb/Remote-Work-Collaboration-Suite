@@ -1,17 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
 import Sidebar from '../components/Sidebar'
+import Overview from '../components/Overview';
 
 const PageContainer = styled.div`
-  height: 98vh;
+  display: flex;
+  height: 100%;
   background-color: ${({ theme }) => theme.primaryBackground};
-  padding: 10px;
 `
 
-const Dashboard = () => {
+const Dashboard = (props) => {
   return (
     <PageContainer>
-        <Sidebar/>
+        <Sidebar themeToggler={props.themeToggler} theme={props.theme}/>
+        <Overview/>
     </PageContainer>
   )
 }

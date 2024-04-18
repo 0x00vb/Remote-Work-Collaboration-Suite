@@ -18,14 +18,14 @@ function App() {
 
   const themeToggler = () => {
     theme === 'light' ? setTheme('dark') : setTheme('light')
-}
+  }
 
   return (  
     <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
       <BrowserRouter>
       <GlobalStyles/>
         <Routes>
-          <Route exact path='/' element={<Dashboard/>}/>
+          <Route exact path='/' element={<Dashboard themeToggler={themeToggler} theme={theme}/>}/>
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
