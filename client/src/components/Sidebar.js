@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import styled, {css} from 'styled-components';
 
+import GoogleIcon from './GoogleIcon';
+import AppIcon from '../assets/favicon-32x32.png';
+
 const SidebarContainer = styled.div`
   margin: 10px;
   position: sticky;
@@ -18,8 +21,10 @@ const SidebarContainer = styled.div`
     css`
       ${SidebarSectionText} {display: none},
       ${SidebarSectionTitle} {display: none},
+      ${Logo} {display: none},
       ${SidebarSectionItem} {justify-content: center},
-      ${SidebarSwitch} {transform: rotate(180deg)}
+      ${SidebarSwitch} {transform: rotate(180deg)},
+      ${SidebarSectionSpan} {display: none}
     `
   }
 `
@@ -96,23 +101,6 @@ const SidebarSectionTitle = styled.p`
   padding-bottom: 5px;
 `
 
-const MaterialIcon = (props) => (
-  <span className={`${props.className} material-symbols-outlined`} style={props.style}>{props.name}</span>
-)
-
-const Icon = styled(MaterialIcon)`
-  color: ${props => props.color ? props.color : ({ theme }) => theme.thirdText};
-  font-size: 28px;
-  &.material-symbols-outlined {
-    font-variation-settings:
-    'FILL' 1,
-    'wght' 400,
-    'GRAD' 0,
-    'opsz' 24
-  };
-  cursor: pointer;
-`
-
 const SidebarNewProjectBtn = styled.button`
   display: flex;
   align-items: center;
@@ -152,33 +140,27 @@ const Sidebar = ({themeToggler, theme}) => {
   return (
     <SidebarContainer expanded={isExpanded}>
       <SidebarHeader>
-        {
-          isExpanded ? (
-            <>
-              <Logo>TeamCollabs</Logo>
-              <SidebarSectionSpan onClick={handleChangeTheme}>
-                <Icon name={theme === 'light' ? 'dark_mode' : 'light_mode'}/>
-              </SidebarSectionSpan>
-            </>
-          )
-          : (
-            <Logo>TC</Logo>
-          )
-        }
+        <div style={{display: 'flex', gap: '5px'}}>
+          <UserImage src={AppIcon}/>
+          <Logo>TeamSync</Logo>
+        </div>
+        <SidebarSectionSpan onClick={handleChangeTheme}>
+          <GoogleIcon name={theme === 'light' ? 'dark_mode' : 'light_mode'}/>
+        </SidebarSectionSpan>
         <SidebarSwitch onClick={() => setIsExpanded(!isExpanded)}>
-          <Icon name={'chevron_left'}/>
+          <GoogleIcon name={'chevron_left'}/>
         </SidebarSwitch>
       </SidebarHeader>
       <SidebarSectionsContainer>
         <SidebarSection>
           <SidebarSectionItem>
-            <Icon name={'insert_chart'}/>
+            <GoogleIcon name={'insert_chart'}/>
             <SidebarSectionText>
               Activity
             </SidebarSectionText>
           </SidebarSectionItem>
           <SidebarSectionItem>
-            <Icon name={'check_circle'}/>
+            <GoogleIcon name={'check_circle'}/>
             <SidebarSectionText>
               Tasks
             </SidebarSectionText>
@@ -189,23 +171,23 @@ const Sidebar = ({themeToggler, theme}) => {
             Menu
           </SidebarSectionTitle>
           <SidebarSectionItem>
-            <Icon name={'dashboard'}/>
+            <GoogleIcon name={'dashboard'}/>
             <SidebarSectionText>Dashboard</SidebarSectionText>
           </SidebarSectionItem>
           <SidebarSectionItem>
-            <Icon name={'chat_bubble'}/>
+            <GoogleIcon name={'chat_bubble'}/>
             <SidebarSectionText>Chat</SidebarSectionText>
           </SidebarSectionItem>
           <SidebarSectionItem>
-            <Icon name={'calendar_today'}/>
+            <GoogleIcon name={'calendar_today'}/>
             <SidebarSectionText>Calendar</SidebarSectionText>
           </SidebarSectionItem>
           <SidebarSectionItem>
-            <Icon name={'groups'}/>
+            <GoogleIcon name={'groups'}/>
             <SidebarSectionText>Team members</SidebarSectionText>
           </SidebarSectionItem>
           <SidebarSectionItem>
-            <Icon name={'settings'}/>
+            <GoogleIcon name={'settings'}/>
             <SidebarSectionText>Settings</SidebarSectionText>
           </SidebarSectionItem>
         </SidebarSection>
@@ -229,7 +211,7 @@ const Sidebar = ({themeToggler, theme}) => {
               isExpanded ?
                 'Create new project'
                 :
-                <Icon name={'add'} color={'#000'}/>
+                <GoogleIcon name={'add'} color={'#000'}/>
             }
           </SidebarNewProjectBtn>
         </SidebarSection>

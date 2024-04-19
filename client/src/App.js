@@ -6,12 +6,11 @@ import {
   Route,
 } from 'react-router-dom';
 
-
+import Landing from './pages/Landing';
 import Dashboard from './pages/Dashboard';
 import { ThemeProvider } from 'styled-components';
-import { GlobalStyles } from './components/globalStyles';
-import { lightTheme, darkTheme } from "./components/Themes"
-
+import { GlobalStyles } from './utils/globalStyles';
+import { lightTheme, darkTheme } from "./utils/Themes"
 
 function App() {
   const [theme, setTheme] = useState('light');
@@ -26,6 +25,7 @@ function App() {
       <GlobalStyles/>
         <Routes>
           <Route exact path='/' element={<Dashboard themeToggler={themeToggler} theme={theme}/>}/>
+          <Route exact path='/teamSync' element={<Landing/>}/>
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
