@@ -9,11 +9,13 @@ html, body{
     height: 100%;
 }
 
-
+::selection {
+    background-color: rgba(61, 177, 255, 0.356);
+}
 
 :root{
     primaryBackground: #F7F7F8;
-    secondaryBackground: #D9D9D9;
+    secondaryBackground: #4c91b185;
     primaryText: #141414;
     secondaryText: #FFFFFF;
     thirdText: #D9D9D9;

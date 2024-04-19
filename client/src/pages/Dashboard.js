@@ -7,6 +7,7 @@ const PageContainer = styled.div`
   display: flex;
   height: 100%;
   background-color: ${({ theme }) => theme.primaryBackground};
+  padding-right: 10px;
 `
 
 const Dashboard = (props) => {

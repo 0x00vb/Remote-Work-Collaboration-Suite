@@ -2,18 +2,25 @@ import React from 'react'
 import styled from 'styled-components'
 
 const Container = styled.div`
-
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 4rem;
+  background-color: ${({ theme }) => theme.secondaryBackground};
+  padding: 15px;
+  border-radius: 15px;
 `
 
 const SubContainer = styled.div`
-    flex-direction: column;
-    display: flex;
-    align-items: baseline;
-    gap: 10px;
+  flex-direction: column;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
 `
 
 const Text = styled.p`
-
+  color: ${({ theme }) => theme.primaryText};
+  ${props => props.fw && {fontWeight: props.fw}};
 `
 
 const MaterialIcon = (props) => (
@@ -38,7 +45,7 @@ const SmallWidget = ({ text, value, iconName}) => {
     <Container>
         <SubContainer>
             <Text>{text}</Text>
-            <Text>{value}</Text>
+            <Text fw={'800'}>{value}</Text>
         </SubContainer>
         <Icon name={iconName}/>
     </Container>

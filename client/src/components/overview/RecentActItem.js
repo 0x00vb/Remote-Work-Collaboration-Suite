@@ -21,8 +21,9 @@ const Text = styled.div`
 `
 
 const Span = styled.span`
-    font-size: 18px;
-    font-weight: 600;
+    color: ${({ theme }) => theme.secondaryText};
+    font-size: 26px;
+    font-weight: 800;
 `
 
 const RecentActItem = () => {
