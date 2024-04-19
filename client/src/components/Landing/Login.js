@@ -108,14 +108,14 @@ const Login = ({ setLoginVisible }) => {
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        const { success, error } = await loginUser(username, password);
-        if(success){
+        const { status, message } = await loginUser(username, password);
+        if(status === 200){
             handleSuccess(success);
             setTimeout(() => {
                 navigate('/');
             }, 1000);
         }else{
-            handleError(error);
+            handleError(message);
         }
         setUsername("");
         setPassword("");
@@ -125,9 +125,10 @@ const Login = ({ setLoginVisible }) => {
         e.preventDefault();
         if(password != confirmPassword){
             handleError("Passwords don't match!");
+            return;
         }
-        const { success, message } = await signinUser(email, username, password);
-        if (success) {
+        const { status, message } = await signinUser(email, username, password);
+        if (status === 200) {
           handleSuccess(message);
           setTimeout(() => {
             navigate("/");
