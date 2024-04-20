@@ -5,13 +5,17 @@ const fileSchema = mongoose.Schema({
         unique: true,
         min: 4
     },
-    description: {
+    path: {
         type: String,
+        required: true
     },
-    members: {
-        type: Array,
-        default: [],
-        required: false
+    project: {
+        type: String,
+        required: true
+    },
+    uploaded_by: {
+        type: String,
+        required: true
     }
 })
 

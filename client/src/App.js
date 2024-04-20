@@ -7,7 +7,7 @@ import {
 } from 'react-router-dom';
 
 import Landing from './pages/Landing';
-import Dashboard from './pages/Dashboard';
+import Main from './pages/Main';
 import { ThemeProvider } from 'styled-components';
 import { GlobalStyles } from './utils/globalStyles';
 import { lightTheme, darkTheme } from "./utils/Themes"
@@ -24,7 +24,7 @@ function App() {
       <BrowserRouter>
       <GlobalStyles/>
         <Routes>
-          <Route exact path='/' element={<Dashboard themeToggler={themeToggler} theme={theme}/>}/>
+          <Route exact path='/' element={<Main themeToggler={themeToggler} theme={theme}/>}/>
           <Route exact path='/teamSync' element={<Landing/>}/>
         </Routes>
       </BrowserRouter>

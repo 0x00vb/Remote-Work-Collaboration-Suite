@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-
+import { Link } from 'react-scroll';
 import AppIcon from '../../assets/favicon-32x32.png';
 
 const Container = styled.nav`
@@ -45,9 +45,8 @@ const Navbar = ({ setLoginVisible }) => {
     <Container>
         <SubContainer>
             <AppIconContainer src={AppIcon}/>
-            <Text>Home</Text>
-            <Text>Get Started</Text>
-            <Text>Features</Text>
+            <Link to='home' offset={-80} spy={true} smooth={true} duration={700}>Home</Link>
+            <Link to='features' offset={-60} spy={true} smooth={true} duration={700}>Features</Link>
         </SubContainer>
         <SubContainer>
             <Text

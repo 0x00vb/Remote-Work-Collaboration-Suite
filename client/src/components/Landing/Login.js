@@ -110,7 +110,7 @@ const Login = ({ setLoginVisible }) => {
         e.preventDefault();
         const { status, message } = await loginUser(username, password);
         if(status === 200){
-            handleSuccess(success);
+            handleSuccess(message);
             setTimeout(() => {
                 navigate('/');
             }, 1000);

@@ -163,14 +163,14 @@ Efficient file sharing and collaboration are crucial for remote teams. This modu
 Here's a suggested list of pages and their specifications for the frontend of your remote work collaboration suite:
 
 1. **Landing Page**
-    - Overview of the application and its features
+    - Dashboard of the application and its features
     - Call-to-action for sign-up/login
 2. **Authentication Pages**
     - Sign-up page (registration form)
     - Login page
     - Password reset page
 3. **Dashboard**
-    - Overview of user's projects, tasks, and recent activity
+    - Dashboard of user's projects, tasks, and recent activity
     - Quick access to various modules (project management, file sharing, video conferencing, etc.)
 4. **Project Management**
     - List of projects (with filters and search)

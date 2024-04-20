@@ -9,6 +9,7 @@ const SidebarContainer = styled.div`
   position: sticky;
   top: 0;
   left: 0;
+  width: 100%;
   max-width: ${props => (props.expanded ? '16rem' : '2rem')};
   min-height: 50rem;
   height: 98%;

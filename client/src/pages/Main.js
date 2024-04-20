@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import Sidebar from '../components/Sidebar'
-import Overview from '../components/Overview';
+import Dashboard from '../components/Dashboard';
 
 const PageContainer = styled.div`
   display: flex;
@@ -10,13 +10,17 @@ const PageContainer = styled.div`
   padding-right: 10px;
 `
 
-const Dashboard = (props) => {
+const Main = (props) => {
+  const [currentSection, setCurrentSection] = useState('Dashboard');
+  
+
+
   return (
     <PageContainer>
         <Sidebar themeToggler={props.themeToggler} theme={props.theme}/>
-        <Overview/>
+        <Dashboard/>
     </PageContainer>
   )
 }
 
-export default Dashboard
+export default Main

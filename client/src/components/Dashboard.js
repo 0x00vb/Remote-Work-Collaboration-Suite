@@ -1,9 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 import ProgressBar from "@ramonak/react-progress-bar";
-import ProjectStatsItem from './overview/ProjectStatsItem'
-import RecentActItem from './overview/RecentActItem';
-import SmallWidget from './overview/SmallWidget';
+import ProjectStatsItem from './dashboard/ProjectStatsItem'
+import RecentActItem from './dashboard/RecentActItem';
+import SmallWidget from './dashboard/SmallWidget';
 
 const Container = styled.div`
     width: 100%;
@@ -97,7 +97,7 @@ const UserImage = styled.img`
   border-radius: 50%;
 `
 
-const Overview = () => {
+const Dashboard = () => {
   return (
     <Container>
         <Banner src={'https://media.istockphoto.com/id/603164912/photo/suburb-asphalt-road-and-sun-flowers.jpg?s=612x612&w=0&k=20&c=qLoQ5QONJduHrQ0kJF3fvoofmGAFcrq6cL84HbzdLQM='}/>
@@ -193,4 +193,4 @@ const Overview = () => {
 )
 }
 
-export default Overview
+export default Dashboard

@@ -16,6 +16,8 @@ const Icon = styled(MaterialIcon)`
     'opsz' 24
   };
   cursor: pointer;
+    ${({ styles }) => styles && styles};
+
 `;
 
 export default Icon;
