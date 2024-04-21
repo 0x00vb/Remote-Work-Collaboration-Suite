@@ -6,47 +6,40 @@ import RecentActItem from './dashboard/RecentActItem';
 import SmallWidget from './dashboard/SmallWidget';
 
 const Container = styled.div`
+    display: flex;
+    flex-direction: column;
     width: 100%;
-    height: 98%;
-    padding-top: 10px;
+    height: 100%;
 `
 
 const Banner = styled.img`
-    width: 99%;
-    height: 17%;
+    width: 98%;
+    height: 15%;
     object-fit: cover;
     border-radius: 15px;
-    margin-bottom:10px;
 `
 
 const MainSection = styled.div`
     width: 100%;
-    height: 82%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+`
+
+const Subsection = styled.div`
+    width: 100%;
+    height: 35%;
     display: flex;
     gap: 1rem;
 `
 
-const RightSubSection = styled.div`
-    width: 35%;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-`
-
-const LeftSubSection = styled.div`
-    height: 98%;
-    width: 63%;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-
-`
-
 const InformationContainer = styled.div`
+    height: ${props => props.height ? props.height : '100%'};
+    width: ${props => props.width ? props.width : 'auto'};
     background-color: ${({ theme }) => theme.secondaryBackground};
     display: flex;
-    height: ${props => props.height ? props.height : '50%'};
-        flex-direction: column;
+    flex-direction: column;
     padding: 15px;
     border-radius: 10px;
     gap: 12px;
@@ -69,6 +62,7 @@ const InfoSubContainer = styled.div`
     align-items: center;
     justify-content: space-between;
     ${props => props.width && {width: props.width}};
+    padding: 0 1rem;
 `
 
 const InfoSubContainerItem = styled.div`
@@ -77,14 +71,16 @@ const InfoSubContainerItem = styled.div`
 `
 
 const Scrollable = styled.div`
+    width: 100%;
     display: flex;
     flex-direction: column;
     gap: 10px;
-    height: 100%;
+    max-height: 100%; 
     overflow: scroll;
 `
 
 const WidgetGrid = styled.div`
+    height: 100%;
     display: grid;
     grid-template-rows: repeat(2, 1fr);
     grid-template-columns: repeat(2, 1fr);
@@ -100,10 +96,10 @@ const UserImage = styled.img`
 const Dashboard = () => {
   return (
     <Container>
-        <Banner src={'https://media.istockphoto.com/id/603164912/photo/suburb-asphalt-road-and-sun-flowers.jpg?s=612x612&w=0&k=20&c=qLoQ5QONJduHrQ0kJF3fvoofmGAFcrq6cL84HbzdLQM='}/>
         <MainSection>
-            <LeftSubSection>
-                <InformationContainer>
+            <Banner src={'https://media.istockphoto.com/id/603164912/photo/suburb-asphalt-road-and-sun-flowers.jpg?s=612x612&w=0&k=20&c=qLoQ5QONJduHrQ0kJF3fvoofmGAFcrq6cL84HbzdLQM='}/>
+            <Subsection>
+                <InformationContainer width={'65%'} style={{justifyContent: 'space-between'}}>
                     <InformationTitle>Project Info</InformationTitle>
                     <InformationText>
                         Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
@@ -138,47 +134,49 @@ const Dashboard = () => {
                         </InfoSubContainerItem>
                     </InfoSubContainer>
                 </InformationContainer>
-                <InformationContainer height={'45%'}>
-                    <InformationTitle>Project statistics</InformationTitle>
-                    <Scrollable>
-                        <ProjectStatsItem/>
-                        <ProjectStatsItem/>
-                        <ProjectStatsItem/>
-                        <ProjectStatsItem/>
-                        <ProjectStatsItem/>
-                        <ProjectStatsItem/>
-                        <ProjectStatsItem/>
-                        <ProjectStatsItem/>
-                        <ProjectStatsItem/>
-                        <ProjectStatsItem/>
-                        <ProjectStatsItem/>
-                        <ProjectStatsItem/>
-                        <ProjectStatsItem/>
-                        <ProjectStatsItem/>
-                        <ProjectStatsItem/>
-                        <ProjectStatsItem/>
-                    </Scrollable>
+                <div style={{display: 'flex', flexDirection: 'column', height: '100%', width: '30%',  gap: '1.3rem'}}>
+                    <InformationContainer height={'5rem'}>
+                        <InfoSubContainer>
+                            <InformationTitle>Overall progress</InformationTitle>
+                            <InformationTitle>70%</InformationTitle>
+                        </InfoSubContainer>
+                        <ProgressBar
+                            bgColor='#B9FF65'
+                            isLabelVisible={false}
+                            completed={70}
+                        />
+                    </InformationContainer>
+                    <WidgetGrid>
+                        <SmallWidget text={'Time remaining'} value={'4d'} iconName={'timer'}/>
+                        <SmallWidget text={'Created tasks'} value={'20'} iconName={'check_circle'}/>
+                        <SmallWidget text={'Task in progress'} value={'10'} iconName={'play_circle'}/>
+                        <SmallWidget text={'Upcoming tasks'} value={'7'} iconName={'schedule'}/>
+                    </WidgetGrid>
+                </div>
+            </Subsection>
+            <Subsection>
+                <InformationContainer width={'65%'}>
+                        <InformationTitle>Project statistics</InformationTitle>
+                        <Scrollable>
+                            <ProjectStatsItem/>
+                            <ProjectStatsItem/>
+                            <ProjectStatsItem/>
+                            <ProjectStatsItem/>
+                            <ProjectStatsItem/>
+                            <ProjectStatsItem/>
+                            <ProjectStatsItem/>
+                            <ProjectStatsItem/>
+                            <ProjectStatsItem/>
+                            <ProjectStatsItem/>
+                            <ProjectStatsItem/>
+                            <ProjectStatsItem/>
+                            <ProjectStatsItem/>
+                            <ProjectStatsItem/>
+                            <ProjectStatsItem/>
+                            <ProjectStatsItem/>
+                        </Scrollable>
                 </InformationContainer>
-            </LeftSubSection>
-            <RightSubSection>
-                <InformationContainer height={'10%'}>
-                    <InfoSubContainer>
-                        <InformationTitle>Overall progress</InformationTitle>
-                        <InformationTitle>70%</InformationTitle>
-                    </InfoSubContainer>
-                    <ProgressBar
-                        bgColor='#B9FF65'
-                        isLabelVisible={false}
-                        completed={70}
-                    />
-                </InformationContainer>
-                <WidgetGrid>
-                    <SmallWidget text={'Time remaining'} value={'4d'} iconName={'timer'}/>
-                    <SmallWidget text={'Created tasks'} value={'20'} iconName={'check_circle'}/>
-                    <SmallWidget text={'Task in progress'} value={'10'} iconName={'play_circle'}/>
-                    <SmallWidget text={'Upcoming tasks'} value={'7'} iconName={'schedule'}/>
-                </WidgetGrid>
-                <InformationContainer>
+                <InformationContainer width={'28%'}>
                     <InformationTitle>Recent activity</InformationTitle>
                     <Scrollable>
                         <RecentActItem/>
@@ -187,7 +185,7 @@ const Dashboard = () => {
                         <RecentActItem/>
                     </Scrollable>
                 </InformationContainer>
-            </RightSubSection>
+            </Subsection>
         </MainSection>
     </Container>
 )

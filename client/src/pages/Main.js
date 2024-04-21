@@ -2,24 +2,34 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import Sidebar from '../components/Sidebar'
 import Dashboard from '../components/Dashboard';
+import Whiteboard from '../components/Whiteboard';
 
 const PageContainer = styled.div`
+  height: 100vh;
+  width: 100%;
   display: flex;
-  height: 100%;
   background-color: ${({ theme }) => theme.primaryBackground};
-  padding-right: 10px;
 `
 
 const Main = (props) => {
   const [currentSection, setCurrentSection] = useState('Dashboard');
   
-
+  const renderSection = () => {
+    switch (currentSection) {
+      case 'dashboard':
+        return <Dashboard />;
+      case 'whiteboard':
+        return <Whiteboard/>
+      default:
+        return <Dashboard />;
+    }
+  };
 
   return (
     <PageContainer>
-        <Sidebar themeToggler={props.themeToggler} theme={props.theme}/>
-        <Dashboard/>
-    </PageContainer>
+        <Sidebar themeToggler={props.themeToggler} theme={props.theme} setCurrentSection={setCurrentSection}/>
+        {renderSection()}  
+      </PageContainer>
   )
 }
 

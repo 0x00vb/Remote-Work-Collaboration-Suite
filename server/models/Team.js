@@ -10,7 +10,7 @@ const teamSchema = mongoose.Schema({
     },
     members: {
         type: Array,
-        default: [],
+        default: [], //UserId's
         required: false
     }
 }, { timestamps: true })

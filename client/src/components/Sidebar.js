@@ -5,9 +5,8 @@ import GoogleIcon from './GoogleIcon';
 import AppIcon from '../assets/favicon-32x32.png';
 
 const SidebarContainer = styled.div`
-  margin: 10px;
   position: sticky;
-  top: 0;
+  top: 10px;
   left: 0;
   width: 100%;
   max-width: ${props => (props.expanded ? '16rem' : '2rem')};
@@ -15,6 +14,7 @@ const SidebarContainer = styled.div`
   height: 98%;
   background-color: ${({ theme }) => theme.sidebarBackground};
   padding: 0 1.5rem;
+  margin-right: 1rem;
   border-radius: 15px;
   transition: all 0.3s ease-in-out;
   ${props => 
@@ -130,12 +130,16 @@ const UserImage = styled.img`
   border-radius: 50%;
 `
 
-const Sidebar = ({themeToggler, theme}) => {
+const Sidebar = ({themeToggler, theme, setCurrentSection}) => {
   const [isExpanded, setIsExpanded] = useState(true);
+  const [selectedProjectIndex, setSelectedProjectIndex] = useState(0);
 
   const handleChangeTheme = () => {
     themeToggler()
+  }
 
+  const handleChangeSection = (section) =>{
+    setCurrentSection(section);
   }
 
   return (
@@ -171,24 +175,28 @@ const Sidebar = ({themeToggler, theme}) => {
           <SidebarSectionTitle>
             Menu
           </SidebarSectionTitle>
-          <SidebarSectionItem>
+          <SidebarSectionItem onClick={() => handleChangeSection('dashboard')}>
             <GoogleIcon name={'dashboard'}/>
             <SidebarSectionText>Dashboard</SidebarSectionText>
           </SidebarSectionItem>
-          <SidebarSectionItem>
+          <SidebarSectionItem onClick={() => handleChangeSection('whiteboard')}>
+            <GoogleIcon name={'visibility'}/>
+            <SidebarSectionText>Whiteboard</SidebarSectionText>
+          </SidebarSectionItem>
+          <SidebarSectionItem onClick={() => handleChangeSection('chat')}>
             <GoogleIcon name={'chat_bubble'}/>
             <SidebarSectionText>Chat</SidebarSectionText>
           </SidebarSectionItem>
-          <SidebarSectionItem>
+          <SidebarSectionItem onClick={() => handleChangeSection('calendar')}>
             <GoogleIcon name={'calendar_today'}/>
             <SidebarSectionText>Calendar</SidebarSectionText>
           </SidebarSectionItem>
-          <SidebarSectionItem>
+          <SidebarSectionItem onClick={() => handleChangeSection('team_members')}>
             <GoogleIcon name={'groups'}/>
             <SidebarSectionText>Team members</SidebarSectionText>
           </SidebarSectionItem>
-          <SidebarSectionItem>
-            <GoogleIcon name={'settings'}/>
+          <SidebarSectionItem name={'settings'} onClick={() => handleChangeSection('settings')}>
+            <GoogleIcon/>
             <SidebarSectionText>Settings</SidebarSectionText>
           </SidebarSectionItem>
         </SidebarSection>
