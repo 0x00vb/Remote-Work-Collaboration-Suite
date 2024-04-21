@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import Sidebar from '../components/Sidebar'
 import Dashboard from '../components/Dashboard';
 import Whiteboard from '../components/Whiteboard';
+import ChatPage from '../components/ChatPage';
+import CalendarPage from '../components/CalendarPage';
 
 const PageContainer = styled.div`
   height: 100vh;
@@ -20,6 +22,11 @@ const Main = (props) => {
         return <Dashboard />;
       case 'whiteboard':
         return <Whiteboard/>
+      case 'chat':
+        return <ChatPage/>;
+      case 'calendar':
+        return <CalendarPage/>;
+        
       default:
         return <Dashboard />;
     }

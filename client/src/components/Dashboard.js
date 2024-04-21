@@ -9,7 +9,7 @@ const Container = styled.div`
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 100%;
+    padding-top: 1rem;
 `
 
 const Banner = styled.img`
@@ -43,6 +43,9 @@ const InformationContainer = styled.div`
     padding: 15px;
     border-radius: 10px;
     gap: 12px;
+    -webkit-box-shadow: 11px 9px 14px -8px rgba(0,0,0,0.1);
+    -moz-box-shadow: 11px 9px 14px -8px rgba(0,0,0,0.1);
+    box-shadow: 11px 9px 14px -8px rgba(0,0,0,0.1);
 `
 
 const InformationTitle = styled.h2`

@@ -29,7 +29,7 @@ const MainSection = styled.div`
 
 const Column = styled.div`
   height: 98%;
-  width: 25rem;
+  width: calc(25% - 1rem); 
 `
 
 const ColumnTitle = styled.p`
@@ -48,7 +48,10 @@ const ColumnScrollable = styled.div`
   align-items: center;
   gap: 0.5rem;
   overflow: scroll;
-
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  scrollbar-color: rebeccapurple ;
 `
 
 const NewButton = styled.span`

@@ -1,6 +1,6 @@
 export const lightTheme = {
      primaryBackground: '#F7F7F8',
-     secondaryBackground: '#FFF',
+     secondaryBackground: '#FFFFFF',
      sidebarBackground: '#132027',
      primaryText: '#141414',
      secondaryText: '#7A7A7A',

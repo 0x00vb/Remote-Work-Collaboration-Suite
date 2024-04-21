@@ -9,6 +9,9 @@ const Container = styled.div`
   background-color: ${({ theme }) => theme.secondaryBackground};
   padding: 15px;
   border-radius: 15px;
+  -webkit-box-shadow: 11px 9px 14px -8px rgba(0,0,0,0.1);
+    -moz-box-shadow: 11px 9px 14px -8px rgba(0,0,0,0.1);
+    box-shadow: 11px 9px 14px -8px rgba(0,0,0,0.1);
 `
 
 const SubContainer = styled.div`

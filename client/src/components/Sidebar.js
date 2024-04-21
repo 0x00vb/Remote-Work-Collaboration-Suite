@@ -6,15 +6,15 @@ import AppIcon from '../assets/favicon-32x32.png';
 
 const SidebarContainer = styled.div`
   position: sticky;
-  top: 10px;
-  left: 0;
+  top: 1rem;
+  left: 0.5rem;
   width: 100%;
   max-width: ${props => (props.expanded ? '16rem' : '2rem')};
   min-height: 50rem;
-  height: 98%;
+  height: 95%;
   background-color: ${({ theme }) => theme.sidebarBackground};
   padding: 0 1.5rem;
-  margin-right: 1rem;
+  margin: 0 0.5rem;
   border-radius: 15px;
   transition: all 0.3s ease-in-out;
   ${props => 
@@ -112,16 +112,18 @@ const SidebarNewProjectBtn = styled.button`
   padding: 12px 0;
   border-radius: 10px;
   border: none;
+  cursor: pointer;
 `
 
 const SidebarBottom = styled.div`
+  width: 100%;
   position: absolute;
   bottom: 0;
   display: flex;
   align-items: center;
+  justify-self: center;
   gap: 5px;
   padding: 20px 0;
-  border-top: 0.5px solid #D9D9D9;
 `
 
 const UserImage = styled.img`
@@ -194,10 +196,6 @@ const Sidebar = ({themeToggler, theme, setCurrentSection}) => {
           <SidebarSectionItem onClick={() => handleChangeSection('team_members')}>
             <GoogleIcon name={'groups'}/>
             <SidebarSectionText>Team members</SidebarSectionText>
-          </SidebarSectionItem>
-          <SidebarSectionItem name={'settings'} onClick={() => handleChangeSection('settings')}>
-            <GoogleIcon/>
-            <SidebarSectionText>Settings</SidebarSectionText>
           </SidebarSectionItem>
         </SidebarSection>
         <SidebarSection>
