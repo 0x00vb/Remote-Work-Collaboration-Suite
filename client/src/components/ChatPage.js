@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components';
 import ContactCard from './chatPage/ContactCard';
+import MessageCard from './chatPage/MessageCard';
 import Icon from './GoogleIcon';
 
-import io, { Socket } from 'socket.io-client'
+import io from 'socket.io-client';
+
+import { fetchChats, setNotifications } from '../redux/chatSlice';
+import { fetchMessages, sendMessage } from '../api/messages';
 
 const Conatiner = styled.div`
     width: 100%;
@@ -86,18 +91,53 @@ const ChatInputContainer = styled.div`
     border-radius: 10px;
 `
 
-const socket = io('http://localhost:5000');
+const socket = io('http://localhost:4444');
+let selectedChat;
 
 const ChatPage = () => {
+    const { activeChat, notifications } = useSelector((state) => state.chats)
+    const dispatch = useDispatch()
     const [message, setMessage] = useState("");
     const [messages, setMessages] = useState([]);
     const [loading, setLoading] = useState(false);
+    const activeUser = useSelector((state) => state.activeChat);
+
+    const keyDownFunction = async (e) => {
+        if ((e.key === "Enter" || e.type === "click") && (message)) {
+          setMessage("")
+          socket.emit("stop typing", activeChat._id)
+          const data = await sendMessage({ chatId: activeChat._id, message })
+          socket.emit("new message", data)
+          setMessages([...messages, data])
+          dispatch(fetchChats())
+        }
+    }    
 
     useEffect(() => {
         const fetchMessages = async () => {
-            setLoading(true)
+            setLoading(true);
+            const data = await fetchMessages(activeChat._Id);
+            setMessages(data);
+            ServiceWorkerContainer.emit("Enter chat", activeChat._id);
+            setLoading(false);
         }
+        fetchMessages();
+        selectedChat = activeChat;
     }, []);
+
+    useEffect(() => {
+        socket.on("message recieved", (newMessageRecieved) => {
+          if ((!selectedChat || selectedChat._id) !== newMessageRecieved.chatId._id) {
+            if (!notifications.includes(newMessageRecieved)) {
+              dispatch(setNotifications([newMessageRecieved, ...notifications]))
+            }
+          }
+          else {
+            setMessages([...messages, newMessageRecieved])
+          }
+          dispatch(fetchChats())
+        })
+      })
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -138,7 +178,11 @@ const ChatPage = () => {
             </RightHeader>
             <ChatsContainer>
                 {
-                    
+                    messages.map((message, index) => (
+                        <MessageCard>
+                            
+                        </MessageCard>
+                    ))
                 }
             </ChatsContainer>
             <ChatInputContainer>
