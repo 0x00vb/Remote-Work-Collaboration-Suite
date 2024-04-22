@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import ContactCard from './chatPage/ContactCard';
 import Icon from './GoogleIcon';
+
+import io, { Socket } from 'socket.io-client'
 
 const Conatiner = styled.div`
     width: 100%;
@@ -84,7 +86,26 @@ const ChatInputContainer = styled.div`
     border-radius: 10px;
 `
 
+const socket = io('http://localhost:5000');
+
 const ChatPage = () => {
+    const [message, setMessage] = useState("");
+    const [messages, setMessages] = useState([]);
+
+    useEffect(() => {
+        socket.io('message', (message) => {
+            setMessages((messages) => [...messages, message]);
+        });
+    }, []);
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if(message){
+            socket.emit('sendMessage', { message });
+            setMessage('')
+        }
+    }
+
   return (
     <Conatiner>
         <LeftSection>
