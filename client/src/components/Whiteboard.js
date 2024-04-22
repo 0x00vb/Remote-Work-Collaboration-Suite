@@ -10,6 +10,9 @@ const Container = styled.div`
 `
 
 const Header = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   height: 10%;
   width: 100%;
 `
@@ -70,13 +73,12 @@ const NewButton = styled.span`
 
 const Whiteboard = () => {
   const [currentWbSection, setCurrentWbSection] = useState('board');
-
-
+  
   return (
     <Container>
       <Header>
         <ProjectName>ProjectName</ProjectName>
-        <SectionsBar setCurrentWbSection={setCurrentWbSection}/>
+        <SectionsBar currentWbSection={currentWbSection} setCurrentWbSection={setCurrentWbSection}/>
       </Header>
       <MainSection>
 
