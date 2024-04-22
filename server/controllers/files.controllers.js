@@ -2,7 +2,7 @@ const File = require('../models/file.model');
 const { deleteFile, extractFileMetadata } = require('../utils/file');
 
 // Upload a file
-exports.uploadFile = async (req, res) => {
+export const uploadFile = async (req, res) => {
   try {
     const { projectId } = req.params;
     const { file } = req;
@@ -31,7 +31,7 @@ exports.uploadFile = async (req, res) => {
 };
 
 // Get all files for a project
-exports.getProjectFiles = async (req, res) => {
+export const getProjectFiles = async (req, res) => {
   try {
     const { projectId } = req.params;
     const files = await File.find({ project: projectId });
@@ -43,7 +43,7 @@ exports.getProjectFiles = async (req, res) => {
 };
 
 // Get a specific file
-exports.getFile = async (req, res) => {
+export const getFile = async (req, res) => {
   try {
     const { fileId } = req.params;
     const file = await File.findById(fileId);
@@ -58,7 +58,7 @@ exports.getFile = async (req, res) => {
 };
 
 // Delete a file
-exports.deleteFile = async (req, res) => {
+export const deleteFile = async (req, res) => {
   try {
     const { fileId } = req.params;
     const file = await File.findByIdAndDelete(fileId);

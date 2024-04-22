@@ -1,7 +1,7 @@
-import Message from '../models/Message';
-import User from '../models/User';
-import Chat from '../models/Chat';
-export const sendMessage = async (req, res) => {
+const Message = ('../models/Message');
+const User = ('../models/User');
+const Chat = ('../models/Chat');
+exports.sendMessage = async (req, res) => {
     const { chatId, message } = req.body;
     try {
       let msg = await Message.create({ sender: req.userId, message, chatId });
@@ -25,9 +25,9 @@ export const sendMessage = async (req, res) => {
       console.log(error);
       res.status(500).json({ message: error });
     }
-  };
+};
 
-  export const getMessages = async (req, res) => {
+  exports.getMessages = async (req, res) => {
     const { chatId } = req.params;
     try {
       let messages = await Message.find({ chatId })

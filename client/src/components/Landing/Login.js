@@ -7,10 +7,10 @@ import { mobile } from '../../utils/Responsive';
 import { loginUser, signinUser } from '../../api/auth';
 
 const Container = styled.div`
-position: absolute;
-top: 0;
+  position: absolute;
+  top: 0;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   background: rgba(90, 90, 90, 0.774);
   background-size: cover;
   display: flex;
@@ -90,6 +90,7 @@ const Login = ({ setLoginVisible }) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setCPassword] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
     const wrapperRef = useRef(null);
 
@@ -104,18 +105,22 @@ const Login = ({ setLoginVisible }) => {
         if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
           setLoginVisible(false);
         }
-      };
+    };
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        const { status, message } = await loginUser(username, password);
-        if(status === 200){
-            handleSuccess(message);
-            setTimeout(() => {
-                navigate('/');
-            }, 1000);
+        setIsLoading(true);
+        const data = await loginUser(username, password);
+        console.log(data);
+        if(data.status === 200){
+          localStorage.setItem('token', data.token);
+          handleSuccess(data.message);
+          setIsLoading(false);
+          setTimeout(() => {
+              navigate('/');
+          }, 2000);
         }else{
-            handleError(message);
+          handleError(data.message);
         }
         setUsername("");
         setPassword("");
@@ -136,6 +141,7 @@ const Login = ({ setLoginVisible }) => {
         } else {
           handleError(message);
         }
+        setEmail("");
         setUsername("");
         setPassword("");
         setCPassword("");
@@ -182,6 +188,7 @@ const Login = ({ setLoginVisible }) => {
           </Form>
         </Wrapper>
       }
+      <ToastContainer/>
     </Container>
   )
 }

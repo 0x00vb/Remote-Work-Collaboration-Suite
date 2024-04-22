@@ -1,23 +1,31 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const User = require('../models/user.model');
+const User = require('../models/User');
 const { sendPasswordResetEmail } = require('../utils/email');
 
 exports.signin = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { username, email, password } = req.body;
 
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ $or: [{ email }, { username }] });
     if (existingUser) {
       return res.status(400).json({ message: 'User already exists' });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const newUser = new User({ name, email, password: hashedPassword });
+    const newUser = new User({
+        username,
+        email,
+        password: hashedPassword
+     });
+    
+    const token = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET, {
+      expiresIn: '3d',
+    });
     await newUser.save();
 
-    res.status(201).json({ message: 'User registered successfully' });
+    res.status(200).json({ message: 'User registered successfully', token: token });
   } catch (err) {
     res.status(500).json({ message: 'Something went wrong' });
   }
@@ -25,9 +33,9 @@ exports.signin = async (req, res) => {
 
 exports.login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { username, password } = req.body;
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ username });
     if (!user) {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
@@ -38,14 +46,30 @@ exports.login = async (req, res) => {
     }
 
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-      expiresIn: '2d',
+      expiresIn: '3d',
     });
 
-    res.status(200).json({ token });
+    res.status(200).json({ meesage: "Logged in successfully!", token: token });
   } catch (err) {
     res.status(500).json({ message: 'Something went wrong' });
   }
 };
+
+exports.validUser = async (req, res) => {
+  try{
+    const validuser = await User
+      .findOne({ _id: req.userId })
+      .select('-password');
+    if (!validuser) res.json({ message: 'user is not valid' });
+    res.status(201).json({
+      user: validuser,
+      token: req.token,
+    });
+  }catch(e){    
+    res.status(500).json({ message: error });
+    console.log(e)
+  }
+}
 
 exports.requestPasswordReset = async (req, res) => {
   try {

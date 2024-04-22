@@ -3,12 +3,12 @@ import { BASE_URL } from "./api";
 
 export const loginUser = async (username, password) => {
     try {
-      const { data } = await axios.post(
+      const response = await axios.post(
             `${BASE_URL}/auth/login`,
             { username, password },
             { withCredentials: true }
       );
-      return data;
+      return response;
     } catch (error) {
       console.log(error);
       return { success: false, message: "An error occurred during login." };
@@ -29,3 +29,15 @@ export const signinUser = async (email, username, password) => {
     }
 }
 
+export const validUser = async () => {
+  try {
+    const token = localStorage.getItem('token');
+
+    const { data } = await BASE_URL(token).get(`/auth/valid`, {
+      headers: { Authorization: token },
+    });
+    return data;
+  } catch (error) {
+    console.log('error in valid user api');
+  }
+};

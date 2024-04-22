@@ -7,7 +7,7 @@ import Icon from './GoogleIcon';
 
 import io from 'socket.io-client';
 
-import { fetchChats, setNotifications } from '../redux/chatSlice';
+import { fetchChats, setNotifications } from '../redux/chatsSlice';
 import { fetchMessages, sendMessage } from '../api/messages';
 
 const Conatiner = styled.div`
@@ -81,7 +81,7 @@ const ChatsContainer = styled.div`
     overflow-y: scroll;
 `
 
-const ChatInputContainer = styled.div`
+const ChatInputContainer = styled.form`
     display: flex;
     align-items: center;
     height: 2rem;
@@ -105,7 +105,6 @@ const ChatPage = () => {
     const keyDownFunction = async (e) => {
         if ((e.key === "Enter" || e.type === "click") && (message)) {
           setMessage("")
-          socket.emit("stop typing", activeChat._id)
           const data = await sendMessage({ chatId: activeChat._id, message })
           socket.emit("new message", data)
           setMessages([...messages, data])
@@ -114,14 +113,16 @@ const ChatPage = () => {
     }    
 
     useEffect(() => {
-        const fetchMessages = async () => {
-            setLoading(true);
-            const data = await fetchMessages(activeChat._Id);
-            setMessages(data);
-            ServiceWorkerContainer.emit("Enter chat", activeChat._id);
-            setLoading(false);
+        const fetchMessagesFunc = async () => {
+            if(activeChat){
+                setLoading(true);
+                const data = await fetchMessages(activeChat._Id);
+                setMessages(data);
+                socket.emit("Enter chat", activeChat._id);
+                setLoading(false);
+            }
         }
-        fetchMessages();
+        fetchMessagesFunc();
         selectedChat = activeChat;
     }, []);
 
@@ -139,11 +140,13 @@ const ChatPage = () => {
         })
       })
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if(message){
-            socket.emit('sendMessage', { message });
-            setMessage('')
+    const handleSubmit = async (e) => {
+        if ((e.key === "Enter" || e.type === "click") && (message)) {
+            setMessage("")
+            const data = await sendMessage({ chatId: activeChat._id, message })
+            socket.emit("new message", data)
+            setMessages([...messages, data])
+            dispatch(fetchChats())
         }
     }
 
@@ -185,7 +188,7 @@ const ChatPage = () => {
                     ))
                 }
             </ChatsContainer>
-            <ChatInputContainer>
+            <ChatInputContainer onKeyDown={(e) => keyDownFunction(e)} onSubmit={(e) => e.preventDefault()}>
                 <Icon name="attach_file"/>
                 <Input placeholder='Your message'/>
                 <div onClick={handleSubmit}>

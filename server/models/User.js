@@ -13,6 +13,10 @@ const userSchema = mongoose.Schema({
     password: {
         type: String,
         min: 8
+    },
+    profilePic: {
+        type: String,
+        default: "https://t4.ftcdn.net/jpg/03/32/59/65/360_F_332596535_lAdLhf6KzbW6PWXBWeIFTovTii1drkbT.webp"
     }
 }, { timestamps: true })
 

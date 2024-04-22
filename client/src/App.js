@@ -22,11 +22,11 @@ function App() {
   return (  
     <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
       <BrowserRouter>
-      <GlobalStyles/>
-        <Routes>
-          <Route exact path='/' element={<Main themeToggler={themeToggler} theme={theme}/>}/>
-          <Route exact path='/teamSync' element={<Landing/>}/>
-        </Routes>
+        <GlobalStyles/>
+          <Routes>
+            <Route exact path='/' element={<Main themeToggler={themeToggler} theme={theme}/>}/>
+            <Route exact path='/teamSync' element={<Landing/>}/>
+          </Routes>
       </BrowserRouter>
     </ThemeProvider>
   );
