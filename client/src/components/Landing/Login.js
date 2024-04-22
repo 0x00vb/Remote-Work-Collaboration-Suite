@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { ToastContainer, toast } from 'react-toastify';
 import { mobile } from '../../utils/Responsive';
 
-import { loginUser, signinUser } from '../../utils/auth';
+import { loginUser, signinUser } from '../../api/auth';
 
 const Container = styled.div`
 position: absolute;

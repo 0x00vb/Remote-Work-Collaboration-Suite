@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 const chatSchema = mongoose.Schema(
   {
     photo: {
@@ -18,10 +18,6 @@ const chatSchema = mongoose.Schema(
     latestMessage: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Message',
-    },
-    groupAdmin: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
     },
   },
   {

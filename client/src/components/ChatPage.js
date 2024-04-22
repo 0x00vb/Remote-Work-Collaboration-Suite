@@ -91,11 +91,12 @@ const socket = io('http://localhost:5000');
 const ChatPage = () => {
     const [message, setMessage] = useState("");
     const [messages, setMessages] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        socket.io('message', (message) => {
-            setMessages((messages) => [...messages, message]);
-        });
+        const fetchMessages = async () => {
+            setLoading(true)
+        }
     }, []);
 
     const handleSubmit = (e) => {
@@ -136,12 +137,16 @@ const ChatPage = () => {
                 <Text>5 members, 2 online</Text>
             </RightHeader>
             <ChatsContainer>
-
+                {
+                    
+                }
             </ChatsContainer>
             <ChatInputContainer>
                 <Icon name="attach_file"/>
                 <Input placeholder='Your message'/>
-                <Icon name="send"/>
+                <div onClick={handleSubmit}>
+                    <Icon name="send"/>
+                </div>
             </ChatInputContainer>
         </RightSection>
     </Conatiner>
