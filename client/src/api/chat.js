@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { toast } from 'react-toastify'
-import { BASE_URL } from './api';
+import { BASE_URL } from './env';
 
 const API = (token) => {
     axios.create({

@@ -42,7 +42,7 @@ const Title = styled.p`
 
 const Text = styled.p`
     font-size: 20px;
-    ${({ additionalStyles }) => additionalStyles && additionalStyles};
+    ${({ additionalstyles }) => additionalstyles && additionalstyles};
 `
 
 const Image = styled.img`   
@@ -82,7 +82,7 @@ const Landing = () => {
                 <Text>Unify your team, amplify productivity – with TeamSync, collaboration has never been easier.</Text>
                 <div style={{display: 'flex', gap: '10px', alignItems: 'center'}}>
                     <Text
-                        additionalStyles={`
+                        additionalstyles={`
                             background-color: #212121;
                             color: #F7F7F8;
                             padding: 12px;
@@ -91,13 +91,13 @@ const Landing = () => {
                     >
                         Get started
                     </Text>
-                    <Text additionalStyles={`font-size: 14px`}>IT'S FREE</Text>
+                    <Text additionalstyles={`font-size: 14px`}>IT'S FREE</Text>
                 </div>
             </ContentContainer>
             <ContentContainer>
                 <Image src={LandingImage}/>
                 <Text
-                    additionalStyles={`
+                    additionalstyles={`
                         line-height: 1.8;
                     `}
                 >
@@ -113,7 +113,7 @@ const Landing = () => {
         <Section id='features' style={{alignItems: 'center'}}>
             <ContentContainer>
                 <Text
-                    additionalStyles={
+                    additionalstyles={
                         `font-size: 1.4rem;
                         font-weight: 600;
                         `
@@ -121,13 +121,13 @@ const Landing = () => {
                 >
                     Features
                 </Text>
-                <Text additionalStyles={`
+                <Text additionalstyles={`
                     font-size: 1.5rem;
                     font-weight: 600;
                 `}>
                     Revolutionize the way your team collaborates with our suite of powerful tools:
                 </Text>
-                <Text additionalStyles={`font-size: 18px; color: #858484`}>
+                <Text additionalstyles={`font-size: 18px; color: #858484`}>
                     Say goodbye to scattered communication channels and disjointed workflows. With TeamSync, your team can work together effortlessly, no matter where they are located.
                 </Text>
             </ContentContainer>
@@ -135,55 +135,55 @@ const Landing = () => {
                     <CardContainer>
                         <Icon name={'groups'} color={'#000000'} styles={`font-size: 3rem`}/>
                         <Text
-                            additionalStyles={`font-size: 1.5rem; font-weight: 600`}
+                            additionalstyles={`font-size: 1.5rem; font-weight: 600`}
                         >Project Management</Text>
                         <Text
-                            additionalStyles={`font-size: 1rem; color: #7e7e7e`}
+                            additionalstyles={`font-size: 1rem; color: #7e7e7e`}
                         >Streamline your workflow from start to finish. Create projects, assign tasks, and track progress with ease. Visualize your project's journey with Kanban boards and Gantt charts.</Text>
                     </CardContainer>
                     <CardContainer>
                         <Icon name={'folder_open'} color={'#000000'} styles={`font-size: 3rem`}/>
                         <Text
-                            additionalStyles={`font-size: 1.5rem; font-weight: 600`}
+                            additionalstyles={`font-size: 1.5rem; font-weight: 600`}
                         >File Sharing</Text>
                         <Text
-                            additionalStyles={`font-size: 1rem; color: #7e7e7e`}
+                            additionalstyles={`font-size: 1rem; color: #7e7e7e`}
                         >Collaborate in real-time with secure file sharing. Ensure everyone is on the same page with version control, comments, and annotation tools. Say goodbye to email attachments and scattered documents.</Text>
                     </CardContainer>
                     <CardContainer>
                         <Icon name={'videocam'} color={'#000000'} styles={`font-size: 3rem`}/>
                         <Text
-                            additionalStyles={`font-size: 1.5rem; font-weight: 600`}
+                            additionalstyles={`font-size: 1.5rem; font-weight: 600`}
                         >Video Conferencing</Text>
                         <Text
-                            additionalStyles={`font-size: 1rem; color: #7e7e7e`}
+                            additionalstyles={`font-size: 1rem; color: #7e7e7e`}
                         >Connect face-to-face with crystal-clear video and audio. Share your screen, record meetings, and customize your virtual background for a professional touch. Bridge the gap between remote team members effortlessly.</Text>
                     </CardContainer>
                     <CardContainer>
                         <Icon name={'chat'} color={'#000000'} styles={`font-size: 3rem`}/>
                         <Text
-                            additionalStyles={`font-size: 1.5rem; font-weight: 600`}
+                            additionalstyles={`font-size: 1.5rem; font-weight: 600`}
                         >Team Chat</Text>
                         <Text
-                            additionalStyles={`font-size: 1rem; color: #7e7e7e`}
+                            additionalstyles={`font-size: 1rem; color: #7e7e7e`}
                         >Keep the conversation flowing with real-time messaging. Organize discussions into channels, share files, and never miss an important message with powerful search functionality. Communication made simple.</Text>
                     </CardContainer>
                     <CardContainer>
                         <Icon name={'assignment'} color={'#000000'} styles={`font-size: 3rem`}/>
                         <Text
-                            additionalStyles={`font-size: 1.5rem; font-weight: 600`}
+                            additionalstyles={`font-size: 1.5rem; font-weight: 600`}
                         >Virtual Whiteboard</Text>
                         <Text
-                            additionalStyles={`font-size: 1rem; color: #7e7e7e`}
+                            additionalstyles={`font-size: 1rem; color: #7e7e7e`}
                         >Foster creativity and collaboration with a digital canvas. Sketch out ideas, annotate documents, and brainstorm in real-time with your team. Break down barriers and unleash your creativity.</Text>
                     </CardContainer>
                     <CardContainer>
                         <Icon name={'calendar_month'} color={'#000000'} styles={`font-size: 3rem`}/>
                         <Text
-                            additionalStyles={`font-size: 1.5rem; font-weight: 600`}
+                            additionalstyles={`font-size: 1.5rem; font-weight: 600`}
                         >Calendar and Scheduling</Text>
                         <Text
-                            additionalStyles={`font-size: 1rem; color: #7e7e7e`}
+                            additionalstyles={`font-size: 1rem; color: #7e7e7e`}
                         >Stay organized and on track with our calendar feature. Schedule meetings, set reminders, and manage your team's availability effortlessly. Say goodbye to scheduling conflicts and missed appointments.</Text>
                     </CardContainer>
             </CardsGrid>

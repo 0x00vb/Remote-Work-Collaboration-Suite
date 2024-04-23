@@ -12,7 +12,7 @@ const app = express();
 app.use(cors({origin: 'http://localhost:3000', credentials: true, methods: ['GET', 'POST', 'DELETE']}))
 app.use(cookieParser())
 app.use(express.json())
-
+ 
 mongoose.connect(process.env.MONGO_URI)
 .then(() => {
   console.log("[+] DB connected!")
@@ -20,6 +20,9 @@ mongoose.connect(process.env.MONGO_URI)
 .catch((e) => {
   console.log("[!] Failed to connect! ", e.message)
 })
+
+app.use('/api/auth', authRoutes);
+app.use('/api/messages', messagesRouter);
 
 const server = app.listen(process.env.PORT, () => {
   console.log('[+] Listening on http://localhost:' + process.env.PORT)
@@ -43,7 +46,4 @@ io.on('connection', (socket) => {
     console.log(`Socket ${socket.id} disconnected`);
   }); 
 });
-
-app.use('/api/auth', authRoutes);
-app.use('/api/messages', messagesRouter);
 

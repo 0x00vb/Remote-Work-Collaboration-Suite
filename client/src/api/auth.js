@@ -1,5 +1,11 @@
 import axios from "axios"
-import { BASE_URL } from "./api";
+import { BASE_URL } from "./env"
+const api = (token) => 
+  axios.create({
+    baseURL: BASE_URL,
+    headers: {Authorization: token}
+  })
+
 
 export const loginUser = async (username, password) => {
     try {
@@ -32,12 +38,12 @@ export const signinUser = async (email, username, password) => {
 export const validUser = async () => {
   try {
     const token = localStorage.getItem('token');
-
-    const { data } = await BASE_URL(token).get(`/auth/valid`, {
+    const response = await api(token).get(`/auth/valid`, {
       headers: { Authorization: token },
     });
-    return data;
+    console.log(response)
+    return response;
   } catch (error) {
-    console.log('error in valid user api');
+    console.log('error in valid user api: ', error);
   }
 };

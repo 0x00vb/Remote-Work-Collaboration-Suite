@@ -37,7 +37,7 @@ const Text = styled.p`
     color: ${({ theme }) => theme.primaryText};
     font-size: 17px;
     cursor: pointer;
-    ${({ additionalStyles }) => additionalStyles && additionalStyles};
+    ${({ additionalstyles }) => additionalstyles && additionalstyles};
 `
 
 const Navbar = ({ setLoginVisible }) => {
@@ -50,7 +50,7 @@ const Navbar = ({ setLoginVisible }) => {
         </SubContainer>
         <SubContainer>
             <Text
-                additionalStyles={`
+                additionalstyles={`
                     background-color: #212121;
                     color: #F7F7F9;
                     padding: 10px;

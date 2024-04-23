@@ -48,8 +48,12 @@ exports.login = async (req, res) => {
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
       expiresIn: '3d',
     });
+    res.cookie('token', token, {
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000,
+    })
 
-    res.status(200).json({ meesage: "Logged in successfully!", token: token });
+    res.status(200).json({ message: "Logged in successfully!", token: token });
   } catch (err) {
     res.status(500).json({ message: 'Something went wrong' });
   }
@@ -60,14 +64,14 @@ exports.validUser = async (req, res) => {
     const validuser = await User
       .findOne({ _id: req.userId })
       .select('-password');
-    if (!validuser) res.json({ message: 'user is not valid' });
-    res.status(201).json({
+    if (!validuser) return res.json({ message: 'User not found' });
+    res.status(200).json({
       user: validuser,
       token: req.token,
     });
-  }catch(e){    
+  }catch(error){    
     res.status(500).json({ message: error });
-    console.log(e)
+    console.log("User Validation error: ", error);
   }
 }
 

@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components'
 import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { mobile } from '../../utils/Responsive';
 
 import { loginUser, signinUser } from '../../api/auth';
@@ -110,17 +111,17 @@ const Login = ({ setLoginVisible }) => {
     const handleLogin = async (e) => {
         e.preventDefault();
         setIsLoading(true);
-        const data = await loginUser(username, password);
-        console.log(data);
-        if(data.status === 200){
-          localStorage.setItem('token', data.token);
-          handleSuccess(data.message);
+        const response = await loginUser(username, password);
+        if(response.status === 200){
+          localStorage.setItem('token', response.data.token);
+          const test = localStorage.getItem('token');
+          handleSuccess(response.data.message);
           setIsLoading(false);
           setTimeout(() => {
               navigate('/');
-          }, 2000);
+          }, 1000);
         }else{
-          handleError(data.message);
+          handleError(response.data.message);
         }
         setUsername("");
         setPassword("");
