@@ -6,7 +6,7 @@ import Icon from './GoogleIcon';
 import TaskCard from './TaskCard';
 const Container = styled.div`
   width: 100%;
-  padding: 1rem 0.5rem;
+  height: 100%;
 `
 
 const Header = styled.div`
@@ -45,7 +45,7 @@ const ColumnTitle = styled.p`
 `
 
 const ColumnScrollable = styled.div`
-  height: 100%;
+  height: 98%;
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -6,17 +6,18 @@ import RecentActItem from './dashboard/RecentActItem';
 import SmallWidget from './dashboard/SmallWidget';
 
 const Container = styled.div`
+    height: 100%;
     display: flex;
     flex-direction: column;
     width: 100%;
-    padding-top: 1rem;
 `
 
 const Banner = styled.img`
     width: 98%;
-    height: 15%;
+    height: 12%;
     object-fit: cover;
     border-radius: 15px;
+    margin-top: 1rem;
 `
 
 const MainSection = styled.div`

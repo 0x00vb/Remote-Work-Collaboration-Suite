@@ -12,10 +12,13 @@ const Container = styled.div`
 `
 
 const ItemContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 0.5rem;
   background-color: ${({ id, theme,  currentWbSection }) =>
     id === currentWbSection ? theme.primaryBackground : 'transparent'};
-    border-radius: 5px;
+  border-radius: 5px;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
   -webkit-box-shadow: 11px 9px 14px -8px rgba(0,0,0,0.1);

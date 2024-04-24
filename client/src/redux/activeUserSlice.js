@@ -15,13 +15,12 @@ const initialState = {
         state.id = payload.id;
         state.email = payload.email;
         state.profilePic = payload.profilePic;
-        state.username = payload.name;
+        state.username = payload.username;
       },
-      setUserUsernameAndBio: (state, { payload }) => {
-        state.username = payload.name;
-        state.bio = payload.bio;
+      setUserUsername: (state, { payload }) => {
+        state.username = payload.username;
       },
     },
   });
-  export const { setActiveUser, setUserUsernameAndBio } = activeUserSlice.actions;
+  export const { setActiveUser, setUserUsername } = activeUserSlice.actions;
   export default activeUserSlice.reducer;

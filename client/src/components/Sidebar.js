@@ -6,8 +6,8 @@ import AppIcon from '../assets/favicon-32x32.png';
 
 const SidebarContainer = styled.div`
   position: sticky;
-  top: 1rem;
-  left: 0.5rem;
+  top: 0;
+  left: 0;
   width: 100%;
   max-width: ${props => (props.expanded ? '16rem' : '2rem')};
   min-height: 50rem;
@@ -195,7 +195,7 @@ const Sidebar = ({themeToggler, theme, setCurrentSection}) => {
           </SidebarSectionItem>
           <SidebarSectionItem onClick={() => handleChangeSection('team_members')}>
             <GoogleIcon name={'groups'}/>
-            <SidebarSectionText>Team members</SidebarSectionText>
+            <SidebarSectionText>Meetings</SidebarSectionText>
           </SidebarSectionItem>
         </SidebarSection>
         <SidebarSection>
@@ -213,7 +213,7 @@ const Sidebar = ({themeToggler, theme, setCurrentSection}) => {
             <SidebarSectionSpan>#</SidebarSectionSpan>
             <SidebarSectionText>Project1</SidebarSectionText>
           </SidebarSectionItem>
-          <SidebarNewProjectBtn>
+          <SidebarNewProjectBtn onClick={() => handleChangeSection('newProject')}>
             {
               isExpanded ?
                 'Create new project'

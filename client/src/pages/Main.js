@@ -11,12 +11,15 @@ import CalendarPage from '../components/CalendarPage';
 import { validUser } from '../api/auth';
 import { setActiveUser } from '../redux/activeUserSlice';
 import { toast,ToastContainer } from 'react-toastify';
+import CreateProject from '../components/CreateProject';
 
 const PageContainer = styled.div`
   height: 100vh;
   width: 100%;
   display: flex;
+  align-items: center;
   background-color: ${({ theme }) => theme.primaryBackground};
+  gap: 1rem;
 `
 
 const Main = (props) => {
@@ -29,6 +32,7 @@ const Main = (props) => {
     const userValidation = async () => {
       try{
           const data = await validUser();
+          console.log(data)
           if(data){
             const user = {
               id: data?.user?._id,
@@ -39,6 +43,7 @@ const Main = (props) => {
             }
             dispatch(setActiveUser(user));
             toast(`Hello ${activeUser.username}`);
+            console.log(activeUser)
           }else{
             navigate('/teamSync');
           }
@@ -60,7 +65,8 @@ const Main = (props) => {
         return <ChatPage/>;
       case 'calendar':
         return <CalendarPage/>;
-        
+      case 'newProject':
+        return <CreateProject/>
       default:
         return <Dashboard />;
     }

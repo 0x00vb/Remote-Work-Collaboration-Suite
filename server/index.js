@@ -1,8 +1,10 @@
 const express = require('express');
+const http = require('http');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const socketio = require('socket.io');
+const easyrtc = require('easyrtc');
 require('dotenv').config();
 
 const authRoutes = require('./routes/auth.routes');
@@ -24,10 +26,7 @@ mongoose.connect(process.env.MONGO_URI)
 app.use('/api/auth', authRoutes);
 app.use('/api/messages', messagesRouter);
 
-const server = app.listen(process.env.PORT, () => {
-  console.log('[+] Listening on http://localhost:' + process.env.PORT)
-})
-
+const server = http.createServer(app);
 const io = new socketio.Server(server, {
   pingTimeout: 60000,
   cors: {
@@ -47,3 +46,42 @@ io.on('connection', (socket) => {
   }); 
 });
 
+easyrtc.setOption("logLevel", "debug");
+
+// Overriding the default easyrtcAuth listener, only so we can directly access its callback
+easyrtc.events.on("easyrtcAuth", function(socket, easyrtcid, msg, socketCallback, callback) {
+    easyrtc.events.defaultListeners.easyrtcAuth(socket, easyrtcid, msg, socketCallback, function(err, connectionObj){
+        if (err || !msg.msgData || !msg.msgData.credential || !connectionObj) {
+            callback(err, connectionObj);
+            return;
+        }
+
+        connectionObj.setField("credential", msg.msgData.credential, {"isShared":false});
+
+        console.log("["+easyrtcid+"] Credential saved!", connectionObj.getFieldValueSync("credential"));
+
+        callback(err, connectionObj);
+    });
+});
+
+
+// To test, lets print the credential to the console for every room join!
+easyrtc.events.on("roomJoin", function(connectionObj, roomName, roomParameter, callback) {
+  console.log("["+connectionObj.getEasyrtcid()+"] Credential retrieved!", connectionObj.getFieldValueSync("credential"));
+  easyrtc.events.defaultListeners.roomJoin(connectionObj, roomName, roomParameter, callback);
+});
+
+// Start EasyRTC server
+var rtc = easyrtc.listen(app, io, null, function(err, rtcRef) {
+  console.log("Initiated");
+
+  rtcRef.events.on("roomCreate", function(appObj, creatorConnectionObj, roomName, roomOptions, callback) {
+      console.log("roomCreate fired! Trying to create: " + roomName);
+
+      appObj.events.defaultListeners.roomCreate(appObj, creatorConnectionObj, roomName, roomOptions, callback);
+  });
+});
+
+server.listen(4444, () => {
+    console.log("[+] Server running on: http://localhost:4444")
+})
