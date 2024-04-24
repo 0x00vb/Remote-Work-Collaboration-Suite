@@ -28,6 +28,8 @@ const Main = (props) => {
   const [currentSection, setCurrentSection] = useState('Dashboard');
   const navigate = useNavigate();
   
+  const [createProject, setCreateProject] = useState(false);
+
   useEffect(() => {
     const userValidation = async () => {
       try{
@@ -65,8 +67,6 @@ const Main = (props) => {
         return <ChatPage/>;
       case 'calendar':
         return <CalendarPage/>;
-      case 'newProject':
-        return <CreateProject/>
       default:
         return <Dashboard />;
     }
@@ -74,8 +74,9 @@ const Main = (props) => {
 
   return (
     <PageContainer>
-        <Sidebar themeToggler={props.themeToggler} theme={props.theme} setCurrentSection={setCurrentSection}/>
-        {renderSection()}  
+        <Sidebar themeToggler={props.themeToggler} theme={props.theme} setCurrentSection={setCurrentSection} setCreateProject={setCreateProject}/>
+        {renderSection()}
+        {createProject && <CreateProject setCreateProject={setCreateProject}/>}  
         <ToastContainer/>
       </PageContainer>
   )

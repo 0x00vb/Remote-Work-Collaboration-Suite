@@ -132,7 +132,7 @@ const UserImage = styled.img`
   border-radius: 50%;
 `
 
-const Sidebar = ({themeToggler, theme, setCurrentSection}) => {
+const Sidebar = ({themeToggler, theme, setCurrentSection, setCreateProject}) => {
   const [isExpanded, setIsExpanded] = useState(true);
   const [selectedProjectIndex, setSelectedProjectIndex] = useState(0);
 
@@ -213,7 +213,7 @@ const Sidebar = ({themeToggler, theme, setCurrentSection}) => {
             <SidebarSectionSpan>#</SidebarSectionSpan>
             <SidebarSectionText>Project1</SidebarSectionText>
           </SidebarSectionItem>
-          <SidebarNewProjectBtn onClick={() => handleChangeSection('newProject')}>
+          <SidebarNewProjectBtn onClick={() => setCreateProject(true)}>
             {
               isExpanded ?
                 'Create new project'

@@ -12,6 +12,10 @@ const teamSchema = mongoose.Schema({
         type: Array,
         default: [], //UserId's
         required: false
+    },
+    leader: {
+        type: String,
+        required: true
     }
 }, { timestamps: true })
 
