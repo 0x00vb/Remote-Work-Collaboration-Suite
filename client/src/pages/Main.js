@@ -35,7 +35,6 @@ const Main = (props) => {
     const userValidation = async () => {
       try{
           const data = await validUser();
-          console.log(data)
           if(data){
             const user = {
               id: data?.user?._id,

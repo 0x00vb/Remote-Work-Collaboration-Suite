@@ -16,5 +16,7 @@ export const darkTheme = {
     primaryText: '#F7F7F8',
     secondaryText: '#FFF',
     thirdText: '#D9D9D9',
-    accent: '#B9FF65'
+    accent: '#B9FF65',
+    darkPurple: '#3c005f',
+    gray: '#D9D9D9'
 }

@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import AsyncSelect from "react-select"
 import { searchUsers } from '../api/auth';
+import Icon from './GoogleIcon';
 
 const Container = styled.div`
 position: absolute;
@@ -17,9 +18,12 @@ left: 0;
 `
 
 const MainContent = styled.div`
+    display: flex;
+    flex-direction: column;
+
     background-color: ${({ theme }) => theme.secondaryBackground};
-    height: 50%;
-    width: 50%;
+    height: 75%;
+    width: 60%;
     max-width: 650px;
     padding: 1rem;
     border-radius: 15px;
@@ -60,9 +64,11 @@ const Form = styled.div`
 const Input = styled.input`
     font-size: 1rem;
     height: 2rem;
+    width: auto;
     padding: 5px;
     border-radius: 5px;
-    border: 1px solid gray;
+    border: 1px solid ${({ theme }) => theme.gray};
+
     outline: none;
 `
 
@@ -72,18 +78,45 @@ const InputContainer = styled.div`
     gap: 1rem;
 `
 
-const UsersSelectorContainer = styled.div`
-    height: 2rem;
+const UserSearchContainer = styled.div`
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 `
 
-const Clickable = styled
+const UsersSelectorContainer = styled.div`
+    width: 60%;
+    height: auto;
+    background-color: #FFFFFF;
+    ${props => props.show  && {padding: '1rem 0.5rem'}};
+    border-radius: 0 0 5px 5px;
+    margin-top: -5px;
+`
+
+const Clickable = styled.div`
+    ${props => props.isSelected && {backgroundColor: '#3e97c7d5'}}
+    width: 1rem;
+    height: 1rem;
+    border: solid 2px #3e98c7;
+    border-radius: 3px;
+    cursor: pointer;
+`
 
 const UserContainer = styled.div`
     display: flex;
-    height: 1rem;
+    align-items: center;
+    gap: 0.5rem;
+`
+
+const UserInfo = styled.div`
+    display: flex;
+    height: auto;
+    max-height: 1rem;
     align-items: center;
     gap: 10px;
     padding: 5px 10px;
+    transition: all 0.3s ease-in-out;
 `
 
 const UserImg = styled.img`
@@ -96,14 +129,36 @@ const UserUsername = styled.p`
 
 `
 
+const SelectedUsersContainer = styled.div`
+    ${props => props.show  && {width: '30%'}};
+    height: auto;
+    background-color: #FFFFFF;
+    ${props => props.show  && {padding: '0.5rem'}};
+    overflow-y: scroll;
+`
+
+const BottomSection = styled.div`
+    margin-left: auto;
+    margin-top: auto;
+
+`
+
 const Button = styled.button`
+    background-color: #3e98c7;
+    color: #FFFFFF;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0.5rem;
+    border-radius: 20px;
     border: none;
+    cursor: pointer;
 `
 
 const CreateProject = ({ setCreateProject }) => {
     const contentRef = useRef(null);
     const [searchUsersResults, setSearchUsersResults] = useState([]);
     const [searchInput, setSearchInput] = useState("");
+    const [selectedUsers, setSelectedUsers] = useState([]);
 
     const handleClickOutside = (event) => {
         if (contentRef.current && !contentRef.current.contains(event.target)) {
@@ -118,91 +173,112 @@ const CreateProject = ({ setCreateProject }) => {
         };
       }, [setCreateProject]);
 
-    // useEffect(() => {
-    //     const fetchSearchResults = async () => {
-    //         console.log(0)
-    //         if(searchInput !== ""){
-    //             try{
-    //                 const results = await searchUsers(searchInput);
-    //                 setSearchUsersResults(results.data);
-    //             }catch(err){
-    //                 console.log(err)
-    //             }
-    //         }
-    //     }
-    //     fetchSearchResults();
-    // }, [searchInput])
-
-    const loadOptions = async (inputValue, callback) => {
-        try {
-          const results = await searchUsers(inputValue);
-          const options = results.data.map(user => ({
-            value: user.id,
-            label: user.username
-          }));
-          callback(options);
-        } catch (error) {
-          console.error('Error loading options:', error);
-          callback([]);
+    useEffect(() => {
+        const fetchSearchResults = async () => {
+            if(searchInput !== ""){
+                try{
+                    const results = await searchUsers(searchInput);
+                    setSearchUsersResults(results.data);
+                }catch(err){
+                    console.log(err)
+                }
+            }else{
+                setSearchUsersResults([])
+            }
         }
-      };
-  return (
-    <Container>
-        <MainContent ref={contentRef}>
-            <Header>
-                <Title>
-                    New project
-                </Title>
-            </Header>
-            <div style={{display: 'flex', alignItems: 'center', flexDirection: 'row', width: '100%', marginBottom: '1rem'}}>
-                <Left>
-                    <Text style={{fontWeight: '600', fontSize: '1.1rem'}}>
-                        Project description
-                    </Text>
-                </Left>
-                <Right>
-                    <InputContainer>
-                        <Text>Project name</Text>
-                        <Input/>
-                    </InputContainer>
-                    <InputContainer>
-                        <Text>Project description</Text>
-                        <Input/>
-                    </InputContainer>
-                </Right>
-            </div>
-            <div>
-                <div style={{display: 'flex', alignItems: 'center', flexDirection: 'row', width: '100%'}}>
+        fetchSearchResults();
+    }, [searchInput])
+
+    const addToSelectedUsers = (user) => {
+        if (selectedUsers.some(selectedUser => selectedUser._id === user._id)) {
+            setSelectedUsers(selectedUsers.filter(selectedUser => selectedUser.id !== user.id));
+        } else {
+            setSelectedUsers([...selectedUsers, user]);
+        }
+    }
+
+    const removeFromSelectedUsers = (userId) => {
+        setSelectedUsers(selectedUsers.filter(user => user._id !== userId));
+    }
+
+    return (
+        <Container>
+            <MainContent ref={contentRef}>
+                <Header>
+                    <Title>
+                        New project
+                    </Title>
+                </Header>
+                <div style={{display: 'flex', alignItems: 'center', flexDirection: 'row', width: '100%', marginBottom: '1rem'}}>
                     <Left>
                         <Text style={{fontWeight: '600', fontSize: '1.1rem'}}>
-                            Team Members
+                            Project description
                         </Text>
                     </Left>
                     <Right>
-                        {/* <Input
-                            placeholder='Search for new members: '
-                            value={searchInput}
-                            onChange={(e) => {setSearchInput(e.target.value); console.log(e.target.value)}}
-                        />
-                        <UsersSelectorContainer>
-                            {
-                                searchUsersResults.map(user => (
-                                    <UserContainer>
-                                        <UserImg src={user.profilePic}/>
-                                        <UserUsername>{user.username}</UserUsername>
-                                    </UserContainer>
-                                ))
-                            }
-                        </UsersSelectorContainer> */}
-                        <AsyncSelect cacheOptions loadOptions={loadOptions} defaultOptions               onChange={(selectedOptions) => {
-                console.log(selectedOptions);
-              }}/>
+                        <InputContainer>
+                            <Text>Project name</Text>
+                            <Input/>
+                        </InputContainer>
+                        <InputContainer>
+                            <Text>Project description</Text>
+                            <Input/>
+                        </InputContainer>
                     </Right>
                 </div>
-            </div>
-        </MainContent>
-    </Container>
-  )
+                <div style={{height: '100%'}}>
+                    <div style={{display: 'flex', alignItems: 'center', flexDirection: 'row', height: '100%', width: '100%'}}>
+                        <Left>
+                            <Text style={{fontWeight: '600', fontSize: '1.1rem'}}>
+                                Team Members
+                            </Text>
+                        </Left>
+                        <Right style={{flexDirection: 'row'}}>
+                            <UserSearchContainer>
+                                <Input
+                                    placeholder='Search for new members: '
+                                    value={searchInput}
+                                    onChange={(e) => {setSearchInput(e.target.value)}}
+                                    style={{width: '60%', padding: '5px 0.5rem'}}
+                                />
+                                <UsersSelectorContainer show={searchUsersResults.length > 0}>
+                                    {
+                                        searchUsersResults.map((user) => (
+                                            <UserContainer key={user._id}>
+                                                <Clickable onClick={() => {addToSelectedUsers(user); console.log(user)}} isSelected={selectedUsers.some(selectedUser => selectedUser.id === user.id)}/>
+                                                <UserInfo>
+                                                    <UserImg src={user.profilePic}/>
+                                                    <UserUsername>{user.username}</UserUsername>
+                                                </UserInfo>
+                                            </UserContainer>
+                                        ))
+                                    }
+                                </UsersSelectorContainer>
+                            </UserSearchContainer>
+                            <SelectedUsersContainer show={selectedUsers.length > 0}>
+                                    {
+                                        selectedUsers.map((user, index) => (
+                                            <UserContainer key={index} style={{border: '1px solid black', width: 'auto', borderRadius: '10px'}}>
+                                                <UserImg src={user.profilePic}/>
+                                                <UserUsername>{user.username}</UserUsername>
+                                                <div 
+                                                    onClick={() => removeFromSelectedUsers(user._id)}
+                                                    style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                                                    <Icon name={'close'} style={{fontSize: '1.25rem'}}/>  
+                                                </div>
+                                            </UserContainer>
+                                        ))
+                                    }
+                            </SelectedUsersContainer>
+                        </Right>
+                    </div>
+                </div>
+                <BottomSection>
+                    <Button>Create project</Button>
+                </BottomSection>
+            </MainContent>
+        </Container>
+    )
 }
 
 export default CreateProject

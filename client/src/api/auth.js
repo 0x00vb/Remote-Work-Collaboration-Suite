@@ -37,9 +37,7 @@ export const signinUser = async (email, username, password) => {
 export const validUser = async () => {
   try {
     const token = localStorage.getItem('token');
-    const response = await api(token).get(`/auth/valid`, {
-      headers: { Authorization: token },
-    });
+    const response = await api(token).get(`/auth/valid`);
     return response;
   } catch (error) {
     console.log('error in valid user api: ', error);
@@ -48,12 +46,8 @@ export const validUser = async () => {
 
 export const searchUsers = async (username) => {
   try {
-    console.log(1)
     const token = localStorage.getItem('token');
-
-    const respose = await api(token).get(`auth/user?search=${username}`);
-    console.log(respose)
-    return respose;
+    return await api(token).get(`auth/user?search=${username}`);
   } catch (error) {
     console.log('error in search users api');
   }

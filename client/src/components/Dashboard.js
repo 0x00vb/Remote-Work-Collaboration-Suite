@@ -13,8 +13,8 @@ const Container = styled.div`
 `
 
 const Banner = styled.img`
-    width: 98%;
-    height: 12%;
+    width: 100%;
+    height: 5rem;
     object-fit: cover;
     border-radius: 15px;
     margin-top: 1rem;
@@ -25,12 +25,12 @@ const MainSection = styled.div`
     height: 100%;
     display: flex;
     flex-direction: column;
-    gap: 2.5rem;
+    gap: 1rem;
 `
 
 const Subsection = styled.div`
     width: 100%;
-    height: 35%;
+    height: 45%;
     display: flex;
     gap: 1rem;
 `
@@ -102,94 +102,96 @@ const Dashboard = () => {
     <Container>
         <MainSection>
             <Banner src={'https://media.istockphoto.com/id/603164912/photo/suburb-asphalt-road-and-sun-flowers.jpg?s=612x612&w=0&k=20&c=qLoQ5QONJduHrQ0kJF3fvoofmGAFcrq6cL84HbzdLQM='}/>
-            <Subsection>
-                <InformationContainer width={'65%'} style={{justifyContent: 'space-between'}}>
-                    <InformationTitle>Project Info</InformationTitle>
-                    <InformationText>
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                    </InformationText>
-                    <InfoSubContainer>
-                        <InfoSubContainerItem>
-                            <InformationTitle>Project type</InformationTitle>
-                            <InformationText>Ecomerce Website</InformationText>
-                        </InfoSubContainerItem>
-                        <InfoSubContainerItem>
-                            <InformationTitle>Start Date</InformationTitle>
-                            <InformationText>Aug 10, 2024</InformationText>
-                        </InfoSubContainerItem>
-                        <InfoSubContainerItem>
-                            <InformationTitle>Deadline</InformationTitle>
-                            <InformationText>Sep 21. 2024</InformationText>
-                        </InfoSubContainerItem>
-                        <InfoSubContainerItem>
-                            <InformationTitle>Team members</InformationTitle>
-                            <InformationText>5</InformationText>
-                        </InfoSubContainerItem>
-                        <InfoSubContainerItem>
-                            <InformationTitle>Reports</InformationTitle>
-                            <InformationText>3</InformationText>
-                        </InfoSubContainerItem>
-                    </InfoSubContainer>
-                    <InfoSubContainer width={'9rem'}>
-                        <UserImage src='https://t3.ftcdn.net/jpg/03/58/90/78/360_F_358907879_Vdu96gF4XVhjCZxN2kCG0THTsSQi8IhT.jpg'/>
-                        <InfoSubContainerItem>
-                            <InformationText>Project leader</InformationText>
-                            <InformationTitle>Jhon Doe</InformationTitle>
-                        </InfoSubContainerItem>
-                    </InfoSubContainer>
-                </InformationContainer>
-                <div style={{display: 'flex', flexDirection: 'column', height: '100%', width: '30%',  gap: '1.3rem'}}>
-                    <InformationContainer height={'5rem'}>
+            <div style={{height: '80%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between'}}>
+                <Subsection>
+                    <InformationContainer width={'65%'} style={{justifyContent: 'space-between'}}>
+                        <InformationTitle>Project Info</InformationTitle>
+                        <InformationText style={{overflow: 'scroll'}}>
+                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                        </InformationText>
                         <InfoSubContainer>
-                            <InformationTitle>Overall progress</InformationTitle>
-                            <InformationTitle>70%</InformationTitle>
+                            <InfoSubContainerItem>
+                                <InformationTitle>Project type</InformationTitle>
+                                <InformationText>Ecomerce Website</InformationText>
+                            </InfoSubContainerItem>
+                            <InfoSubContainerItem>
+                                <InformationTitle>Start Date</InformationTitle>
+                                <InformationText>Aug 10, 2024</InformationText>
+                            </InfoSubContainerItem>
+                            <InfoSubContainerItem>
+                                <InformationTitle>Deadline</InformationTitle>
+                                <InformationText>Sep 21. 2024</InformationText>
+                            </InfoSubContainerItem>
+                            <InfoSubContainerItem>
+                                <InformationTitle>Team members</InformationTitle>
+                                <InformationText>5</InformationText>
+                            </InfoSubContainerItem>
+                            <InfoSubContainerItem>
+                                <InformationTitle>Reports</InformationTitle>
+                                <InformationText>3</InformationText>
+                            </InfoSubContainerItem>
                         </InfoSubContainer>
-                        <ProgressBar
-                            bgColor='#B9FF65'
-                            isLabelVisible={false}
-                            completed={70}
-                        />
+                        <InfoSubContainer width={'9rem'}>
+                            <UserImage src='https://t3.ftcdn.net/jpg/03/58/90/78/360_F_358907879_Vdu96gF4XVhjCZxN2kCG0THTsSQi8IhT.jpg'/>
+                            <InfoSubContainerItem>
+                                <InformationText>Project leader</InformationText>
+                                <InformationTitle>Jhon Doe</InformationTitle>
+                            </InfoSubContainerItem>
+                        </InfoSubContainer>
                     </InformationContainer>
-                    <WidgetGrid>
-                        <SmallWidget text={'Time remaining'} value={'4d'} iconName={'timer'}/>
-                        <SmallWidget text={'Created tasks'} value={'20'} iconName={'check_circle'}/>
-                        <SmallWidget text={'Task in progress'} value={'10'} iconName={'play_circle'}/>
-                        <SmallWidget text={'Upcoming tasks'} value={'7'} iconName={'schedule'}/>
-                    </WidgetGrid>
-                </div>
-            </Subsection>
-            <Subsection>
-                <InformationContainer width={'65%'}>
-                        <InformationTitle>Project statistics</InformationTitle>
+                    <div style={{display: 'flex', flexDirection: 'column', height: '100%', width: '30%',  gap: '1.3rem'}}>
+                        <InformationContainer height={'5rem'}>
+                            <InfoSubContainer>
+                                <InformationTitle>Overall progress</InformationTitle>
+                                <InformationTitle>70%</InformationTitle>
+                            </InfoSubContainer>
+                            <ProgressBar
+                                bgColor='#B9FF65'
+                                isLabelVisible={false}
+                                completed={70}
+                            />
+                        </InformationContainer>
+                        <WidgetGrid>
+                            <SmallWidget text={'Time remaining'} value={'4d'} iconName={'timer'}/>
+                            <SmallWidget text={'Created tasks'} value={'20'} iconName={'check_circle'}/>
+                            <SmallWidget text={'Task in progress'} value={'10'} iconName={'play_circle'}/>
+                            <SmallWidget text={'Upcoming tasks'} value={'7'} iconName={'schedule'}/>
+                        </WidgetGrid>
+                    </div>
+                </Subsection>
+                <Subsection>
+                    <InformationContainer width={'65%'}>
+                            <InformationTitle>Project statistics</InformationTitle>
+                            <Scrollable>
+                                <ProjectStatsItem/>
+                                <ProjectStatsItem/>
+                                <ProjectStatsItem/>
+                                <ProjectStatsItem/>
+                                <ProjectStatsItem/>
+                                <ProjectStatsItem/>
+                                <ProjectStatsItem/>
+                                <ProjectStatsItem/>
+                                <ProjectStatsItem/>
+                                <ProjectStatsItem/>
+                                <ProjectStatsItem/>
+                                <ProjectStatsItem/>
+                                <ProjectStatsItem/>
+                                <ProjectStatsItem/>
+                                <ProjectStatsItem/>
+                                <ProjectStatsItem/>
+                            </Scrollable>
+                    </InformationContainer>
+                    <InformationContainer width={'28%'}>
+                        <InformationTitle>Recent activity</InformationTitle>
                         <Scrollable>
-                            <ProjectStatsItem/>
-                            <ProjectStatsItem/>
-                            <ProjectStatsItem/>
-                            <ProjectStatsItem/>
-                            <ProjectStatsItem/>
-                            <ProjectStatsItem/>
-                            <ProjectStatsItem/>
-                            <ProjectStatsItem/>
-                            <ProjectStatsItem/>
-                            <ProjectStatsItem/>
-                            <ProjectStatsItem/>
-                            <ProjectStatsItem/>
-                            <ProjectStatsItem/>
-                            <ProjectStatsItem/>
-                            <ProjectStatsItem/>
-                            <ProjectStatsItem/>
+                            <RecentActItem/>
+                            <RecentActItem/>
+                            <RecentActItem/>
+                            <RecentActItem/>
                         </Scrollable>
-                </InformationContainer>
-                <InformationContainer width={'28%'}>
-                    <InformationTitle>Recent activity</InformationTitle>
-                    <Scrollable>
-                        <RecentActItem/>
-                        <RecentActItem/>
-                        <RecentActItem/>
-                        <RecentActItem/>
-                    </Scrollable>
-                </InformationContainer>
-            </Subsection>
+                    </InformationContainer>
+                </Subsection>
+            </div>
         </MainSection>
     </Container>
 )

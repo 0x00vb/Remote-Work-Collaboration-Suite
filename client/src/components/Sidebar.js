@@ -8,9 +8,9 @@ const SidebarContainer = styled.div`
   position: sticky;
   top: 0;
   left: 0;
-  width: 100%;
-  max-width: ${props => (props.expanded ? '16rem' : '2rem')};
-  min-height: 50rem;
+  width: 80%;
+  max-width: ${props => (props.expanded ? '13rem' : '2rem')};
+  min-height: 44rem;
   height: 95%;
   background-color: ${({ theme }) => theme.sidebarBackground};
   padding: 0 1.5rem;
@@ -37,7 +37,7 @@ const SidebarHeader = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 20px 0;
-  gap: 3rem;
+  gap: 2rem;
 `
 const Logo = styled.h2`
   color: #FFF;

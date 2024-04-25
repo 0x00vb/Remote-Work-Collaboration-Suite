@@ -79,7 +79,11 @@ exports.searchUsers = async (req, res) => {
   const search = req.query.search;
 
   try {
-    const users = await User.find({ username: { $regex: search, $options: 'i' } });
+    const users = await User.find(
+      { username: { $regex: search, $options: 'i' } },
+      '_id username profilePic'
+    
+    );
     res.status(200).send(users);
   } catch (error) {
     console.log('Error in searching users:', error);
