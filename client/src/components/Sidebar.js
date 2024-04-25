@@ -193,7 +193,7 @@ const Sidebar = ({themeToggler, theme, setCurrentSection, setCreateProject}) => 
             <GoogleIcon name={'calendar_today'}/>
             <SidebarSectionText>Calendar</SidebarSectionText>
           </SidebarSectionItem>
-          <SidebarSectionItem onClick={() => handleChangeSection('team_members')}>
+          <SidebarSectionItem onClick={() => handleChangeSection('meetings')}>
             <GoogleIcon name={'groups'}/>
             <SidebarSectionText>Meetings</SidebarSectionText>
           </SidebarSectionItem>

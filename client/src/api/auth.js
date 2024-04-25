@@ -6,7 +6,6 @@ const api = (token) =>
     headers: {Authorization: token}
   })
 
-
 export const loginUser = async (username, password) => {
     try {
       const response = await axios.post(
@@ -19,7 +18,7 @@ export const loginUser = async (username, password) => {
       console.log(error);
       return { success: false, message: "An error occurred during login." };
     }
-  }
+}
 
 export const signinUser = async (email, username, password) => {
     try {
@@ -41,9 +40,21 @@ export const validUser = async () => {
     const response = await api(token).get(`/auth/valid`, {
       headers: { Authorization: token },
     });
-    console.log(response)
     return response;
   } catch (error) {
     console.log('error in valid user api: ', error);
+  }
+};
+
+export const searchUsers = async (username) => {
+  try {
+    console.log(1)
+    const token = localStorage.getItem('token');
+
+    const respose = await api(token).get(`auth/user?search=${username}`);
+    console.log(respose)
+    return respose;
+  } catch (error) {
+    console.log('error in search users api');
   }
 };

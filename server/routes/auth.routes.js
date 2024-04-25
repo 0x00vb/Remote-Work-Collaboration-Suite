@@ -9,6 +9,8 @@ router.post('/login', authController.login);
 
 router.get('/valid', verifyToken, authController.validUser)
 
+router.get('/user?', verifyToken, authController.searchUsers);
+
 router.post('/reset-password', authController.requestPasswordReset);
 
 router.patch('/reset-password/:token', authController.resetPassword);

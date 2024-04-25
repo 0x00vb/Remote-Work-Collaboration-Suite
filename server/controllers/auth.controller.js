@@ -75,6 +75,18 @@ exports.validUser = async (req, res) => {
   }
 }
 
+exports.searchUsers = async (req, res) => {
+  const search = req.query.search;
+
+  try {
+    const users = await User.find({ username: { $regex: search, $options: 'i' } });
+    res.status(200).send(users);
+  } catch (error) {
+    console.log('Error in searching users:', error);
+    res.status(500).json({ error: 'An error occurred while searching for users' });
+  }
+};
+
 exports.requestPasswordReset = async (req, res) => {
   try {
     const { email } = req.body;

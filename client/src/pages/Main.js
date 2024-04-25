@@ -12,6 +12,7 @@ import { validUser } from '../api/auth';
 import { setActiveUser } from '../redux/activeUserSlice';
 import { toast,ToastContainer } from 'react-toastify';
 import CreateProject from '../components/CreateProject';
+import MeetingsPage from '../components/MeetingsPage';
 
 const PageContainer = styled.div`
   height: 100vh;
@@ -44,8 +45,6 @@ const Main = (props) => {
               username: data?.user?.username
             }
             dispatch(setActiveUser(user));
-            toast(`Hello ${activeUser.username}`);
-            console.log(activeUser)
           }else{
             navigate('/teamSync');
           }
@@ -55,7 +54,6 @@ const Main = (props) => {
     }
     userValidation();
   }, [dispatch, navigate])
-
 
   const renderSection = () => {
     switch (currentSection) {
@@ -67,6 +65,8 @@ const Main = (props) => {
         return <ChatPage/>;
       case 'calendar':
         return <CalendarPage/>;
+      case 'meetings':
+        return <MeetingsPage/>
       default:
         return <Dashboard />;
     }

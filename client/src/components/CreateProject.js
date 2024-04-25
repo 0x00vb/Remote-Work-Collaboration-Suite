@@ -1,5 +1,7 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import styled from 'styled-components';
+import AsyncSelect from "react-select"
+import { searchUsers } from '../api/auth';
 
 const Container = styled.div`
 position: absolute;
@@ -15,7 +17,7 @@ left: 0;
 `
 
 const MainContent = styled.div`
-    background-color: ${({ theme }) => theme.primaryBackground};
+    background-color: ${({ theme }) => theme.secondaryBackground};
     height: 50%;
     width: 50%;
     max-width: 650px;
@@ -70,12 +72,38 @@ const InputContainer = styled.div`
     gap: 1rem;
 `
 
+const UsersSelectorContainer = styled.div`
+    height: 2rem;
+`
+
+const Clickable = styled
+
+const UserContainer = styled.div`
+    display: flex;
+    height: 1rem;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 10px;
+`
+
+const UserImg = styled.img`
+    height: 2rem;
+    width: 2rem;
+    border-radius: 50%;
+`
+
+const UserUsername = styled.p`
+
+`
+
 const Button = styled.button`
     border: none;
 `
 
 const CreateProject = ({ setCreateProject }) => {
     const contentRef = useRef(null);
+    const [searchUsersResults, setSearchUsersResults] = useState([]);
+    const [searchInput, setSearchInput] = useState("");
 
     const handleClickOutside = (event) => {
         if (contentRef.current && !contentRef.current.contains(event.target)) {
@@ -89,6 +117,35 @@ const CreateProject = ({ setCreateProject }) => {
           document.removeEventListener('mousedown', handleClickOutside);
         };
       }, [setCreateProject]);
+
+    // useEffect(() => {
+    //     const fetchSearchResults = async () => {
+    //         console.log(0)
+    //         if(searchInput !== ""){
+    //             try{
+    //                 const results = await searchUsers(searchInput);
+    //                 setSearchUsersResults(results.data);
+    //             }catch(err){
+    //                 console.log(err)
+    //             }
+    //         }
+    //     }
+    //     fetchSearchResults();
+    // }, [searchInput])
+
+    const loadOptions = async (inputValue, callback) => {
+        try {
+          const results = await searchUsers(inputValue);
+          const options = results.data.map(user => ({
+            value: user.id,
+            label: user.username
+          }));
+          callback(options);
+        } catch (error) {
+          console.error('Error loading options:', error);
+          callback([]);
+        }
+      };
   return (
     <Container>
         <MainContent ref={contentRef}>
@@ -97,7 +154,7 @@ const CreateProject = ({ setCreateProject }) => {
                     New project
                 </Title>
             </Header>
-            <div style={{display: 'flex', alignItems: 'center', flexDirection: 'row', width: '100%'}}>
+            <div style={{display: 'flex', alignItems: 'center', flexDirection: 'row', width: '100%', marginBottom: '1rem'}}>
                 <Left>
                     <Text style={{fontWeight: '600', fontSize: '1.1rem'}}>
                         Project description
@@ -115,14 +172,33 @@ const CreateProject = ({ setCreateProject }) => {
                 </Right>
             </div>
             <div>
-                <Left>
-                    <Text style={{fontWeight: '600', fontSize: '1.1rem'}}>
-                        Team
-                    </Text>
-                </Left>
-                <Right>
-                    
-                </Right>
+                <div style={{display: 'flex', alignItems: 'center', flexDirection: 'row', width: '100%'}}>
+                    <Left>
+                        <Text style={{fontWeight: '600', fontSize: '1.1rem'}}>
+                            Team Members
+                        </Text>
+                    </Left>
+                    <Right>
+                        {/* <Input
+                            placeholder='Search for new members: '
+                            value={searchInput}
+                            onChange={(e) => {setSearchInput(e.target.value); console.log(e.target.value)}}
+                        />
+                        <UsersSelectorContainer>
+                            {
+                                searchUsersResults.map(user => (
+                                    <UserContainer>
+                                        <UserImg src={user.profilePic}/>
+                                        <UserUsername>{user.username}</UserUsername>
+                                    </UserContainer>
+                                ))
+                            }
+                        </UsersSelectorContainer> */}
+                        <AsyncSelect cacheOptions loadOptions={loadOptions} defaultOptions               onChange={(selectedOptions) => {
+                console.log(selectedOptions);
+              }}/>
+                    </Right>
+                </div>
             </div>
         </MainContent>
     </Container>
