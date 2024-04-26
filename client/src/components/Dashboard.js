@@ -97,7 +97,7 @@ const UserImage = styled.img`
   border-radius: 50%;
 `
 
-const Dashboard = () => {
+const Dashboard = ({activeProject}) => {
   return (
     <Container>
         <MainSection>

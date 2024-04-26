@@ -26,6 +26,7 @@ const PageContainer = styled.div`
 const Main = (props) => {
   const dispatch = useDispatch();
   const activeUser = useSelector((state) => state.activeUser);
+  const activeProject = useSelector((state) => state.activeProject);
   const [currentUserName, setCurrentUserName] = useState("");
   const [currentSection, setCurrentSection] = useState('Dashboard');
   const navigate = useNavigate();
@@ -58,7 +59,7 @@ const Main = (props) => {
   const renderSection = () => {
     switch (currentSection) {
       case 'dashboard':
-        return <Dashboard />;
+        return <Dashboard activeProject={activeProject}/>;
       case 'whiteboard':
         return <Whiteboard/>
       case 'chat':

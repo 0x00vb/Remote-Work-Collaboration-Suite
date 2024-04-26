@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import styled, {css} from 'styled-components';
+import { useDispatch } from 'react-redux';import styled, {css} from 'styled-components';
 import { toast } from 'react-toastify';
 
 import GoogleIcon from './GoogleIcon';
 import AppIcon from '../assets/favicon-32x32.png';
 import { searchUserProjects } from '../api/project';
+import { setActiveProject } from '../redux/activeProjectSlice';
 
 const SidebarContainer = styled.div`
   position: sticky;
@@ -77,6 +78,7 @@ const SidebarSectionItem = styled.div`
   gap: 10px;
   padding: 7px 5px;
   border-radius: 5px;
+  cursor: pointer;
   &:hover{
     background-color: rgba(255,255,255, 0.3);
   }
@@ -91,7 +93,7 @@ const SidebarSectionSpan = styled.span`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: ${({ theme }) => theme.thirdText};
+  color: ${({ theme, selected }) => selected ? theme.thirdText : theme.accent};
   font-size: 22px;
   font-weight: 800;
 `
@@ -135,9 +137,10 @@ const UserImage = styled.img`
 `
 
 const Sidebar = ({themeToggler, theme, setCurrentSection, setCreateProject, currentUserName }) => {
+  const dispatch = useDispatch();
   const [isExpanded, setIsExpanded] = useState(true);
   const [projects, setProjects] = useState([]);
-  const [selectedProjectIndex, setSelectedProjectIndex] = useState(0);
+  const [selectedProjectId, setSelectedProjectId] = useState(null);
 
   const handleChangeTheme = () => {
     themeToggler()
@@ -151,10 +154,12 @@ const Sidebar = ({themeToggler, theme, setCurrentSection, setCreateProject, curr
     const fetchCurrentUsersProjects = async () =>{
       try{
         const response = await searchUserProjects();
-        console.log(response)
         if(response.status === 200){
             setProjects(response.data.projects);
-        }
+            setSelectedProjectId(response.data.projects[0]);
+            dispatch(setActiveProject(response.data.projects[0]))
+
+          }
 
       }catch(err){
         console.log(err);
@@ -163,6 +168,11 @@ const Sidebar = ({themeToggler, theme, setCurrentSection, setCreateProject, curr
     }
     fetchCurrentUsersProjects();
   }, [])
+
+  const handleProjectSelection = (project) => {
+    setSelectedProjectId(project._id);
+    dispatch(setActiveProject(project))
+  }
 
   return (
     <SidebarContainer expanded={isExpanded}>
@@ -221,12 +231,12 @@ const Sidebar = ({themeToggler, theme, setCurrentSection, setCreateProject, curr
         <SidebarSection>
         <SidebarSectionTitle>Projects</SidebarSectionTitle>
           {
-            projects.map((project, index) => {
-              <SidebarSectionItem key={index}>
-                <SidebarSectionSpan>#</SidebarSectionSpan>
+            projects.map((project, index) => (
+              <SidebarSectionItem key={project._id} onClick={() => handleProjectSelection(project)}>
+                <SidebarSectionSpan selected={selectedProjectId == project._id}>#</SidebarSectionSpan>
                 <SidebarSectionText>{project.name}</SidebarSectionText>
               </SidebarSectionItem>
-            })
+            ))
           }
           <SidebarNewProjectBtn onClick={() => setCreateProject(true)}>
             {
