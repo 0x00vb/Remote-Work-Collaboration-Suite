@@ -18,3 +18,12 @@ export const createProject = async (projectName, projectDesc, teamId) => {
         console.log("Error creating project! ", err);
     }
 }
+
+export const searchUserProjects = async () => {
+    try{
+        const token = localStorage.getItem('token');
+        return await api(token).get('/project/searchUserProjects');
+    }catch(err){
+        console.log(err);
+    }
+}

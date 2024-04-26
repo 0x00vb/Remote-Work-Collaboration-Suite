@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled, {css} from 'styled-components';
+import { toast } from 'react-toastify';
 
 import GoogleIcon from './GoogleIcon';
 import AppIcon from '../assets/favicon-32x32.png';
+import { searchUserProjects } from '../api/project';
 
 const SidebarContainer = styled.div`
   position: sticky;
@@ -134,6 +136,7 @@ const UserImage = styled.img`
 
 const Sidebar = ({themeToggler, theme, setCurrentSection, setCreateProject, currentUserName }) => {
   const [isExpanded, setIsExpanded] = useState(true);
+  const [projects, setProjects] = useState([]);
   const [selectedProjectIndex, setSelectedProjectIndex] = useState(0);
 
   const handleChangeTheme = () => {
@@ -143,6 +146,23 @@ const Sidebar = ({themeToggler, theme, setCurrentSection, setCreateProject, curr
   const handleChangeSection = (section) =>{
     setCurrentSection(section);
   }
+
+  useEffect(() => {
+    const fetchCurrentUsersProjects = async () =>{
+      try{
+        const response = await searchUserProjects();
+        console.log(response)
+        if(response.status === 200){
+            setProjects(response.data.projects);
+        }
+
+      }catch(err){
+        console.log(err);
+        toast.error("Something went wrong...");
+      }
+    }
+    fetchCurrentUsersProjects();
+  }, [])
 
   return (
     <SidebarContainer expanded={isExpanded}>
@@ -200,19 +220,14 @@ const Sidebar = ({themeToggler, theme, setCurrentSection, setCreateProject, curr
         </SidebarSection>
         <SidebarSection>
         <SidebarSectionTitle>Projects</SidebarSectionTitle>
-          {/* Map trough user's Projects */}
-          <SidebarSectionItem>
-            <SidebarSectionSpan>#</SidebarSectionSpan>
-            <SidebarSectionText>Project1</SidebarSectionText>
-          </SidebarSectionItem>
-          <SidebarSectionItem>
-            <SidebarSectionSpan>#</SidebarSectionSpan>
-            <SidebarSectionText>Project1</SidebarSectionText>
-          </SidebarSectionItem>
-          <SidebarSectionItem>
-            <SidebarSectionSpan>#</SidebarSectionSpan>
-            <SidebarSectionText>Project1</SidebarSectionText>
-          </SidebarSectionItem>
+          {
+            projects.map((project, index) => {
+              <SidebarSectionItem key={index}>
+                <SidebarSectionSpan>#</SidebarSectionSpan>
+                <SidebarSectionText>{project.name}</SidebarSectionText>
+              </SidebarSectionItem>
+            })
+          }
           <SidebarNewProjectBtn onClick={() => setCreateProject(true)}>
             {
               isExpanded ?

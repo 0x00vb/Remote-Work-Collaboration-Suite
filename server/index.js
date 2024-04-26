@@ -9,6 +9,8 @@ require('dotenv').config();
 
 const authRoutes = require('./routes/auth.routes');
 const messagesRouter = require('./routes/messages.routes');
+const teamRouter = require('./routes/team.routes');
+const projectRouter = require('./routes/project.routes');
 
 const app = express();
 app.use(cors({origin: 'http://localhost:3000', credentials: true, methods: ['GET', 'POST', 'DELETE']}))
@@ -25,6 +27,8 @@ mongoose.connect(process.env.MONGO_URI)
 
 app.use('/api/auth', authRoutes);
 app.use('/api/messages', messagesRouter);
+app.use('/api/team', teamRouter);
+app.use('/api/project', projectRouter);
 
 const server = http.createServer(app);
 const io = new socketio.Server(server, {

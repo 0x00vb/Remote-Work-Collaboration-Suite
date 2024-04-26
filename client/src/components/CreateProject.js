@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
+import {useSelector} from 'react-redux';
 import styled from 'styled-components';
 import { searchUsers } from '../api/auth';
 import { createProject } from '../api/project'
@@ -67,6 +68,18 @@ const Input = styled.input`
     font-size: 1rem;
     height: 2rem;
     width: auto;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid ${({ theme }) => theme.gray};
+
+    outline: none;
+`
+const Textarea = styled.textarea`
+    font-size: 1rem;
+    height: 4rem;
+    max-height: 6rem;
+    width: auto;
+    max-width: 98%;
     padding: 5px;
     border-radius: 5px;
     border: 1px solid ${({ theme }) => theme.gray};
@@ -157,12 +170,13 @@ const Button = styled.button`
 `
 
 const CreateProject = ({ setCreateProject }) => {
+    const activeUser = useSelector(state => state.activeUser);
     const [pName, setPName] = useState([]);
     const [pDesc, setPDesc] = useState([]);
     const contentRef = useRef(null);
     const [searchUsersResults, setSearchUsersResults] = useState([]);
     const [searchInput, setSearchInput] = useState("");
-    const [teamMembers, setTeamMembers] = useState([]);
+    const [teamMembers, setTeamMembers] = useState([activeUser]);
 
     const handleClickOutside = (event) => {
         if (contentRef.current && !contentRef.current.contains(event.target)) {
@@ -208,7 +222,7 @@ const CreateProject = ({ setCreateProject }) => {
     const handleCreateProject = async () => {
         try{
             const teamMembersIds = teamMembers.map(user => user._id)
-            const teamResponse = await createTeam(teamMembersIds, leaderId);
+            const teamResponse = await createTeam(teamMembersIds, activeUser.id);
             if(teamResponse.status === 200){
                 const teamId = teamResponse.data.teamId;
                 const projectResponse = await createProject(pName, pDesc, teamId);
@@ -222,7 +236,8 @@ const CreateProject = ({ setCreateProject }) => {
                 toast.error(response.data.message)
             }
         }catch(err){
-            
+            console.log(err);
+            toast.error("Something went wrong! Try again later.")
         }
     }
 
@@ -250,7 +265,7 @@ const CreateProject = ({ setCreateProject }) => {
                         </InputContainer>
                         <InputContainer>
                             <Text>Project description</Text>
-                            <Input
+                            <Textarea
                                 value={pDesc}
                                 onChange={(e) => setPDesc(e.target.value)}
                             />

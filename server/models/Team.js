@@ -6,7 +6,7 @@ const teamSchema = mongoose.Schema({
         required: false
     },
     leader: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
         required: true
     }
 }, { timestamps: true })

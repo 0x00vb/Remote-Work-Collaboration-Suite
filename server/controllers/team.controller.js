@@ -4,8 +4,8 @@ exports.createTeam = async (req, res) => {
     try{
         const { teamMembersId, leaderId } = req.body;
         const team = new Team({
-            teamMembersId,
-            leaderId
+            members: teamMembersId,
+            leader: leaderId
         })        
         await team.save();
         res.status(200).json({ message: 'Team created successfully!', teamId: team._id})

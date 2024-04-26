@@ -18,6 +18,35 @@ exports.createProject = async (req, res) => {
         res.status(200).json({ message: "Project created successfully!" })
     }catch(err){
         console.log(err);
-        res.status(500).json({ message: 'Somthing went wrong!' });
+        res.status(500).json({ message: 'Internal server error!' });
+    }
+}
+
+exports.searchUserProjects = async (req, res) => {
+    try{
+        const userId = req.userId.toString();
+        console.log(userId)
+        const userProjects = await Project.aggregate([
+            // Stage 1: Match teams where the user is a member
+            {
+              $lookup: {
+                from: 'teams',
+                localField: 'team',
+                foreignField: '_id',
+                as: 'teamData'
+              }
+            },
+            {
+              $match: {
+                'teamData.members': userId
+              }
+            }
+          ]);
+          
+          res.status(200).json({projects: userProjects});
+
+    }catch(err){
+        console.log(err);
+        res.status(500).json({ message: 'Internal server error!'})
     }
 }

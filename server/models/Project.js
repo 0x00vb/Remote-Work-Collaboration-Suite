@@ -9,7 +9,7 @@ const projectSchema = mongoose.Schema({
         type: String,
     },
     team: {
-        type: String, //Team ID
+        type: mongoose.Schema.Types.ObjectId, //Team ID
     },
     tasks: {
         type: Array,
