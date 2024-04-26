@@ -122,7 +122,7 @@ const SidebarBottom = styled.div`
   display: flex;
   align-items: center;
   justify-self: center;
-  gap: 5px;
+  gap: 10px;
   padding: 20px 0;
 `
 
@@ -132,7 +132,7 @@ const UserImage = styled.img`
   border-radius: 50%;
 `
 
-const Sidebar = ({themeToggler, theme, setCurrentSection, setCreateProject}) => {
+const Sidebar = ({themeToggler, theme, setCurrentSection, setCreateProject, currentUserName }) => {
   const [isExpanded, setIsExpanded] = useState(true);
   const [selectedProjectIndex, setSelectedProjectIndex] = useState(0);
 
@@ -226,7 +226,7 @@ const Sidebar = ({themeToggler, theme, setCurrentSection, setCreateProject}) => 
       <SidebarBottom>
         <UserImage src='https://t3.ftcdn.net/jpg/03/58/90/78/360_F_358907879_Vdu96gF4XVhjCZxN2kCG0THTsSQi8IhT.jpg'/>
         <SidebarSectionText>
-          
+          {currentUserName}
         </SidebarSectionText>
       </SidebarBottom>
     </SidebarContainer>

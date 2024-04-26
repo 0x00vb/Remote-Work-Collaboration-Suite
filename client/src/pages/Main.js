@@ -24,8 +24,9 @@ const PageContainer = styled.div`
 `
 
 const Main = (props) => {
-  const dispatch = useDispatch()
-  const {activeUser} = useSelector((state) => state)
+  const dispatch = useDispatch();
+  const activeUser = useSelector((state) => state.activeUser);
+  const [currentUserName, setCurrentUserName] = useState("");
   const [currentSection, setCurrentSection] = useState('Dashboard');
   const navigate = useNavigate();
   
@@ -34,16 +35,16 @@ const Main = (props) => {
   useEffect(() => {
     const userValidation = async () => {
       try{
-          const data = await validUser();
+          const {data} = await validUser();
           if(data){
             const user = {
               id: data?.user?._id,
               email: data?.user?.email,
               profilePic: data?.user?.profilePic,
-              bio: data?.user?.bio,
               username: data?.user?.username
             }
             dispatch(setActiveUser(user));
+            setCurrentUserName(user.username)
           }else{
             navigate('/teamSync');
           }
@@ -73,7 +74,13 @@ const Main = (props) => {
 
   return (
     <PageContainer>
-        <Sidebar themeToggler={props.themeToggler} theme={props.theme} setCurrentSection={setCurrentSection} setCreateProject={setCreateProject}/>
+        <Sidebar
+          themeToggler={props.themeToggler}
+          theme={props.theme}
+          setCurrentSection={setCurrentSection}
+          setCreateProject={setCreateProject}
+          currentUserName={currentUserName}
+        />
         {renderSection()}
         {createProject && <CreateProject setCreateProject={setCreateProject}/>}  
         <ToastContainer/>
