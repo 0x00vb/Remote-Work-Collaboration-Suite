@@ -25,7 +25,7 @@ const PageContainer = styled.div`
 
 const Main = (props) => {
   const dispatch = useDispatch()
-  const { activeUser } = useSelector((state) => state)
+  const {activeUser} = useSelector((state) => state)
   const [currentSection, setCurrentSection] = useState('Dashboard');
   const navigate = useNavigate();
   

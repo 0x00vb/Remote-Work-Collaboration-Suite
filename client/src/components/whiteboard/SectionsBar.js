@@ -21,9 +21,8 @@ const ItemContainer = styled.div`
   border-radius: 5px;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
-  -webkit-box-shadow: 11px 9px 14px -8px rgba(0,0,0,0.1);
-  -moz-box-shadow: 11px 9px 14px -8px rgba(0,0,0,0.1);
-  box-shadow: 11px 9px 14px -8px rgba(0,0,0,0.1);
+  ${props => props.currentWbSection === props.id && 'box-shadow: 2px 1px 3px 0px rgba(0,0,0,0.2);'};
+
 `
 
 const Text = styled.p`

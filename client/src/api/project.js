@@ -7,9 +7,13 @@ const api = (token) =>
         headers: {Authorization: token}
     })
 
-export const createProject = async () => {
+export const createProject = async (projectName, projectDesc, teamId) => {
     try{
-
+        const token = localStorage.getItem('token');
+        const response = await api(token).post('/project/createProject', {
+            projectName, projectDesc, teamId
+        })
+        return response;
     }catch(err){
         console.log("Error creating project! ", err);
     }

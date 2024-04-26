@@ -16,7 +16,7 @@ export const loginUser = async (username, password) => {
       return response;
     } catch (error) {
       console.log(error);
-      return { success: false, message: "An error occurred during login." };
+      return { message: "An error occurred during login." };
     }
 }
 
@@ -37,8 +37,7 @@ export const signinUser = async (email, username, password) => {
 export const validUser = async () => {
   try {
     const token = localStorage.getItem('token');
-    const response = await api(token).get(`/auth/valid`);
-    return response;
+    return await api(token).get(`/auth/valid`);
   } catch (error) {
     console.log('error in valid user api: ', error);
   }

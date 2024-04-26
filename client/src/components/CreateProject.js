@@ -1,8 +1,10 @@
 import React, { useRef, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import AsyncSelect from "react-select"
 import { searchUsers } from '../api/auth';
+import { createProject } from '../api/project'
+import { createTeam } from '../api/team'
 import Icon from './GoogleIcon';
+import { toast } from 'react-toastify'
 
 const Container = styled.div`
 position: absolute;
@@ -155,10 +157,12 @@ const Button = styled.button`
 `
 
 const CreateProject = ({ setCreateProject }) => {
+    const [pName, setPName] = useState([]);
+    const [pDesc, setPDesc] = useState([]);
     const contentRef = useRef(null);
     const [searchUsersResults, setSearchUsersResults] = useState([]);
     const [searchInput, setSearchInput] = useState("");
-    const [selectedUsers, setSelectedUsers] = useState([]);
+    const [teamMembers, setTeamMembers] = useState([]);
 
     const handleClickOutside = (event) => {
         if (contentRef.current && !contentRef.current.contains(event.target)) {
@@ -190,15 +194,36 @@ const CreateProject = ({ setCreateProject }) => {
     }, [searchInput])
 
     const addToSelectedUsers = (user) => {
-        if (selectedUsers.some(selectedUser => selectedUser._id === user._id)) {
-            setSelectedUsers(selectedUsers.filter(selectedUser => selectedUser.id !== user.id));
+        if (teamMembers.some(selectedUser => selectedUser._id === user._id)) {
+            setTeamMembers(teamMembers.filter(selectedUser => selectedUser.id !== user.id));
         } else {
-            setSelectedUsers([...selectedUsers, user]);
+            setTeamMembers([...teamMembers, user]);
         }
     }
 
     const removeFromSelectedUsers = (userId) => {
-        setSelectedUsers(selectedUsers.filter(user => user._id !== userId));
+        setTeamMembers(teamMembers.filter(user => user._id !== userId));
+    }
+
+    const handleCreateProject = async () => {
+        try{
+            const teamMembersIds = teamMembers.map(user => user._id)
+            const teamResponse = await createTeam(teamMembersIds, leaderId);
+            if(teamResponse.status === 200){
+                const teamId = teamResponse.data.teamId;
+                const projectResponse = await createProject(pName, pDesc, teamId);
+                if(projectResponse.status === 200){
+                    toast.success(projectResponse.data.message);
+                    setTimeout(() =>{
+                        setCreateProject(false);
+                    }, 1000);
+                }
+            }else{
+                toast.error(response.data.message)
+            }
+        }catch(err){
+            
+        }
     }
 
     return (
@@ -218,11 +243,17 @@ const CreateProject = ({ setCreateProject }) => {
                     <Right>
                         <InputContainer>
                             <Text>Project name</Text>
-                            <Input/>
+                            <Input
+                                value={pName}
+                                onChange={(e) => setPName(e.target.value)}
+                            />
                         </InputContainer>
                         <InputContainer>
                             <Text>Project description</Text>
-                            <Input/>
+                            <Input
+                                value={pDesc}
+                                onChange={(e) => setPDesc(e.target.value)}
+                            />
                         </InputContainer>
                     </Right>
                 </div>
@@ -245,7 +276,7 @@ const CreateProject = ({ setCreateProject }) => {
                                     {
                                         searchUsersResults.map((user) => (
                                             <UserContainer key={user._id}>
-                                                <Clickable onClick={() => {addToSelectedUsers(user); console.log(user)}} isSelected={selectedUsers.some(selectedUser => selectedUser.id === user.id)}/>
+                                                <Clickable onClick={() => {addToSelectedUsers(user); console.log(user)}} isSelected={teamMembers.some(selectedUser => selectedUser.id === user.id)}/>
                                                 <UserInfo>
                                                     <UserImg src={user.profilePic}/>
                                                     <UserUsername>{user.username}</UserUsername>
@@ -255,9 +286,9 @@ const CreateProject = ({ setCreateProject }) => {
                                     }
                                 </UsersSelectorContainer>
                             </UserSearchContainer>
-                            <SelectedUsersContainer show={selectedUsers.length > 0}>
+                            <SelectedUsersContainer show={teamMembers.length > 0}>
                                     {
-                                        selectedUsers.map((user, index) => (
+                                        teamMembers.map((user, index) => (
                                             <UserContainer key={index} style={{border: '1px solid black', width: 'auto', borderRadius: '10px'}}>
                                                 <UserImg src={user.profilePic}/>
                                                 <UserUsername>{user.username}</UserUsername>
@@ -274,7 +305,7 @@ const CreateProject = ({ setCreateProject }) => {
                     </div>
                 </div>
                 <BottomSection>
-                    <Button>Create project</Button>
+                    <Button onClick={handleCreateProject}>Create project</Button>
                 </BottomSection>
             </MainContent>
         </Container>
