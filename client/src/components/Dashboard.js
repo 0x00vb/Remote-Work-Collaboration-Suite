@@ -1,9 +1,12 @@
 import React from 'react'
+import { UseSelector, useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components'
 import ProgressBar from "@ramonak/react-progress-bar";
 import ProjectStatsItem from './dashboard/ProjectStatsItem'
 import RecentActItem from './dashboard/RecentActItem';
 import SmallWidget from './dashboard/SmallWidget';
+
+
 
 const Container = styled.div`
     height: 100%;
@@ -97,7 +100,11 @@ const UserImage = styled.img`
   border-radius: 50%;
 `
 
-const Dashboard = ({activeProject}) => {
+const Dashboard = ({ activeProject, loading }) => {
+    if (loading) {
+        // If activeProject data is not available, render a loading indicator or placeholder
+        return <div>Loading...</div>;
+    }
   return (
     <Container>
         <MainSection>
@@ -105,9 +112,9 @@ const Dashboard = ({activeProject}) => {
             <div style={{height: '80%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between'}}>
                 <Subsection>
                     <InformationContainer width={'65%'} style={{justifyContent: 'space-between'}}>
-                        <InformationTitle>Project Info</InformationTitle>
+                        <InformationTitle>{activeProject?.name}</InformationTitle>
                         <InformationText style={{overflow: 'scroll'}}>
-                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                            {activeProject?.description}
                         </InformationText>
                         <InfoSubContainer>
                             <InfoSubContainerItem>

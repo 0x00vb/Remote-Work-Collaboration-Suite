@@ -22,6 +22,9 @@ const initialState = {
       setProjectTasks: (state, { payload }) => {
         state.tasks = payload.username;
       },
+      setProjectTeam: (state, { payload }) => {
+        state.team = payload.team;
+      }
     },
   });
   export const { setActiveProject } = activeProjectSlice.actions;

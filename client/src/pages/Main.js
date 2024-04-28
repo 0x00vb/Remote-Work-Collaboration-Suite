@@ -30,6 +30,7 @@ const Main = (props) => {
   const [currentUserName, setCurrentUserName] = useState("");
   const [currentSection, setCurrentSection] = useState('Dashboard');
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
   
   const [createProject, setCreateProject] = useState(false);
 
@@ -46,6 +47,7 @@ const Main = (props) => {
             }
             dispatch(setActiveUser(user));
             setCurrentUserName(user.username)
+            setLoading(false);
           }else{
             navigate('/teamSync');
           }
@@ -59,7 +61,7 @@ const Main = (props) => {
   const renderSection = () => {
     switch (currentSection) {
       case 'dashboard':
-        return <Dashboard activeProject={activeProject}/>;
+        return <Dashboard activeProject={activeProject} loading={loading}/>;
       case 'whiteboard':
         return <Whiteboard/>
       case 'chat':

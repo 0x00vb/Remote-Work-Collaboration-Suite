@@ -231,7 +231,7 @@ const Sidebar = ({themeToggler, theme, setCurrentSection, setCreateProject, curr
             projects.map((project, index) => (
               console.log(activeProject.id, project._id),
               <SidebarSectionItem key={project._id} onClick={() => handleProjectSelection(project)}>
-                <SidebarSectionSpan selected={activeProject.id == parseInt(project._id)}>#</SidebarSectionSpan>
+                <SidebarSectionSpan selected={activeProject.id === parseInt(project._id)}>#</SidebarSectionSpan>
                 <SidebarSectionText>{project.name}</SidebarSectionText>
               </SidebarSectionItem>
             ))
