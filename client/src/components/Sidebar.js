@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import GoogleIcon from './GoogleIcon';
 import AppIcon from '../assets/favicon-32x32.png';
 import { searchUserProjects } from '../api/project';
-import { setActiveProject } from '../redux/activeProjectSlice';
+import { fetchTeamInformation, setActiveProject, fetchProjectTasks } from '../redux/activeProjectSlice';
 
 const SidebarContainer = styled.div`
   position: sticky;
@@ -156,7 +156,7 @@ const Sidebar = ({themeToggler, theme, setCurrentSection, setCreateProject, curr
         const response = await searchUserProjects();
         if(response.status === 200){
             setProjects(response.data.projects);
-            dispatch(setActiveProject(response.data.projects[0]))
+            handleProjectSelection(response.data.projects[0]);
           }
 
       }catch(err){
@@ -168,7 +168,13 @@ const Sidebar = ({themeToggler, theme, setCurrentSection, setCreateProject, curr
   }, [])
 
   const handleProjectSelection = (project) => {
-    dispatch(setActiveProject(project));
+    try{
+      dispatch(setActiveProject(project));
+      dispatch(fetchProjectTasks(project.team));
+      dispatch(fetchTeamInformation(project._id))
+    }catch(err){
+      console.log("failed to set activeProject: ", err);
+    }
   }
 
   return (

@@ -29,7 +29,8 @@ const initialState = {
     id: '',
     name: '',
     description: '',
-    team: [],
+    team: '',
+    teamData: [],
     tasks: [],
   };
 

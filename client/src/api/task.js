@@ -14,7 +14,7 @@ export const fetchProjectsTasks = async (projectId) => {
         const token = localStorage.getItem('token');
         const response = await api(token).get(`/task/fetchTasks/${projectId}`);
         console.log(response);
-        return response.data;
+        return response.data.tasks;
     }catch(err){
         console.log(err);
     }
@@ -26,7 +26,7 @@ export const createTask = async (title, description, assignee, due_date, project
         const response = await api(token).post(`task/createTask/${projectId}`,
             {title, description, assignee, due_date, projectId}
         );
-        console.log(respose);
+        console.log(response);
         return response.data;
     }catch(err){
         console.log(err);
