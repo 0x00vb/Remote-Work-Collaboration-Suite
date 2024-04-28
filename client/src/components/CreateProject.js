@@ -233,7 +233,7 @@ const CreateProject = ({ setCreateProject }) => {
                     }, 1000);
                 }
             }else{
-                toast.error(response.data.message)
+                toast.error(teamResponse.data.message)
             }
         }catch(err){
             console.log(err);

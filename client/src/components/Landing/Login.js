@@ -112,16 +112,16 @@ const Login = ({ setLoginVisible }) => {
         e.preventDefault();
         setIsLoading(true);
         const response = await loginUser(username, password);
+        console.log(response);
         if(response.status === 200){
           localStorage.setItem('token', response.data.token);
-          const test = localStorage.getItem('token');
           handleSuccess(response.data.message);
           setIsLoading(false);
           setTimeout(() => {
               navigate('/');
           }, 1000);
         }else{
-          handleError(response.data.message);
+          handleError("Login failed!");
         }
         setUsername("");
         setPassword("");

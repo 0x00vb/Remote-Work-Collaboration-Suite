@@ -14,6 +14,7 @@ export const loginUser = async (username, password) => {
             { withCredentials: true }
       );
       return response;
+      console.log(response)
     } catch (error) {
       console.log(error);
       return { message: "An error occurred during login." };

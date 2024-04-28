@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useDispatch } from 'react-redux';import styled, {css} from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';import styled, {css} from 'styled-components';
 import { toast } from 'react-toastify';
 
 import GoogleIcon from './GoogleIcon';
@@ -138,9 +138,9 @@ const UserImage = styled.img`
 
 const Sidebar = ({themeToggler, theme, setCurrentSection, setCreateProject, currentUserName }) => {
   const dispatch = useDispatch();
+  const activeProject = useSelector(state => state.activeProject)
   const [isExpanded, setIsExpanded] = useState(true);
   const [projects, setProjects] = useState([]);
-  const [selectedProjectId, setSelectedProjectId] = useState(null);
 
   const handleChangeTheme = () => {
     themeToggler()
@@ -156,9 +156,7 @@ const Sidebar = ({themeToggler, theme, setCurrentSection, setCreateProject, curr
         const response = await searchUserProjects();
         if(response.status === 200){
             setProjects(response.data.projects);
-            setSelectedProjectId(response.data.projects[0]);
             dispatch(setActiveProject(response.data.projects[0]))
-
           }
 
       }catch(err){
@@ -170,8 +168,7 @@ const Sidebar = ({themeToggler, theme, setCurrentSection, setCreateProject, curr
   }, [])
 
   const handleProjectSelection = (project) => {
-    setSelectedProjectId(project._id);
-    dispatch(setActiveProject(project))
+    dispatch(setActiveProject(project));
   }
 
   return (
@@ -232,8 +229,9 @@ const Sidebar = ({themeToggler, theme, setCurrentSection, setCreateProject, curr
         <SidebarSectionTitle>Projects</SidebarSectionTitle>
           {
             projects.map((project, index) => (
+              console.log(activeProject.id, project._id),
               <SidebarSectionItem key={project._id} onClick={() => handleProjectSelection(project)}>
-                <SidebarSectionSpan selected={selectedProjectId == project._id}>#</SidebarSectionSpan>
+                <SidebarSectionSpan selected={activeProject.id == parseInt(project._id)}>#</SidebarSectionSpan>
                 <SidebarSectionText>{project.name}</SidebarSectionText>
               </SidebarSectionItem>
             ))

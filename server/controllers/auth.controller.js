@@ -27,6 +27,7 @@ exports.signin = async (req, res) => {
 
     res.status(200).json({ message: 'User registered successfully', token: token });
   } catch (err) {
+    console.log(err);
     res.status(500).json({ message: 'Something went wrong' });
   }
 };
@@ -55,6 +56,7 @@ exports.login = async (req, res) => {
 
     res.status(200).json({ message: "Logged in successfully!", token: token });
   } catch (err) {
+    console.log(err);
     res.status(500).json({ message: 'Something went wrong' });
   }
 };

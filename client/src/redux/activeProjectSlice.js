@@ -13,10 +13,10 @@ const initialState = {
     initialState,
     reducers: {
       setActiveProject: (state, { payload }) => {
-        state.id = payload.id;
-        state.name = payload.email;
-        state.description = payload.profilePic;
-        state.team = payload.username;
+        state.id = payload._id;
+        state.name = payload.name;
+        state.description = payload.description;
+        state.team = payload.team;
         state.tasks = payload.tasks;
       },
       setProjectTasks: (state, { payload }) => {
