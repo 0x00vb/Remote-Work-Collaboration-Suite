@@ -15,3 +15,13 @@ export const createTeam = async (teamMembersId, leaderId) => {
         console.log("Error creating project! ", err);
     }
 }
+
+export const fetchTeamData = async (teamId) => {
+  try{
+    const token = localStorage.getItem('token');
+    const response = await api(token).get(`/team/getTeam/${teamId}`);
+    return response.data;
+  }catch(err){
+    console.log(err);
+  }
+}

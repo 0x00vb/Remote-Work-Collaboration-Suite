@@ -20,10 +20,10 @@ const taskSchema = mongoose.Schema({
         type: String,
         enum: ['todo', 'in_progress', 'done'],
         default: 'todo',
-        required: true,
+        required: false,
     },
     project: {
-        type: String,
+        type: String,  // Project id
         required: true
     }
 }, { timestamps: true })

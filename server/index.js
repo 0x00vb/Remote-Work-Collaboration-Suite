@@ -10,6 +10,7 @@ require('dotenv').config();
 const authRoutes = require('./routes/auth.routes');
 const messagesRouter = require('./routes/messages.routes');
 const teamRouter = require('./routes/team.routes');
+const taskRouter = require('./routes/task.routes');
 const projectRouter = require('./routes/project.routes');
 
 const app = express();
@@ -28,6 +29,7 @@ mongoose.connect(process.env.MONGO_URI)
 app.use('/api/auth', authRoutes);
 app.use('/api/messages', messagesRouter);
 app.use('/api/team', teamRouter);
+app.use('/api/task', taskRouter);
 app.use('/api/project', projectRouter);
 
 const server = http.createServer(app);

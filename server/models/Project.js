@@ -12,7 +12,7 @@ const projectSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId, //Team ID
     },
     tasks: {
-        type: Array,
+        type: Array,  // Tasks Ids
     }
 }, { timestamps: true })
 
