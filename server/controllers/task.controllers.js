@@ -8,7 +8,7 @@ exports.fetchTasks = async (req, res) => {
         if(projectExists){
             const tasks = await Task.find({ project: projectId });
 
-            res.status(200).json({ message: 'Success rettrieving tasks', tasks: tasks  })
+            res.status(200).json({ message: 'Success rettrieving tasks', tasks  })
         }
         res.status(404).json({ message: 'Nothing found' });
     }catch(err){

@@ -26,12 +26,14 @@ export const fetchProjectTasks = createAsyncThunk(
 );
 
 const initialState = {
+    creationDate: '',
     id: '',
     name: '',
     description: '',
     team: '',
-    teamData: [],
+    teamData: {},
     tasks: [],
+    deadLine: '',
   };
 
   const activeProjectSlice = createSlice({
@@ -43,6 +45,7 @@ const initialState = {
         state.name = payload.name;
         state.description = payload.description;
         state.team = payload.team;
+        state.teamData = payload.teamData;
         state.tasks = payload.tasks;
       },
       setProjectTasks: (state, { payload }) => {
@@ -58,11 +61,11 @@ const initialState = {
           state.isLoadingTeamMembers = true;
         })
         .addCase(fetchTeamInformation.fulfilled, (state, { payload }) => {
-          state.teamMembers = payload;
-          state.isLoadingTeamMembers = false;
+          state.teamData = payload;
+          state.isLoadingTeamData = false;
         })
         .addCase(fetchTeamInformation.rejected, (state) => {
-          state.isLoadingTeamMembers = false;
+          state.isLoadingTeamData = false;
         })
         .addCase(fetchProjectTasks.pending, (state) => {
           state.isLoadingTasks = true;

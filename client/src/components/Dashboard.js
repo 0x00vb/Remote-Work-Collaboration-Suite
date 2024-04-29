@@ -131,7 +131,7 @@ const Dashboard = ({ activeProject, loading }) => {
                             </InfoSubContainerItem>
                             <InfoSubContainerItem>
                                 <InformationTitle>Team members</InformationTitle>
-                                <InformationText>5</InformationText>
+                                <InformationText>{activeProject?.teamData.members.length}</InformationText>
                             </InfoSubContainerItem>
                             <InfoSubContainerItem>
                                 <InformationTitle>Reports</InformationTitle>
