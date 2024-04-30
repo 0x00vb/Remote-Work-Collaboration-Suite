@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import TaskCard from '../TaskCard';
 import Icon from '../GoogleIcon';
+import { useSelector } from 'react-redux';
 
 const MainSection = styled.div`
   width: 100%;
@@ -12,7 +13,7 @@ const MainSection = styled.div`
 
 const Column = styled.div`
   height: 98%;
-  width: calc(25% - 1rem); 
+  width: calc(33% - 1rem); 
 `
 
 const ColumnTitle = styled.p`
@@ -52,6 +53,7 @@ const NewButton = styled.span`
 `
 
 const BoardPage = () => {
+  const activeProject = useSelector(state => state.activeProject);
   return (
     <MainSection>
 
@@ -72,21 +74,6 @@ const BoardPage = () => {
 
     <Column>
       <ColumnTitle>In Progress <p>(10)</p></ColumnTitle>
-      <ColumnScrollable>
-        <NewButton>
-          <Icon name={'add'} styles={`color: ${({ theme }) => theme.primaryText};`}/>
-        </NewButton>
-        <TaskCard/>
-        <TaskCard/>
-        <TaskCard/>
-        <TaskCard/>
-        <TaskCard/>
-        <TaskCard/>
-      </ColumnScrollable>
-    </Column>
-
-    <Column>
-      <ColumnTitle>On review<p>(10)</p></ColumnTitle>
       <ColumnScrollable>
         <NewButton>
           <Icon name={'add'} styles={`color: ${({ theme }) => theme.primaryText};`}/>

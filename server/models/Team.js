@@ -2,11 +2,11 @@ const mongoose = require('mongoose');
 const teamSchema = mongoose.Schema({
     members: {
         type: Array,
-        default: [], //UserId's
+        default: [], //UserName's
         required: false
     },
     leader: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
         required: true
     }
 }, { timestamps: true })

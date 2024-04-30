@@ -23,7 +23,7 @@ exports.fetchTeamData = async (req, res) => {
         if(projectExists){
             const team = await Team.findOne({ _id: projectExists.team });
 
-            res.status(200).json({ message: 'Success rettrieving tasks', team });
+            res.status(200).json({ message: 'Success rettrieving teams', team });
         }
     }catch(err){
         console.log(err);

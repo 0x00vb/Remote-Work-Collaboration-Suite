@@ -6,8 +6,6 @@ import ProjectStatsItem from './dashboard/ProjectStatsItem'
 import RecentActItem from './dashboard/RecentActItem';
 import SmallWidget from './dashboard/SmallWidget';
 
-
-
 const Container = styled.div`
     height: 100%;
     display: flex;
@@ -131,7 +129,7 @@ const Dashboard = ({ activeProject, loading }) => {
                             </InfoSubContainerItem>
                             <InfoSubContainerItem>
                                 <InformationTitle>Team members</InformationTitle>
-                                <InformationText>{activeProject?.teamData.members.length}</InformationText>
+                                <InformationText>{activeProject?.teamData.members?.length}</InformationText>
                             </InfoSubContainerItem>
                             <InfoSubContainerItem>
                                 <InformationTitle>Reports</InformationTitle>

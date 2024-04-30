@@ -24,8 +24,7 @@ exports.createProject = async (req, res) => {
 
 exports.searchUserProjects = async (req, res) => {
     try{
-        const userId = req.userId.toString();
-        console.log(userId)
+        const userUsername = req.user.username;
         const userProjects = await Project.aggregate([
             // Stage 1: Match teams where the user is a member
             {
@@ -38,13 +37,11 @@ exports.searchUserProjects = async (req, res) => {
             },
             {
               $match: {
-                'teamData.members': userId
+                'teamData.members': userUsername
               }
             }
           ]);
-          
           res.status(200).json({projects: userProjects});
-
     }catch(err){
         console.log(err);
         res.status(500).json({ message: 'Internal server error!'})

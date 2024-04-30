@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux';import styled, {css} from 'styled-components';
 import { toast } from 'react-toastify';
-
+import { useNavigate } from 'react-router-dom';
 import GoogleIcon from './GoogleIcon';
 import AppIcon from '../assets/favicon-32x32.png';
 import { searchUserProjects } from '../api/project';
@@ -20,6 +20,7 @@ const SidebarContainer = styled.div`
   margin: 0 0.5rem;
   border-radius: 15px;
   transition: all 0.3s ease-in-out;
+  overflow: hidden;
   ${props => 
     !props.expanded && 
     css`
@@ -128,6 +129,7 @@ const SidebarBottom = styled.div`
   justify-self: center;
   gap: 10px;
   padding: 20px 0;
+  cursor: pointer;
 `
 
 const UserImage = styled.img`
@@ -136,11 +138,33 @@ const UserImage = styled.img`
   border-radius: 50%;
 `
 
+const LogoutSpanContainer = styled.div`
+  background-color: ${({ theme }) => theme.sidebarBackground};
+  width: 100%;
+  z-index: 900;
+  position: absolute;
+  transform: ${props => props.show ? 'translateX(-10%) ' : 'translateX(-110%)'};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 0;
+  transition: all 0.3s ease-in-out;
+`
+
+const LogoutSpan = styled.span`
+  color: ${({ theme }) => theme.thirdText};  position: absolute;
+  font-size: 1.2rem;
+
+`
+
 const Sidebar = ({themeToggler, theme, setCurrentSection, setCreateProject, currentUserName }) => {
+  const [showLogout, setShowLogout] = useState(false);
+  const logoutSpanRef = useRef(null);
   const dispatch = useDispatch();
   const activeProject = useSelector(state => state.activeProject)
   const [isExpanded, setIsExpanded] = useState(true);
   const [projects, setProjects] = useState([]);
+  const navigate = useNavigate();
 
   const handleChangeTheme = () => {
     themeToggler()
@@ -176,6 +200,25 @@ const Sidebar = ({themeToggler, theme, setCurrentSection, setCreateProject, curr
       console.log("failed to set activeProject: ", err);
     }
   }
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/teamSync');
+  }
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (logoutSpanRef.current && !logoutSpanRef.current.contains(event.target)) {
+        setShowLogout(false);
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, []);
 
   return (
     <SidebarContainer expanded={isExpanded}>
@@ -251,12 +294,16 @@ const Sidebar = ({themeToggler, theme, setCurrentSection, setCreateProject, curr
           </SidebarNewProjectBtn>
         </SidebarSection>
       </SidebarSectionsContainer>
-      <SidebarBottom>
+      <SidebarBottom onClick={() => setShowLogout(true)} ref={logoutSpanRef}>
         <UserImage src='https://t3.ftcdn.net/jpg/03/58/90/78/360_F_358907879_Vdu96gF4XVhjCZxN2kCG0THTsSQi8IhT.jpg'/>
         <SidebarSectionText>
           {currentUserName}
         </SidebarSectionText>
+        <LogoutSpanContainer show={showLogout} onClick={handleLogout}>
+          <LogoutSpan>Logout</LogoutSpan>
+        </LogoutSpanContainer>
       </SidebarBottom>
+
     </SidebarContainer>
   )
 }

@@ -10,9 +10,9 @@ const API = (token) => {
 }
 export const acessCreate = async (body) => {
     try {
-        const token = localStorage.getItem('userToken');
+        const token = localStorage.getItem('token');
 
-        const { data } = await API(token).post('/api/chat', body);
+        const { data } = await API(token).post('/chat/', body);
         console.log(data);
         return data;
     } catch (error) {
@@ -21,8 +21,9 @@ export const acessCreate = async (body) => {
 };
 export const fetchAllChats = async () => {
     try {
-        const token = localStorage.getItem('userToken');
-        const { data } = await API(token).get('/api/chat');
+        const token = localStorage.getItem('token');
+        const { data } = await API(token).get('/chat/:chatId');
+        console.log(data);
         return data;
     } catch (error) {
         console.log('error in fetch all chats api');

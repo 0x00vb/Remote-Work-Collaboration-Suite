@@ -6,6 +6,7 @@ import { createProject } from '../api/project'
 import { createTeam } from '../api/team'
 import Icon from './GoogleIcon';
 import { toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
 position: absolute;
@@ -177,6 +178,7 @@ const CreateProject = ({ setCreateProject }) => {
     const [searchUsersResults, setSearchUsersResults] = useState([]);
     const [searchInput, setSearchInput] = useState("");
     const [teamMembers, setTeamMembers] = useState([activeUser]);
+    const navigate = useNavigate();
 
     const handleClickOutside = (event) => {
         if (contentRef.current && !contentRef.current.contains(event.target)) {
@@ -208,28 +210,29 @@ const CreateProject = ({ setCreateProject }) => {
     }, [searchInput])
 
     const addToSelectedUsers = (user) => {
-        if (teamMembers.some(selectedUser => selectedUser._id === user._id)) {
-            setTeamMembers(teamMembers.filter(selectedUser => selectedUser.id !== user.id));
+        if (teamMembers.some(selectedUser => selectedUser.username === user.username)) {
+            setTeamMembers(teamMembers.filter(selectedUser => selectedUser.username !== user.username));
         } else {
             setTeamMembers([...teamMembers, user]);
         }
     }
 
-    const removeFromSelectedUsers = (userId) => {
-        setTeamMembers(teamMembers.filter(user => user._id !== userId));
+    const removeFromSelectedUsers = (username) => {
+        setTeamMembers(teamMembers.filter(user => user.username !== username));
     }
 
     const handleCreateProject = async () => {
         try{
-            const teamMembersIds = teamMembers.map(user => user._id)
-            const teamResponse = await createTeam(teamMembersIds, activeUser.id);
+            const teamMembersUsernames = teamMembers.map(user => user.username);
+            console.log(teamMembersUsernames)
+            const teamResponse = await createTeam(teamMembersUsernames, activeUser.username);
             if(teamResponse.status === 200){
                 const teamId = teamResponse.data.teamId;
                 const projectResponse = await createProject(pName, pDesc, teamId);
                 if(projectResponse.status === 200){
                     toast.success(projectResponse.data.message);
                     setTimeout(() =>{
-                        setCreateProject(false);
+                        navigate('/');
                     }, 1000);
                 }
             }else{
@@ -291,7 +294,7 @@ const CreateProject = ({ setCreateProject }) => {
                                     {
                                         searchUsersResults.map((user) => (
                                             <UserContainer key={user._id}>
-                                                <Clickable onClick={() => {addToSelectedUsers(user); console.log(user)}} isSelected={teamMembers.some(selectedUser => selectedUser.id === user.id)}/>
+                                                <Clickable onClick={() => addToSelectedUsers(user)} isSelected={teamMembers.some(selectedUser => selectedUser.username === user.username)}/>
                                                 <UserInfo>
                                                     <UserImg src={user.profilePic}/>
                                                     <UserUsername>{user.username}</UserUsername>
@@ -308,7 +311,7 @@ const CreateProject = ({ setCreateProject }) => {
                                                 <UserImg src={user.profilePic}/>
                                                 <UserUsername>{user.username}</UserUsername>
                                                 <div 
-                                                    onClick={() => removeFromSelectedUsers(user._id)}
+                                                    onClick={() => removeFromSelectedUsers(user.username)}
                                                     style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                                                     <Icon name={'close'} style={{fontSize: '1.25rem'}}/>  
                                                 </div>
