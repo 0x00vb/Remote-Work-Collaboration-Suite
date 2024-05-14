@@ -27,7 +27,6 @@ const Main = (props) => {
   const dispatch = useDispatch();
   const activeUser = useSelector((state) => state.activeUser);
   const activeProject = useSelector((state) => state.activeProject);
-  const [currentUserName, setCurrentUserName] = useState("");
   const [currentSection, setCurrentSection] = useState('Dashboard');
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
@@ -46,7 +45,6 @@ const Main = (props) => {
               username: data?.user?.username
             }
             dispatch(setActiveUser(user));
-            setCurrentUserName(user.username)
             setLoading(false);
           }else{
             navigate('/teamSync');
@@ -82,7 +80,7 @@ const Main = (props) => {
           theme={props.theme}
           setCurrentSection={setCurrentSection}
           setCreateProject={setCreateProject}
-          currentUserName={currentUserName}
+          activeUser={activeUser}
         />
         {renderSection()}
         {createProject && <CreateProject setCreateProject={setCreateProject}/>}  

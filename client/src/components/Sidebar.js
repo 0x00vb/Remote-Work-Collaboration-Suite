@@ -157,7 +157,7 @@ const LogoutSpan = styled.span`
 
 `
 
-const Sidebar = ({themeToggler, theme, setCurrentSection, setCreateProject, currentUserName }) => {
+const Sidebar = ({themeToggler, theme, setCurrentSection, setCreateProject, activeUser }) => {
   const [showLogout, setShowLogout] = useState(false);
   const logoutSpanRef = useRef(null);
   const dispatch = useDispatch();
@@ -165,7 +165,7 @@ const Sidebar = ({themeToggler, theme, setCurrentSection, setCreateProject, curr
   const [isExpanded, setIsExpanded] = useState(true);
   const [projects, setProjects] = useState([]);
   const navigate = useNavigate();
-  const isLeader = true;
+  const [isLeader, setIsLeader] = useState(false);
 
   const handleChangeTheme = () => {
     themeToggler()
@@ -221,6 +221,12 @@ const Sidebar = ({themeToggler, theme, setCurrentSection, setCreateProject, curr
     };
   }, []);
 
+  useEffect(() => {
+    if(activeProject.teamData.leader == activeUser.name){
+      setIsLeader(true);
+    }
+  }, [])
+
   return (
     <SidebarContainer expanded={isExpanded}>
       <SidebarHeader>
@@ -237,6 +243,16 @@ const Sidebar = ({themeToggler, theme, setCurrentSection, setCreateProject, curr
       </SidebarHeader>
       <SidebarSectionsContainer>
         <SidebarSection>
+          {
+              isLeader && (
+                <SidebarSectionItem>
+                  <GoogleIcon name={'folder_managed'}/>
+                  <SidebarSectionText>
+                    Manage project
+                  </SidebarSectionText>
+                </SidebarSectionItem>
+              )
+          }
           <SidebarSectionItem>
             <GoogleIcon name={'insert_chart'}/>
             <SidebarSectionText>
@@ -298,7 +314,7 @@ const Sidebar = ({themeToggler, theme, setCurrentSection, setCreateProject, curr
       <SidebarBottom onClick={() => setShowLogout(true)} ref={logoutSpanRef}>
         <UserImage src='https://t3.ftcdn.net/jpg/03/58/90/78/360_F_358907879_Vdu96gF4XVhjCZxN2kCG0THTsSQi8IhT.jpg'/>
         <SidebarSectionText>
-          {currentUserName}
+          {activeUser.name}
         </SidebarSectionText>
         <LogoutSpanContainer show={showLogout} onClick={handleLogout}>
           <LogoutSpan>Logout</LogoutSpan>
