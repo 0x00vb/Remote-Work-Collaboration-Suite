@@ -26,8 +26,6 @@ const ProjectName = styled.h2`
   font-size: 2rem;
 `
 
-
-
 const Whiteboard = () => {
   const [currentWbSection, setCurrentWbSection] = useState('board');
   

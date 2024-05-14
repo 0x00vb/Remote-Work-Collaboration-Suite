@@ -63,13 +63,13 @@ const Main = (props) => {
       case 'dashboard':
         return <Dashboard activeProject={activeProject} loading={loading}/>;
       case 'whiteboard':
-        return <Whiteboard/>
+        return <Whiteboard activeProject={activeProject}/>
       case 'chat':
-        return <ChatPage/>;
+        return <ChatPage activeProject={activeProject}/>;
       case 'calendar':
-        return <CalendarPage/>;
+        return <CalendarPage activeProject={activeProject}/>;
       case 'meetings':
-        return <MeetingsPage/>
+        return <MeetingsPage activeProject={activeProject}/>
       default:
         return <Dashboard />;
     }

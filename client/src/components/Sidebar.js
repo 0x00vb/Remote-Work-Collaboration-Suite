@@ -165,6 +165,7 @@ const Sidebar = ({themeToggler, theme, setCurrentSection, setCreateProject, curr
   const [isExpanded, setIsExpanded] = useState(true);
   const [projects, setProjects] = useState([]);
   const navigate = useNavigate();
+  const isLeader = true;
 
   const handleChangeTheme = () => {
     themeToggler()

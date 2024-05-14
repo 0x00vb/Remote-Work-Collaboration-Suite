@@ -54,6 +54,11 @@ const NewButton = styled.span`
 
 const BoardPage = () => {
   const activeProject = useSelector(state => state.activeProject);
+
+  const todoTasks = activeProject.tasks.filter(todo => todo.status === 'todo');
+  const inProgressTasks = activeProject.tasks.filter(task => task.status === 'in_progress');
+  const doneTasks = activeProject.tasks.filter(task => task.status === 'done');
+
   return (
     <MainSection>
 
@@ -78,12 +83,7 @@ const BoardPage = () => {
         <NewButton>
           <Icon name={'add'} styles={`color: ${({ theme }) => theme.primaryText};`}/>
         </NewButton>
-        <TaskCard/>
-        <TaskCard/>
-        <TaskCard/>
-        <TaskCard/>
-        <TaskCard/>
-        <TaskCard/>
+        {todoTasks.map(task => <TaskCard key={task._id} task={task} />)}
       </ColumnScrollable>
     </Column>
 

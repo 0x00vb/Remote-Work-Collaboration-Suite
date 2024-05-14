@@ -13,7 +13,7 @@ export const fetchChats = createAsyncThunk('redux/chats', async () => {
       const data = await fetchAllChats();
       return data;
     } catch (error) {
-      toast.error('Something Went Wrong!Try Again');
+      toast.error('Something Went Wrong! Try Again');
       throw error;
     }
 });
