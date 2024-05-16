@@ -39,8 +39,6 @@ exports.fetchTeamData = async (req, res) => {
                 members: teamMembers
             };
 
-            console.log(teamWithMembers)
-
             res.status(200).json({ message: 'Success rettrieving teams', team: teamWithMembers });
         }   
     }catch(err){

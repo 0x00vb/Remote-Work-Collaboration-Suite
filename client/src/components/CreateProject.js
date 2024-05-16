@@ -72,7 +72,6 @@ const Input = styled.input`
     padding: 5px;
     border-radius: 5px;
     border: 1px solid ${({ theme }) => theme.gray};
-
     outline: none;
 `
 const Textarea = styled.textarea`
@@ -84,7 +83,6 @@ const Textarea = styled.textarea`
     padding: 5px;
     border-radius: 5px;
     border: 1px solid ${({ theme }) => theme.gray};
-
     outline: none;
 `
 
