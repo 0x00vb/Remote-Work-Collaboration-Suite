@@ -245,7 +245,7 @@ const Sidebar = ({themeToggler, theme, setCurrentSection, setCreateProject, acti
         <SidebarSection>
           {
               isLeader && (
-                <SidebarSectionItem>
+                <SidebarSectionItem onClick={() => handleChangeSection('projectManagement')}>
                   <GoogleIcon name={'folder_managed'}/>
                   <SidebarSectionText>
                     Manage project

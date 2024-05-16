@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import SectionsBar from './whiteboard/SectionsBar';
 import BoardPage from './whiteboard/BoardPage';
-import MembersPage from './whiteboard/MembersPage';
+
 import FilesPage from './whiteboard/FilesPage';
 
 
@@ -33,8 +33,6 @@ const Whiteboard = () => {
     switch(currentWbSection){
       case 'board':
         return <BoardPage/>
-      case 'members':
-        return <MembersPage/>
       case 'files':
         return <FilesPage/>
       default:

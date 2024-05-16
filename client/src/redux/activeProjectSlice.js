@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { fetchTeamData } from '../api/team';
 
-// Thunk to fetch team members
 export const fetchTeamInformation = createAsyncThunk(
   'activeProject/fetchTeamMembers',
   async (teamId, { rejectWithValue }) => {
@@ -13,7 +12,6 @@ export const fetchTeamInformation = createAsyncThunk(
   }
 );
 
-// Thunk to fetch project tasks
 export const fetchProjectTasks = createAsyncThunk(
   'activeProject/fetchProjectTasks',
   async (projectId, { rejectWithValue }) => {

@@ -36,9 +36,6 @@ const SectionsBar = ({currentWbSection, setCurrentWbSection}) => {
       <ItemContainer id='board' onClick={() => setCurrentWbSection('board')} currentWbSection={currentWbSection}>
         <Text>Board</Text>
       </ItemContainer>
-      <ItemContainer  id='members' onClick={() => setCurrentWbSection('members')} currentWbSection={currentWbSection}>
-        <Text>Members</Text>
-      </ItemContainer>
       <ItemContainer  id='files' onClick={() => setCurrentWbSection('files')} currentWbSection={currentWbSection}>
         <Text>Files (6)</Text>
       </ItemContainer>

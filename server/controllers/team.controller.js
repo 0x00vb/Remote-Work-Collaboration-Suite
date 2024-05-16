@@ -1,5 +1,6 @@
 const Team = require('../models/Team');
 const Project = require('../models/Project');
+const User = require('../models/User');
 
 exports.createTeam = async (req, res) => {
     try{
@@ -22,9 +23,26 @@ exports.fetchTeamData = async (req, res) => {
         const projectExists = await Project.findOne({ _id : projectId });
         if(projectExists){
             const team = await Team.findOne({ _id: projectExists.team });
+            let teamMembers = [];
+            if (team && team.members && team.members.length > 0) {
+                teamMembers = await User.find(
+                    { username: { $in: team.members } },
+                    '_id username profilePic email'
+                );
+            }
 
-            res.status(200).json({ message: 'Success rettrieving teams', team });
-        }
+            const teamNoMembers = team.toObject();
+            delete teamNoMembers.members;
+
+            const teamWithMembers = {
+                ...teamNoMembers,
+                members: teamMembers
+            };
+
+            console.log(teamWithMembers)
+
+            res.status(200).json({ message: 'Success rettrieving teams', team: teamWithMembers });
+        }   
     }catch(err){
         console.log(err);
         res.status(500).json({ message: 'Somthing went wrong!' });

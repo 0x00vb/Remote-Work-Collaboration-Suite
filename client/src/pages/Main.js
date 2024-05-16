@@ -13,6 +13,7 @@ import { setActiveUser } from '../redux/activeUserSlice';
 import { toast,ToastContainer } from 'react-toastify';
 import CreateProject from '../components/CreateProject';
 import MeetingsPage from '../components/MeetingsPage';
+import ProjectManagement from '../components/ProjectManagement';
 
 const PageContainer = styled.div`
   height: 100vh;
@@ -68,6 +69,8 @@ const Main = (props) => {
         return <CalendarPage activeProject={activeProject}/>;
       case 'meetings':
         return <MeetingsPage activeProject={activeProject}/>
+      case 'projectManagement':
+        return <ProjectManagement activeProject={activeProject}/>
       default:
         return <Dashboard />;
     }

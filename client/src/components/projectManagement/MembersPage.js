@@ -13,13 +13,41 @@ const MainSection = styled.div`
   gap: 1.5rem;
 `;
 
+const MemberCardContainer = styled.div`
+  background-color: ${({ theme }) => theme.secondaryBackground};
+
+`
+
+const MemberCardProfPic = styled.img`
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  object-fit: cover;
+`
+
+const MemberCardUserName = styled.p`
+  color: ${({ theme }) => theme.primaryText};
+
+`
+
 const MembersPage = () => {
   const activeProjectMembersData = useSelector((state) => state.activeProject.teamData);
   const [members, setMembers] = useState({});
 
+  useEffect(() => {
+    console.log(members);
+  }, [])
+
   return (
     <MainSection>
-
+      {
+        members.map((member, index) => (
+          <MemberCardContainer key={index}>
+            <MemberCardProfPic src={member.profilePic} />
+            <MemberCardUserName>{member.name}</MemberCardUserName>
+          </MemberCardContainer>
+        ))
+      }
     </MainSection>
   );
 };
