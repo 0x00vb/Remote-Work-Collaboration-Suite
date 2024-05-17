@@ -222,7 +222,7 @@ const Sidebar = ({themeToggler, theme, setCurrentSection, setCreateProject, acti
   }, []);
 
   useEffect(() => {
-    if(activeProject.teamData.leader == activeUser.name){
+    if(activeProject.teamLeader == activeUser.username){
       setIsLeader(true);
     }
   }, [])

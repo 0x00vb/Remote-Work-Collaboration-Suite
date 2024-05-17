@@ -20,7 +20,6 @@ export const fetchTeamData = async (teamId) => {
   try{
     const token = localStorage.getItem('token');
     const response = await api(token).get(`/team/getTeam/${teamId}`);
-    console.log(response.data);
     return response.data.team;
   }catch(err){
     console.log(err);

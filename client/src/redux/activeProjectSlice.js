@@ -30,7 +30,8 @@ const initialState = {
     name: '',
     description: '',
     team: '',
-    teamData: {},
+    teamMembers: [],
+    teamLeader: '',
     tasks: [],
     deadLine: '',
   };
@@ -44,7 +45,8 @@ const initialState = {
         state.name = payload.name;
         state.description = payload.description;
         state.team = payload.team;
-        state.teamData = payload.teamData;
+        state.teamLeader = payload.teamLeader;
+        state.teamMembers = payload.teamMembers;
         state.tasks = payload.tasks;
       },
       setProjectTasks: (state, { payload }) => {
@@ -60,8 +62,8 @@ const initialState = {
           state.isLoadingTeamMembers = true;
         })
         .addCase(fetchTeamInformation.fulfilled, (state, { payload }) => {
-          console.log('teamData payload:', payload); // Add this line
-          state.teamData = payload;
+          state.teamLeader = payload.leader;
+          state.teamMembers = payload.members;
           state.isLoadingTeamData = false;
         })
         .addCase(fetchTeamInformation.rejected, (state) => {
