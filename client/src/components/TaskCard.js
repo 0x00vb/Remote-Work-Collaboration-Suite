@@ -45,7 +45,7 @@ const UserImage = styled.img`
     border-radius: 50%;
 `
 
-const TaskCard = () => {
+const TaskCard = ({ task }) => {
 
     const tagsColorPalette = {
         "website": {
@@ -64,9 +64,9 @@ const TaskCard = () => {
         <Tag key={'website'} tag={'website'} tagsColorPalette={tagsColorPalette}>Website</Tag>
         <Tag key={'design'} tag={'design'} tagsColorPalette={tagsColorPalette}>Design</Tag>
       </Header>
-      <Title>Design System</Title>
+      <Title>{task.title}</Title>
       <Bottom>
-        <UserImage src='https://t3.ftcdn.net/jpg/03/58/90/78/360_F_358907879_Vdu96gF4XVhjCZxN2kCG0THTsSQi8IhT.jpg'/>
+        <UserImage src='https://t3.ftcdn.net/jpg/03/58/90/78/360_F_358907879_Vdu96gF4XVhjCZxN2kCG0THTsSQi8IhT.jpg' alt={task.assignee} title={task.assignee}/>
       </Bottom>
     </Container>
   )

@@ -155,14 +155,14 @@ const ProjectManagement = ({activeProject}) => {
     const [description, setDescription] = useState("");
     const [assignee, setAssignee] = useState("");
     const [searchInput, setSearchInput] = useState("");
-    const [filteredMembers, setFilteredMembers] = useState(activeProject.teamData.members);
+    const [filteredMembers, setFilteredMembers] = useState(activeProject.teamMembers);
     const [dueDate, setDueDate] = useState("");
 
     useEffect(() => {
         if (searchInput === "") {
-            setFilteredMembers(activeProject.teamData.members);
+            setFilteredMembers(activeProject.teamMembers);
         } else {
-            const results = activeProject.teamData.members.filter(member =>
+            const results = activeProject.teamMembers.filter(member =>
                 member.username.toLowerCase().includes(searchInput.toLowerCase())
             );
             setFilteredMembers(results);
@@ -192,7 +192,7 @@ const ProjectManagement = ({activeProject}) => {
                 <Text>Team members</Text>
                 <SubSection>
                 {
-                    activeProject.teamData.members.map((member, index) => (
+                    activeProject.teamMembers.map((member, index) => (
                     <MemberCardContainer key={index}>
                         <MemberCardSections>
                             <MemberCardProfPic src={member.profilePic} />

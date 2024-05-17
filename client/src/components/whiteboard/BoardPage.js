@@ -38,20 +38,6 @@ const ColumnScrollable = styled.div`
   scrollbar-color: rebeccapurple ;
 `
 
-const NewButton = styled.span`
-  background-color: ${({ theme }) => theme.secondaryBackground};
-  width: 95%;
-  height: 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 5px;
-  -webkit-box-shadow: 11px 9px 14px -8px rgba(0,0,0,0.2);
-  -moz-box-shadow: 11px 9px 14px -8px rgba(0,0,0,0.2);
-  box-shadow: 11px 9px 14px -8px rgba(0,0,0,0.2);
-  cursor: pointer;
-`
-
 const BoardPage = () => {
   const activeProject = useSelector(state => state.activeProject);
 
@@ -65,40 +51,22 @@ const BoardPage = () => {
     <Column>
       <ColumnTitle>To Do <p>(2)</p></ColumnTitle>
       <ColumnScrollable>
-        <NewButton>
-          <Icon name={'add'} styles={`color: ${({ theme }) => theme.primaryText};`}/>
-        </NewButton>
-        <TaskCard/>
-        <TaskCard/>
-        <TaskCard/>
-        <TaskCard/>
-        <TaskCard/>
-        <TaskCard/>
+        {todoTasks.map(task => <TaskCard key={task._id} task={task} />)}
+
       </ColumnScrollable>
     </Column>
 
     <Column>
       <ColumnTitle>In Progress <p>(10)</p></ColumnTitle>
       <ColumnScrollable>
-        <NewButton>
-          <Icon name={'add'} styles={`color: ${({ theme }) => theme.primaryText};`}/>
-        </NewButton>
-        {todoTasks.map(task => <TaskCard key={task._id} task={task} />)}
+        {inProgressTasks.map(task => <TaskCard key={task._id} task={task} />)}
       </ColumnScrollable>
     </Column>
 
     <Column>
       <ColumnTitle>Done <p>(10)</p></ColumnTitle>
       <ColumnScrollable>
-        <NewButton>
-          <Icon name={'add'} styles={`color: ${({ theme }) => theme.primaryText};`}/>
-        </NewButton>
-        <TaskCard/>
-        <TaskCard/>
-        <TaskCard/>
-        <TaskCard/>
-        <TaskCard/>
-        <TaskCard/>
+        {doneTasks.map(task => <TaskCard key={task._id} task={task} />)}
       </ColumnScrollable>
     </Column>
 
