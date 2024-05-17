@@ -1,6 +1,5 @@
 import axios from 'axios'
 import {BASE_URL} from './env'
-import { applyMiddleware } from 'redux'
 
 const api = (token) => 
   axios.create({
@@ -9,11 +8,10 @@ const api = (token) =>
   })
 
 
-export const fetchProjectsTasks = async (projectId) => {
+export const fetchProjectTasks = async (projectId) => {
     try{
         const token = localStorage.getItem('token');
         const response = await api(token).get(`/task/fetchTasks/${projectId}`);
-        console.log(response);
         return response.data.tasks;
     }catch(err){
         console.log(err);

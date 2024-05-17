@@ -6,7 +6,9 @@ export const lightTheme = {
      secondaryText: '#7A7A7A',
      thirdText: '#D9D9D9',
      accent: '#B9FF65',
-     darkPurple: '#3c005f'
+     darkPurple: '#3c005f',
+     gray: '#D9D9D9'
+
 }
 
 export const darkTheme = {

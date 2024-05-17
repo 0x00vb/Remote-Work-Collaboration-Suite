@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { fetchTeamData } from '../api/team';
+import { fetchProjectTasks } from '../api/task';
 
 export const fetchTeamInformation = createAsyncThunk(
   'activeProject/fetchTeamMembers',
@@ -12,8 +13,8 @@ export const fetchTeamInformation = createAsyncThunk(
   }
 );
 
-export const fetchProjectTasks = createAsyncThunk(
-  'activeProject/fetchProjectTasks',
+export const fetchTasks = createAsyncThunk(
+  'activeProject/fetchTasks',
   async (projectId, { rejectWithValue }) => {
     try {
       return await fetchProjectTasks(projectId);
@@ -59,20 +60,21 @@ const initialState = {
           state.isLoadingTeamMembers = true;
         })
         .addCase(fetchTeamInformation.fulfilled, (state, { payload }) => {
+          console.log('teamData payload:', payload); // Add this line
           state.teamData = payload;
           state.isLoadingTeamData = false;
         })
         .addCase(fetchTeamInformation.rejected, (state) => {
           state.isLoadingTeamData = false;
         })
-        .addCase(fetchProjectTasks.pending, (state) => {
+        .addCase(fetchTasks.pending, (state) => {
           state.isLoadingTasks = true;
         })
-        .addCase(fetchProjectTasks.fulfilled, (state, { payload }) => {
+        .addCase(fetchTasks.fulfilled, (state, { payload }) => {
           state.tasks = payload;
           state.isLoadingTasks = false;
         })
-        .addCase(fetchProjectTasks.rejected, (state) => {
+        .addCase(fetchTasks.rejected, (state) => {
           state.isLoadingTasks = false;
         });
     },  

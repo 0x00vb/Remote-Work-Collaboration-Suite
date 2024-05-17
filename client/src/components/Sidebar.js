@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import GoogleIcon from './GoogleIcon';
 import AppIcon from '../assets/favicon-32x32.png';
 import { searchUserProjects } from '../api/project';
-import { fetchTeamInformation, setActiveProject, fetchProjectTasks } from '../redux/activeProjectSlice';
+import { fetchTeamInformation, setActiveProject, fetchTasks } from '../redux/activeProjectSlice';
 
 const SidebarContainer = styled.div`
   position: sticky;
@@ -195,7 +195,7 @@ const Sidebar = ({themeToggler, theme, setCurrentSection, setCreateProject, acti
   const handleProjectSelection = (project) => {
     try{
       dispatch(setActiveProject(project));
-      dispatch(fetchProjectTasks(project.team));
+      dispatch(fetchTasks(project._id));
       dispatch(fetchTeamInformation(project._id))
     }catch(err){
       console.log("failed to set activeProject: ", err);
@@ -314,7 +314,7 @@ const Sidebar = ({themeToggler, theme, setCurrentSection, setCreateProject, acti
       <SidebarBottom onClick={() => setShowLogout(true)} ref={logoutSpanRef}>
         <UserImage src='https://t3.ftcdn.net/jpg/03/58/90/78/360_F_358907879_Vdu96gF4XVhjCZxN2kCG0THTsSQi8IhT.jpg'/>
         <SidebarSectionText>
-          {activeUser.name}
+          {activeUser.username}
         </SidebarSectionText>
         <LogoutSpanContainer show={showLogout} onClick={handleLogout}>
           <LogoutSpan>Logout</LogoutSpan>

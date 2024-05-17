@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import Icon from './GoogleIcon'
+import { toast } from 'react-toastify'
+import { createTask } from '../api/task'
 
 const Conatiner = styled.div`
+position: relative;
     height: 90%;
     width: 100%;    
     display: flex;
@@ -65,6 +68,7 @@ const SmallText = styled.p`
 `
 
 const InputContainer = styled.div`
+    width: 100%;
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
@@ -102,7 +106,7 @@ const UsersSelectorContainer = styled.div`
     width: 100%;
     height: auto;
     background-color: #FFFFFF;
-    ${props => props.show  && {padding: '1rem 0.5rem'}};
+    display: ${props => props.show ? 'inline' : 'none'};
     padding: 0.1rem;
     border-radius: 5px;
 `
@@ -134,9 +138,16 @@ const Clickable = styled.div`
 `
 
 const Button = styled.span`
+    background-color: ${({ theme }) => theme.accent};
+    color: #F2F2F0;
+    font-weight: bold;
+    font-size: 1.2rem;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
     justify-self: flex-end;
     align-self: flex-end;
-    bottom: 0;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
 `
 
 const ProjectManagement = ({activeProject}) => {
@@ -145,7 +156,7 @@ const ProjectManagement = ({activeProject}) => {
     const [assignee, setAssignee] = useState("");
     const [searchInput, setSearchInput] = useState("");
     const [filteredMembers, setFilteredMembers] = useState(activeProject.teamData.members);
-
+    const [dueDate, setDueDate] = useState("");
 
     useEffect(() => {
         if (searchInput === "") {
@@ -158,6 +169,22 @@ const ProjectManagement = ({activeProject}) => {
         }
     }, [searchInput])
 
+    const handleCreateTask = async (title, description, assignee, dueDate) => {
+        try{
+            const projectId = activeProject.id;
+            const response = await createTask(
+                title,
+                description,
+                assignee,
+                dueDate,
+                projectId
+            );
+            console.log(response);
+            toast.success(response.message);
+        }catch(err){
+            toast.error(err);
+        }
+    }
 
     return (
         <Conatiner>
@@ -197,31 +224,43 @@ const ProjectManagement = ({activeProject}) => {
                             onChange={(e) => setDescription(e.target.value)}
                         />
                     </InputContainer>
-                    <InputContainer>
-                        <SmallText>Assignee</SmallText>
-                        <UserSearchContainer>
+                    <div style={{display: 'flex'}}>
+                        <InputContainer>
+                            <SmallText>Assignee</SmallText>
+                            <UserSearchContainer>
+                                <Input
+                                    value={searchInput}
+                                    onChange={(e) => setSearchInput(e.target.value)}
+                                    style={{width: '98%'}}
+                                />
+                                <UsersSelectorContainer show={searchInput !== ""}>
+                                    {
+                                        filteredMembers.map((member, index) => (
+                                            <UserContainer key={index}>
+                                                <Clickable onClick={() => setAssignee( assignee === member.username ? "" : member.username)} isSelected={member.username === assignee}/>
+                                                <UserImg src={member.profilePic}/>
+                                                <UserUsername>{member.username}</UserUsername>
+                                            </UserContainer>
+                                        ))
+                                    }
+                                </UsersSelectorContainer>
+                            </UserSearchContainer>
+                        </InputContainer>
+                        <InputContainer>
+                            <SmallText>Due date</SmallText>
                             <Input
-                                value={searchInput}
-                                onChange={(e) => setSearchInput(e.target.value)}
-                                style={{width: '98%'}}
+                                type='date'
+                                value={dueDate}
+                                onChange={(e) => setDueDate(e.target.value)}
                             />
-                            <UsersSelectorContainer show={searchInput !== ""}>
-                                {
-                                    filteredMembers.map((member, index) => (
-                                        <UserContainer>
-                                            <Clickable onClick={() => setAssignee( assignee === member.username ? "" : member.username)} isSelected={member.username === assignee}/>
-                                            <UserImg src={member.profilePic}/>
-                                            <UserUsername>{member.username}</UserUsername>
-                                        </UserContainer>
-                                    ))
-                                }
-                            </UsersSelectorContainer>
-                        </UserSearchContainer>
-                    </InputContainer>
+                        </InputContainer>
+                    </div>
                 </SubSection>
             </Section>
-            <div>
-                <Button>Create task</Button>
+            <div style={{display: 'flex', justifyContent: 'right', position: 'absolute', bottom: '1.5rem', right: '1.5rem'}}>
+                <Button onClick={() => handleCreateTask(title, description, assignee, dueDate)}>
+                    Create task
+                </Button>
             </div>
         </Conatiner>
     )
