@@ -41,6 +41,16 @@ const Input = styled.input`
     font-size: 1rem;
 `
 
+const NewButton = styled.span`
+display: flex;
+align-items: center;
+justify-content: center;
+border-radius: 50%;
+    &:hover{
+        background-color: rgba(255,255,255, 0.15);
+    }
+`
+
 const Scrollable = styled.div`
     display: flex;
     flex-direction: column;
@@ -95,12 +105,16 @@ const socket = io('http://localhost:4444');
 let selectedChat;
 
 const ChatPage = () => {
-    const { activeChat, notifications } = useSelector((state) => state.chats)
+    const { chats, activeChat, notifications } = useSelector((state) => state.chats)
+    const activeUser = useSelector((state) => state.activeChat);
     const dispatch = useDispatch()
     const [message, setMessage] = useState("");
     const [messages, setMessages] = useState([]);
     const [loading, setLoading] = useState(false);
-    const activeUser = useSelector((state) => state.activeChat);
+
+    useEffect(() => {
+        dispatch(fetchChats());
+    }, [dispatch]);
 
     const keyDownFunction = async (e) => {
         if ((e.key === "Enter" || e.type === "click") && (message)) {
@@ -153,25 +167,21 @@ const ChatPage = () => {
   return (
     <Conatiner>
         <LeftSection>
+        <div style={{width: '100%', display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '0.5rem'}}>
             <Input placeholder='Search'/>
+            <NewButton>
+                <Icon name='add' />
+            </NewButton>
+        </div>
             <Scrollable>
                 <ContactCard/>
-                <ContactCard/>
-                <ContactCard/>
-                <ContactCard/>
-                <ContactCard/>
-                <ContactCard/>
-                <ContactCard/>
-                <ContactCard/>
-                <ContactCard/>
-                <ContactCard/>
-                <ContactCard/>
-                <ContactCard/>
-                <ContactCard/>
-                <ContactCard/>
-                <ContactCard/>
-                <ContactCard/>
-                <ContactCard/>
+
+                {
+                    chats?.map((chat, index) => (
+                        <ContactCard key={index}/>
+                    ))
+                }
+
             </Scrollable>
         </LeftSection>
         <RightSection>
