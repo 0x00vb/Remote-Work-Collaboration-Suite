@@ -94,7 +94,7 @@ const SidebarSectionSpan = styled.span`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: ${({ theme, selected }) => selected ? theme.thirdText : theme.accent};
+  color: ${({ theme, selected }) => (!selected ? theme.thirdText : theme.accent)};
   font-size: 22px;
   font-weight: 800;
 `
@@ -292,15 +292,18 @@ const Sidebar = ({themeToggler, theme, setCurrentSection, setCreateProject, acti
           </SidebarSectionItem>
         </SidebarSection>
         <SidebarSection>
-        <SidebarSectionTitle>Projects</SidebarSectionTitle>
-          {
-            projects.map((project, index) => (
-              <SidebarSectionItem key={project._id} onClick={() => handleProjectSelection(project)}>
-                <SidebarSectionSpan selected={activeProject.id === parseInt(project._id)}>#</SidebarSectionSpan>
-                <SidebarSectionText>{project.name}</SidebarSectionText>
-              </SidebarSectionItem>
-            ))
-          }
+          <SidebarSectionTitle>Projects</SidebarSectionTitle>
+          <SidebarSection style={{height: 'auto', maxHeight: '7.5rem', overflow: 'scroll', marginBottom: '1rem'}} >
+            {
+              
+              projects.map((project, index) => (
+                <SidebarSectionItem key={project._id} onClick={() => handleProjectSelection(project)}>
+                  <SidebarSectionSpan selected={activeProject.id === project._id}>#</SidebarSectionSpan>
+                  <SidebarSectionText>{project.name}</SidebarSectionText>
+                </SidebarSectionItem>
+              ))
+            }
+          </SidebarSection>
           <SidebarNewProjectBtn onClick={() => setCreateProject(true)}>
             {
               isExpanded ?

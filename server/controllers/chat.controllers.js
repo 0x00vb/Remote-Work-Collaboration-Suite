@@ -1,7 +1,6 @@
 import Chat from '../models/Chat';
 import User from '../models/User';
 
-
 export const fetchAllChats = async (req, res) => {
     try {
       const chats = await Chat.find().populate('users', 'username'); // Populate the 'users' field with usernames only
