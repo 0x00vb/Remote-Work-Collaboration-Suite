@@ -1,26 +1,76 @@
 const Project = require('../models/Project');
+const User = require('../models/User');
+const Chat = require('../models/Chat');
+
+// exports.createProject = async (req, res) => {
+//     try{
+//         const { projectName, projectDesc, teamId } = req.body;
+//         const existingProject = await Project.findOne({ name: projectName });
+//         if(existingProject){
+//             res.status(400).json({ message: 'Project with specified name already exists!'});
+//         }
+
+//         const project = new Project({
+//             name: projectName,
+//             description: projectDesc,
+//             team: teamId,
+//             tasks: []
+//         })
+//         await project.save()
+//         res.status(200).json({ message: "Project created successfully!" })
+//     }catch(err){
+//         console.log(err);
+//         res.status(500).json({ message: 'Internal server error!' });
+//     }
+// }
 
 exports.createProject = async (req, res) => {
-    try{
-        const { projectName, projectDesc, teamId } = req.body;
-        const existingProject = await Project.findOne({ name: projectName });
-        if(existingProject){
-            res.status(400).json({ message: 'Project with specified name already exists!'});
-        }
+  try {
+    const { projectName, projectDesc, teamId } = req.body;
+    const existingProject = await Project.findOne({ name: projectName });
 
-        const project = new Project({
-            name: projectName,
-            description: projectDesc,
-            team: teamId,
-            tasks: []
-        })
-        await project.save()
-        res.status(200).json({ message: "Project created successfully!" })
-    }catch(err){
-        console.log(err);
-        res.status(500).json({ message: 'Internal server error!' });
+    if (existingProject) {
+      return res.status(400).json({ message: 'Project with specified name already exists!' });
     }
-}
+
+    const project = new Project({
+      name: projectName,
+      description: projectDesc,
+      team: teamId,
+      tasks: [],
+    });
+    await project.save();
+
+    // Fetch team members
+    const teamMembers = await User.find({ team: teamId });
+
+    // Create individual chats for each pair of team members
+    for (let i = 0; i < teamMembers.length; i++) {
+      for (let j = i + 1; j < teamMembers.length; j++) {
+        const user1 = teamMembers[i]._id;
+        const user2 = teamMembers[j]._id;
+
+        // Check if chat between these two users already exists
+        const existingChat = await Chat.findOne({ 
+          users: { $all: [user1, user2] }, 
+          isGroup: false 
+        });
+
+        if (!existingChat) {
+          const chat = new Chat({
+            users: [user1, user2],
+          });
+          await chat.save();
+        }
+      }
+    }
+
+    res.status(200).json({ message: 'Project and private chats created successfully!' });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: 'Internal server error!' });
+  }
+};
 
 exports.searchUserProjects = async (req, res) => {
     try{

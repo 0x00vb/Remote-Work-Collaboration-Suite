@@ -158,7 +158,7 @@ const Dashboard = ({ activeProject, loading }) => {
                         </InformationContainer>
                         <WidgetGrid>
                             <SmallWidget text={'Time remaining'} value={'4d'} iconName={'timer'}/>
-                            <SmallWidget text={'Created tasks'} value={'20'} iconName={'check_circle'}/>
+                            <SmallWidget text={'Created tasks'} value={activeProject.tasks.length} iconName={'check_circle'}/>
                             <SmallWidget text={'Task in progress'} value={'10'} iconName={'play_circle'}/>
                             <SmallWidget text={'Upcoming tasks'} value={'7'} iconName={'schedule'}/>
                         </WidgetGrid>

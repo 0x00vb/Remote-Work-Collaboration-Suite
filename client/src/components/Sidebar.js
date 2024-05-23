@@ -95,7 +95,7 @@ const SidebarSectionSpan = styled.span`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: ${({ theme, selected }) => selected ? theme.thirdText : theme.accent};
+  color: ${({ theme, selected }) => (!selected ? theme.thirdText : theme.accent)};
   font-size: 22px;
   font-weight: 800;
 `
