@@ -20,7 +20,7 @@ const ItemContainer = styled.div`
     id === currentWbSection ? theme.primaryBackground : 'transparent'};
   border-radius: 5px;
   cursor: pointer;
-  transition: all 0.3s ease-in-out;
+  transition: box-shadow 0.3s ease-in-out;
   ${props => props.currentWbSection === props.id && 'box-shadow: 2px 1px 3px 0px rgba(0,0,0,0.2);'};
 
 `

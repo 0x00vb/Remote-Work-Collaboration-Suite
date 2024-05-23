@@ -70,6 +70,7 @@ const SidebarSectionsContainer = styled.div`
 const SidebarSection = styled.div`
   display: flex;
   flex-direction: column;
+  
 `
 
 const SidebarSectionItem = styled.div`
@@ -227,6 +228,8 @@ const Sidebar = ({themeToggler, theme, setCurrentSection, setCreateProject, acti
     }
   }, [])
 
+  const userTasks = activeProject.tasks.filter(task => task.assiggnee === activeUser.username);
+
   return (
     <SidebarContainer expanded={isExpanded}>
       <SidebarHeader>
@@ -259,10 +262,10 @@ const Sidebar = ({themeToggler, theme, setCurrentSection, setCreateProject, acti
               Activity
             </SidebarSectionText>
           </SidebarSectionItem>
-          <SidebarSectionItem>
+          <SidebarSectionItem onClick={() => handleChangeSection('myTasks')}>
             <GoogleIcon name={'check_circle'}/>
             <SidebarSectionText>
-              Tasks
+              My Tasks
             </SidebarSectionText>
           </SidebarSectionItem>
         </SidebarSection>
@@ -292,7 +295,7 @@ const Sidebar = ({themeToggler, theme, setCurrentSection, setCreateProject, acti
           </SidebarSectionItem>
         </SidebarSection>
         <SidebarSection>
-        <SidebarSectionTitle>Projects</SidebarSectionTitle>
+          <SidebarSectionTitle>Projects</SidebarSectionTitle>
           {
             projects.map((project, index) => (
               <SidebarSectionItem key={project._id} onClick={() => handleProjectSelection(project)}>

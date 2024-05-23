@@ -14,6 +14,7 @@ import { toast,ToastContainer } from 'react-toastify';
 import CreateProject from '../components/CreateProject';
 import MeetingsPage from '../components/MeetingsPage';
 import ProjectManagement from '../components/ProjectManagement';
+import BoardPage from '../components/whiteboard/BoardPage';
 
 const PageContainer = styled.div`
   height: 100vh;
@@ -59,6 +60,8 @@ const Main = (props) => {
 
   const renderSection = () => {
     switch (currentSection) {
+      case 'myTasks':
+        return <BoardPage activeProject={activeProject} currentSection={currentSection}/>
       case 'dashboard':
         return <Dashboard activeProject={activeProject} loading={loading}/>;
       case 'whiteboard':

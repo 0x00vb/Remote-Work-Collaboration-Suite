@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import TaskCard from '../TaskCard';
 import Icon from '../GoogleIcon';
 import { useSelector } from 'react-redux';
+import { current } from '@reduxjs/toolkit';
 
 const MainSection = styled.div`
   width: 100%;
@@ -38,18 +39,25 @@ const ColumnScrollable = styled.div`
   scrollbar-color: rebeccapurple ;
 `
 
-const BoardPage = () => {
-  const activeProject = useSelector(state => state.activeProject);
+const BoardPage = ({ activeProject, currentSection }) => {
+  const activeUser = useSelector((state) => state.activeUser);
 
-  const todoTasks = activeProject.tasks.filter(todo => todo.status === 'todo');
-  const inProgressTasks = activeProject.tasks.filter(task => task.status === 'in_progress');
-  const doneTasks = activeProject.tasks.filter(task => task.status === 'done');
+  let tasks;
+  if(currentSection === 'myTasks'){
+    tasks = activeProject.tasks.filter(task => task.assignee === activeUser.username);
+  }else{
+    tasks = activeProject.tasks;
+  }
+
+  const todoTasks = tasks.filter(task => task.status === 'todo');
+  const inProgressTasks = tasks.filter(task => task.status === 'in_progress');
+  const doneTasks = tasks.filter(task => task.status === 'done');
 
   return (
     <MainSection>
 
     <Column>
-      <ColumnTitle>To Do <p>(2)</p></ColumnTitle>
+      <ColumnTitle>To Do <p>({todoTasks.length})</p></ColumnTitle>
       <ColumnScrollable>
         {todoTasks.map(task => <TaskCard key={task._id} task={task} />)}
 

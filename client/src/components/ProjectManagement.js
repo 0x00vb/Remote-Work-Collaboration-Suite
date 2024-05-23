@@ -179,8 +179,15 @@ const ProjectManagement = ({activeProject}) => {
                 dueDate,
                 projectId
             );
+            
             console.log(response);
             toast.success(response.message);
+            const [title, setTitle] = useState("");
+            setDescription("");
+            setAssignee("");
+            setSearchInput("");
+            setDueDate("");
+        
         }catch(err){
             toast.error(err);
         }
