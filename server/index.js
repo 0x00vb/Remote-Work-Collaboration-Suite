@@ -14,7 +14,7 @@ const taskRouter = require('./routes/task.routes');
 const projectRouter = require('./routes/project.routes');
 
 const app = express();
-app.use(cors({origin: 'http://localhost:3000', credentials: true, methods: ['GET', 'POST', 'DELETE']}))
+app.use(cors({origin: 'http://localhost:3000', credentials: true, methods: ['GET', 'POST', 'DELETE', 'PATCH']}))
 app.use(cookieParser())
 app.use(express.json())
  

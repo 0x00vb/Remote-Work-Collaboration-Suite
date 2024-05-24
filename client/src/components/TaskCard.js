@@ -1,6 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import Icon from './GoogleIcon'
+
+import { updateTaskStatusRedux } from '../redux/activeProjectSlice'
 
 const Container = styled.div`
     position: relative;
@@ -83,6 +86,8 @@ const OptionsText = styled.span`
 const TaskCard = ({ task }) => {
   const [optionsMenu, setOptionsMenu] = useState('');
   const menuRef = useRef();
+  const dispatch = useDispatch();
+  const [updatingStatus, setUpdatingStatus] = useState(false);
 
   const tagsColorPalette = {
       "website": {
@@ -111,23 +116,36 @@ const TaskCard = ({ task }) => {
     setOptionsMenu(optionsMenu === taskId ? "" : taskId);
   }
 
+  const handleUpdateStatus = (taskId, newStatus) => {
+    dispatch(updateTaskStatusRedux({ taskId, newStatus }));
+    setOptionsMenu('');
+  };
+
   const renderOptions = () => {
     let options = [];
     switch (task.status) {
       case 'todo':
         options = [
-          <OptionContainer key="inProgress"><OptionsText>Mark as in progress</OptionsText></OptionContainer>,
-          <OptionContainer key="done"><OptionsText>Mark as done</OptionsText></OptionContainer>
+          <OptionContainer key="inProgress" onClick={() => {handleUpdateStatus(task._id, 'in_progress')}}>
+            <OptionsText>Mark as in progress</OptionsText>
+            </OptionContainer>,
+          <OptionContainer key="done" onClick={() => handleUpdateStatus(task._id, 'done')}>
+            <OptionsText>Mark as done</OptionsText>
+          </OptionContainer>
         ];
         break;
       case 'inProgress':
         options = [
-          <OptionContainer key="done"><OptionsText>Mark as done</OptionsText></OptionContainer>
+          <OptionContainer key="done" onClick={() => handleUpdateStatus(task._id, 'in_progress')}>
+            <OptionsText>Mark as done</OptionsText>
+          </OptionContainer>
         ];
         break;
       case 'done':
         options = [
-          <OptionContainer key="inProgress"><OptionsText>Mark as in progress</OptionsText></OptionContainer>
+          <OptionContainer key="inProgress" onClick={() => handleUpdateStatus(task._id, 'in_progress')}>
+            <OptionsText>Mark as in progress</OptionsText>
+          </OptionContainer>
         ];
         break;
       default:

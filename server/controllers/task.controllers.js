@@ -40,8 +40,10 @@ exports.createTask = async (req, res) => {
 }
 
 exports.updateTaskStatus = async (req, res) => {
-    const { id } = req.params;
+    const { taskId } = req.params;
     const { status } = req.body;
+
+    console.log(taskId);
 
     const validStatuses = ['todo', 'in_progress', 'done'];
     if (!validStatuses.includes(status)) {
@@ -49,7 +51,7 @@ exports.updateTaskStatus = async (req, res) => {
     }
     try{
         const task = await Task.findByIdAndUpdate(
-            id,
+            taskId,
             { status },
             { new: true, runValidators: true }
         );

@@ -24,6 +24,16 @@ export const createTask = async (title, description, assignee, due_date, project
         const response = await api(token).post(`task/createTask/${projectId}`,
             {title, description, assignee, due_date, projectId}
         );
+        return response.data;
+    }catch(err){
+        console.log(err);
+    }
+}
+
+export const updateTaskStatus = async (id, status) => {
+    try{
+        const token = localStorage.getItem('token');
+        const response = await api(token).patch(`task/updateTaskStatus/${id}`, {status});
         console.log(response);
         return response.data;
     }catch(err){

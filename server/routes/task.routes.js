@@ -7,6 +7,6 @@ router.get('/fetchTasks/:projectId', verifyToken, taskController.fetchTasks);
 
 router.post('/createTask/:projectId', verifyToken, taskController.createTask);
 
-router.patch('updateTaskStatus', verifyToken, taskController.updateTaskStatus);
+router.patch('/updateTaskStatus/:taskId', verifyToken, taskController.updateTaskStatus);
 
 module.exports = router;

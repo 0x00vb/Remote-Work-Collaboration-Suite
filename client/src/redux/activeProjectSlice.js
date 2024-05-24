@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { fetchTeamData } from '../api/team';
-import { fetchProjectTasks } from '../api/task';
+import { fetchProjectTasks, updateTaskStatus } from '../api/task';
 
 export const fetchTeamInformation = createAsyncThunk(
   'activeProject/fetchTeamMembers',
@@ -23,6 +23,19 @@ export const fetchTasks = createAsyncThunk(
     }
   }
 );
+
+export const updateTaskStatusRedux = createAsyncThunk(
+  'activeProject/updateTaskStatus',
+  async ({ taskId, newStatus }, { rejectWithValue }) => {
+    try {
+      await updateTaskStatus(taskId, newStatus);
+      return { taskId, newStatus };
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
 
 const initialState = {
     creationDate: '',
@@ -78,6 +91,13 @@ const initialState = {
         })
         .addCase(fetchTasks.rejected, (state) => {
           state.isLoadingTasks = false;
+        })
+        .addCase(updateTaskStatusRedux.fulfilled, (state, { payload }) => {
+          const { taskId, newStatus } = payload;
+          const taskIndex = state.tasks.findIndex(task => task._id === taskId);
+          if (taskIndex !== -1) {
+            state.tasks[taskIndex].status = newStatus;
+          }
         });
     },  
   });
