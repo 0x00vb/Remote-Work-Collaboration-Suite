@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import styled from 'styled-components'
+import Icon from './GoogleIcon'
 
 const Container = styled.div`
+    position: relative;
     box-sizing: border-box;
     width: 95%;
     height: 10rem;
@@ -17,7 +19,22 @@ const Container = styled.div`
 `
 const Header = styled.div`
     display: flex;
-    gap: 5px;
+    justify-content: space-between;
+    align-items: center;
+
+`
+
+const Hleft = styled.div`
+  display: flex;
+  gap: 5px;
+`
+
+const Hright = styled.span`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius:50%;
+  background-color: rgba(255,255,255,0.1);
 `
 
 const Tag = styled.div`
@@ -45,24 +62,91 @@ const UserImage = styled.img`
     border-radius: 50%;
 `
 
-const TaskCard = ({ task }) => {
+const OptionsMenu = styled.div`
+    background-color: ${({ theme }) => theme.primaryBackground};
+    position: absolute;
+    top: 0.25rem;
+    right: 0.25rem;
+    border-radius: 10px;
+`
 
-    const tagsColorPalette = {
-        "website": {
-            backgroundColor: 'lightgray',
-            color: 'gray'
-        },
-        "design": {
-            backgroundColor: 'lightGreen',
-            color: 'green'
-        }
+const OptionContainer = styled.div`
+  padding: 0.25rem;
+  cursor: pointer;
+`
+
+const OptionsText = styled.span`
+  color: ${({ theme }) => theme.primaryText};
+  font-size: 1rem;
+`
+
+const TaskCard = ({ task }) => {
+  const [optionsMenu, setOptionsMenu] = useState('');
+  const menuRef = useRef();
+
+  const tagsColorPalette = {
+      "website": {
+          backgroundColor: 'lightgray',
+          color: 'gray'
+      },
+      "design": {
+          backgroundColor: 'lightGreen',
+          color: 'green'
+      }
+  }
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setOptionsMenu('');
+      }
     }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+  }, [menuRef]);
+
+  const hanldeShowOptions = (taskId) => {
+    setOptionsMenu(optionsMenu === taskId ? "" : taskId);
+  }
+
+  const renderOptions = () => {
+    let options = [];
+    switch (task.status) {
+      case 'todo':
+        options = [
+          <OptionContainer key="inProgress"><OptionsText>Mark as in progress</OptionsText></OptionContainer>,
+          <OptionContainer key="done"><OptionsText>Mark as done</OptionsText></OptionContainer>
+        ];
+        break;
+      case 'inProgress':
+        options = [
+          <OptionContainer key="done"><OptionsText>Mark as done</OptionsText></OptionContainer>
+        ];
+        break;
+      case 'done':
+        options = [
+          <OptionContainer key="inProgress"><OptionsText>Mark as in progress</OptionsText></OptionContainer>
+        ];
+        break;
+      default:
+        break;
+    }
+    return <OptionsMenu ref={menuRef}>{options}</OptionsMenu>;
+  }
 
   return (
     <Container>
+      { optionsMenu === task._id && renderOptions() }
       <Header>
-        <Tag key={'website'} tag={'website'} tagsColorPalette={tagsColorPalette}>Website</Tag>
-        <Tag key={'design'} tag={'design'} tagsColorPalette={tagsColorPalette}>Design</Tag>
+        <Hleft>
+          <Tag key={'website'} tag={'website'} tagsColorPalette={tagsColorPalette}>Website</Tag>
+          <Tag key={'design'} tag={'design'} tagsColorPalette={tagsColorPalette}>Design</Tag>
+        </Hleft>
+        <Hright onClick={() => hanldeShowOptions(task._id)}>
+          <Icon name="more_horiz"/>
+        </Hright>
       </Header>
       <Title>{task.title}</Title>
       <Bottom>
