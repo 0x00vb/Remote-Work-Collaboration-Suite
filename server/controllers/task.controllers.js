@@ -38,3 +38,29 @@ exports.createTask = async (req, res) => {
         res.status(500).json({ message: 'internal server error' });
     }
 }
+
+exports.updateTaskStatus = async (req, res) => {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    const validStatuses = ['todo', 'in_progress', 'done'];
+    if (!validStatuses.includes(status)) {
+        return res.status(400).json({ error: 'Invalid status' });
+    }
+    try{
+        const task = await Task.findByIdAndUpdate(
+            id,
+            { status },
+            { new: true, runValidators: true }
+        );
+
+        if (!task) {
+            return res.status(404).json({ error: 'Task not found' });
+        }
+
+        res.status(200).json({ message: 'Task status updated successfully', task });
+    }catch(err){
+        console.log(err);
+        res.status(500).json({ message: 'internal server error' });
+    }
+}
