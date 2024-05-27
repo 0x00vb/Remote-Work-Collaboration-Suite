@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import Icon from './GoogleIcon'
 
@@ -84,10 +84,11 @@ const OptionsText = styled.span`
 `
 
 const TaskCard = ({ task }) => {
+  const activeUser = useSelector(state => state.activeUser);
+  const activeProject = useSelector(state => state.activeProject);
   const [optionsMenu, setOptionsMenu] = useState('');
   const menuRef = useRef();
   const dispatch = useDispatch();
-  const [updatingStatus, setUpdatingStatus] = useState(false);
 
   const tagsColorPalette = {
       "website": {
@@ -134,9 +135,9 @@ const TaskCard = ({ task }) => {
           </OptionContainer>
         ];
         break;
-      case 'inProgress':
+      case 'in_progress':
         options = [
-          <OptionContainer key="done" onClick={() => handleUpdateStatus(task._id, 'in_progress')}>
+          <OptionContainer key="done" onClick={() => handleUpdateStatus(task._id, 'done')}>
             <OptionsText>Mark as done</OptionsText>
           </OptionContainer>
         ];
@@ -162,9 +163,13 @@ const TaskCard = ({ task }) => {
           <Tag key={'website'} tag={'website'} tagsColorPalette={tagsColorPalette}>Website</Tag>
           <Tag key={'design'} tag={'design'} tagsColorPalette={tagsColorPalette}>Design</Tag>
         </Hleft>
-        <Hright onClick={() => hanldeShowOptions(task._id)}>
-          <Icon name="more_horiz"/>
-        </Hright>
+        {
+          (task.assignee == activeUser.username || activeUser.username == activeProject.teamLeader) &&(
+            <Hright onClick={() => hanldeShowOptions(task._id)}>
+              <Icon name="more_horiz"/>
+            </Hright>
+          )
+        }
       </Header>
       <Title>{task.title}</Title>
       <Bottom>
