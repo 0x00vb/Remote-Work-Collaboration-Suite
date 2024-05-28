@@ -164,7 +164,7 @@ const TaskCard = ({ task }) => {
           <Tag key={'design'} tag={'design'} tagsColorPalette={tagsColorPalette}>Design</Tag>
         </Hleft>
         {
-          (task.assignee == activeUser.username || activeUser.username == activeProject.teamLeader) &&(
+          (task.assignee === activeUser.username || activeUser.username === activeProject.teamLeader) &&(
             <Hright onClick={() => hanldeShowOptions(task._id)}>
               <Icon name="more_horiz"/>
             </Hright>

@@ -13,7 +13,8 @@ const projectSchema = mongoose.Schema({
     },
     tasks: {
         type: Array,  // Tasks Ids
-    }
+    },
+    meetingId: String
 }, { timestamps: true })
 
 module.exports = mongoose.model("Project", projectSchema);

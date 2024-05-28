@@ -1,6 +1,8 @@
 const Project = require('../models/Project');
 const User = require('../models/User');
 const Chat = require('../models/Chat');
+const mongoose = require('mongoose');
+const { v4: uuidv4 } = require('uuid');
 
 // exports.createProject = async (req, res) => {
 //     try{
@@ -96,4 +98,26 @@ exports.searchUserProjects = async (req, res) => {
         console.log(err);
         res.status(500).json({ message: 'Internal server error!'})
     }
+}
+
+exports.createOrGetMeetingId = async (req, res) => {
+  try {
+    const projectIdParam = req.params.projectId;
+    console.log(projectIdParam);
+    const projectId = new mongoose.Types.ObjectId(projectIdParam);
+    let project = await Project.findById(projectId);
+
+    if (!project) {
+      return res.status(404).json({ error: 'Project not found' });
+    }
+
+    if (!project.meetingId) {
+      project.meetingId = uuidv4();
+      await project.save();
+    }
+
+    res.json({ meetingId: project.meetingId });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 }

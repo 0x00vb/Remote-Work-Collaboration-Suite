@@ -27,3 +27,15 @@ export const searchUserProjects = async () => {
         console.log(err);
     }
 }
+
+export const fetchOrCreateMeeting = async (projectId) => {
+    try{
+        const token = localStorage.getItem('token');
+        console.log(projectId)
+        return await api(token).get(`/project/${projectId}/meeting`, {
+            projectId
+        });
+    }catch(err){
+        console.log(err);
+    }
+}
