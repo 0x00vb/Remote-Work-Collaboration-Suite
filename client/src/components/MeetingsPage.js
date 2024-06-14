@@ -122,6 +122,12 @@ const MeetingsPage = () => {
         socketRef.current = socket;
         setWebCamStream(webcamStream);
 
+        if (userVideoRef.current) {
+            userVideoRef.current.srcObject = webcamStream;
+        }
+
+        console.log(webcamStream);
+
         MeetingService.setupSocketListeners(socket, webcamStream, setPeers, screenCaptureStream.current, currentPeers.current, setMessages, meetingId);
       } catch (err) {
         console.error(err);
@@ -186,6 +192,7 @@ const MeetingsPage = () => {
         <UserVideo muted ref={userVideoRef} autoPlay playsInline />
         <VideoGrid>
           {peers.map((peer) => (
+            console.log(0),
             <Video key={peer.peerId} peer={peer.peer} />
           ))}
         </VideoGrid>

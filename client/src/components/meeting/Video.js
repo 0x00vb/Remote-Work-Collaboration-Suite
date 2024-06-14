@@ -11,7 +11,10 @@ const Video = ({ peer }) => {
   const ref = useRef();
 
   useEffect(() => {
+    console.log(0);
+    console.log('Peer received in Video component:', peer);
     peer.on('stream', stream => {
+    console.log('Stream received in Video component:', stream);
       ref.current.srcObject = stream;
     });
   }, [peer]);

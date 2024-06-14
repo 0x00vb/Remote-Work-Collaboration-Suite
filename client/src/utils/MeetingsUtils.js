@@ -2,12 +2,12 @@ import Peer from "simple-peer"
 
 export const addPeer = (incomingSignal, callerId, stream, socket) => {
     const peer = new Peer({
-        initiator: true,
+        initiator: false,
         trickle: false,
         stream
     });
-
     peer.on("signal", (signal) => {
+      console.log('Returning signal:', signal);
         socket.emit("returningSignal", { signal, callerId: callerId });
     })
 
@@ -110,13 +110,14 @@ export const createPeer = (userIdToSendSignal, mySocketId, stream, socket) => {
     //if initiator is true then newly created peer will send a signal to other peer it those two peers accept signal
     // then connection will be established between those two peers
     //trickle for enable/disable trickle ICE candidates
+    console.log('Creating peer for user:', userIdToSendSignal);
     const peer = new Peer({
       initiator: true,
       trickle: false,
       config: {
         iceServers: [
           {
-            urls: process.env.REACT_APP_GOOGLE_STUN_SERVER
+            urls: " stun.nova.is:3478"
           },
           {
             urls: process.env.REACT_APP_TURN_SERVER1_NAME,
