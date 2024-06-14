@@ -1,37 +1,119 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom';
-import styled from 'styled-components'
-
-import MeetingService from './meeting/MeetingService'
-import {muteOrUnmuteAudio, playOrStopVideo, sendMessage, shareScreen, stopAllVideoAudioMedia} from '../utils/MeetingsUtils';
-import { v4 as uuidv4 } from 'uuid';
+import React, { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import MeetingService from './meeting/MeetingService';
+import { muteOrUnmuteAudio, playOrStopVideo, sendMessage, shareScreen } from '../utils/MeetingsUtils';
 import { fetchOrCreateMeeting } from '../api/project';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
+import Video from './meeting/Video'; 
+
 
 const Container = styled.div`
+  display: flex;
+  height: 100vh;
+  width: 100%;
+`;
 
-`
+const VideosContainer = styled.div`
+  flex: 10;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+`;
 
-const MeetingsPage = (props) => {
+const UserVideo = styled.video`
+  width: 100%;
+  height: 100%;
+`;
+
+const VideoGrid = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+`;
+
+const Controls = styled.div`
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+`;
+
+const ControlButton = styled.div`
+  cursor: pointer;
+  text-align: center;
+  margin: 0 10px;
+  i {
+    font-size: 24px;
+  }
+  span {
+    display: block;
+  }
+`;
+
+const ChatContainer = styled.div`
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid #ddd;
+`;
+
+const ChatHeader = styled.div`
+  padding: 10px;
+  background: #f5f5f5;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+  font-weight: bold;
+`;
+
+const MessagesContainer = styled.div`
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+`;
+
+const Message = styled.p`
+  margin: 5px 0;
+`;
+
+const MessageForm = styled.form`
+  display: flex;
+  padding: 10px;
+  border-top: 1px solid #ddd;
+`;
+
+const MessageInput = styled.input`
+  flex: 1;
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+`;
+
+const SendButton = styled.i`
+  cursor: pointer;
+  margin-left: 10px;
+  font-size: 24px;
+`;
+
+const MeetingsPage = () => {
   const activeProject = useSelector(state => state.activeProject);
   const [peers, setPeers] = useState([]);
   const socketRef = useRef();
   const userVideoRef = useRef();
   const messageRef = useRef();
-  const peersRef = useRef();
   const screenCaptureStream = useRef();
-  const [meetingId, setMeetingId] = useState(''); //joined room id
-  const [ isVideoMuted, setIsVideoMuted ] = useState(false);
-  const [ isAudioMuted, setIsAudioMuted ] = useState(false);
-  const [webcamStream, setWebCamStream ] = useState(null); //own webcam stream
-  const [ messages, setMessages ] = useState([]); //all messages state after joining the room
+  const [meetingId, setMeetingId] = useState('');
+  const [isVideoMuted, setIsVideoMuted] = useState(false);
+  const [isAudioMuted, setIsAudioMuted] = useState(false);
+  const [webcamStream, setWebCamStream] = useState(null);
+  const [messages, setMessages] = useState([]);
   const navigate = useNavigate();
   const currentPeers = useRef([]);
 
   useEffect(() => {
     const initMeeting = async () => {
-      try{
+      try {
         const { data } = await fetchOrCreateMeeting(activeProject.id);
         const { meetingId } = data;
         setMeetingId(meetingId);
@@ -41,11 +123,11 @@ const MeetingsPage = (props) => {
         setWebCamStream(webcamStream);
 
         MeetingService.setupSocketListeners(socket, webcamStream, setPeers, screenCaptureStream.current, currentPeers.current, setMessages, meetingId);
-      }catch(err){
-        console.log(err);
-        toast.error('Something has occurred, try again later!')
+      } catch (err) {
+        console.error(err);
+        toast.error('Something went wrong, please try again later!');
       }
-    }
+    };
 
     initMeeting();
 
@@ -55,133 +137,90 @@ const MeetingsPage = (props) => {
       }
       await stopAllVideoAudioMedia();
     };
-
   }, [activeProject]);
 
-  // useEffect(() => {
-  //   MeetingService.connectToSocketAndWebcamStream(localStorage.getItem("token"))
-  //     .then(({ socket, webcamStream }) => {
-  //       socketRef.current = socket;
-  //       setWebCamStream(webcamStream);
+  const stopAllVideoAudioMedia = async () => {
+    // Destroying previous stream (screen capture stream)
+    const previousScreenCaptureStream = screenCaptureStream.current;
+    if (previousScreenCaptureStream) {
+      const previousScreenCaptureStreamTracks = previousScreenCaptureStream.getTracks();
+      previousScreenCaptureStreamTracks.forEach(track => {
+        track.stop();
+      });
+    }
 
-  //       MeetingService.setupSocketListeners(socket, webcamStream, setPeers, screenCaptureStream.current, currentPeers.current, setMessages, roomId);
-  //     });
-
-  //     return async () => {
-  //       socketRef.current.disconnect();
-  //       await stopAllVideoAudioMedia();
-  //     }
-  // }, []);
-
-  const stopAllVideoAudioMedia = async ()  => {
-      //destroying previous stream(screen capture stream)
-      const previousScreenCaptureStream = screenCaptureStream.current;
-      if(previousScreenCaptureStream) {
-          const previousScreenCaptureStreamTracks = previousScreenCaptureStream.getTracks();
-          previousScreenCaptureStreamTracks.forEach(track => {
-              track.stop();
-          });
-      }
-
-      //destroying previous stream(webcam stream)
-      const previousWebcamStream = webcamStream;
-      if(previousWebcamStream) {
-          const previousWebcamStreamTracks = previousWebcamStream.getTracks();
-          previousWebcamStreamTracks.forEach(track => {
-              track.stop();
-          });
-      }
-  }
+    // Destroying previous stream (webcam stream)
+    const previousWebcamStream = webcamStream;
+    if (previousWebcamStream) {
+      const previousWebcamStreamTracks = previousWebcamStream.getTracks();
+      previousWebcamStreamTracks.forEach(track => {
+        track.stop();
+      });
+    }
+  };
 
   const handleOnClickAudioToggle = () => {
     muteOrUnmuteAudio(webcamStream, isAudioMuted, setIsAudioMuted);
-  }
+  };
 
   const handlePlayOrStopVideo = () => {
-      playOrStopVideo(webcamStream, isVideoMuted, setIsVideoMuted);
-  }
+    playOrStopVideo(webcamStream, isVideoMuted, setIsVideoMuted);
+  };
 
   const handleShareScreen = async () => {
-      await shareScreen(peers, screenCaptureStream, webcamStream, peers, userVideoRef.current, setIsAudioMuted, setIsVideoMuted);
-  }
+    await shareScreen(peers, screenCaptureStream, webcamStream, peers, userVideoRef.current, setIsAudioMuted, setIsVideoMuted);
+  };
 
   const handleSendMessage = (e) => {
-      sendMessage(e, socketRef.current, roomId, messageRef.current);
-  }
+    e.preventDefault();
+    sendMessage(e, socketRef.current, meetingId, messageRef.current);
+  };
 
   const leaveMeeting = () => {
-      navigate('/');
+    navigate('/');
   };
 
   return (
-    <div className="room row">
-    <div className="videos col s10 p0">
-        <div className="videos__users-video">
-            <div id="video-grid">
-                <video muted ref={userVideoRef} autoPlay playsInline />
-                {console.log('peers', peers)}
-                    {peers.map((peer) => (
-                        <Video controls key={peer.peerId} peer={peer} />
-                    ))}
-            </div>
-        </div>
+    <Container>
+      <VideosContainer>
+        <UserVideo muted ref={userVideoRef} autoPlay playsInline />
+        <VideoGrid>
+          {peers.map((peer) => (
+            <Video key={peer.peerId} peer={peer.peer} />
+          ))}
+        </VideoGrid>
+        <Controls>
+          <ControlButton onClick={handleOnClickAudioToggle}>
+            {isAudioMuted ? <i className="unmute fas fa-microphone-slash" /> : <i className="fas fa-microphone" />}
+            {isAudioMuted ? <span>Unmute</span> : <span>Mute</span>}
+          </ControlButton>
+          <ControlButton onClick={handlePlayOrStopVideo}>
+            {isVideoMuted ? <i className="stop fas fa-video-slash" /> : <i className="fas fa-video" />}
+            {isVideoMuted ? <span>Play Video</span> : <span>Stop Video</span>}
+          </ControlButton>
+          <ControlButton onClick={handleShareScreen}>
+            <i className="fas fa-shield-alt" />
+            <span>Share Screen</span>
+          </ControlButton>
+          <ControlButton onClick={leaveMeeting}>
+            <span className="leave_meeting">Leave Meeting</span>
+          </ControlButton>
+        </Controls>
+      </VideosContainer>
+      <ChatContainer>
+        <ChatHeader>Chat</ChatHeader>
+        <MessagesContainer>
+          {messages.map((message, index) => (
+            <Message key={index}>{message.name}({message.username}): {message.message}</Message>
+          ))}
+        </MessagesContainer>
+        <MessageForm onSubmit={handleSendMessage}>
+          <MessageInput ref={messageRef} type="text" placeholder="Type message here..." />
+          <SendButton onClick={handleSendMessage} className="fa fa-paper-plane" />
+        </MessageForm>
+      </ChatContainer>
+    </Container>
+  );
+};
 
-        <div className="videos__controls">
-            <div className="control">
-                    <div onClick={handleOnClickAudioToggle} className="control__btn-container">
-                    {isAudioMuted
-                        ? <i className="unmute fas fa-microphone-slash" />
-                        : <i className="fas fa-microphone" />
-                    }
-                    {isAudioMuted
-                        ? <span>Unmute</span>
-                        : <span>Mute</span>
-                    }
-                </div>
-                <div onClick={handlePlayOrStopVideo} className="control__btn-container">
-                    {isVideoMuted
-                        ? <i className="stop fas fa-video-slash" />
-                        : <i className="fas fa-video" />
-                    }
-                    {isVideoMuted
-                        ? <span>Play Video</span>
-                        : <span>Stop Video</span>
-                    }
-                </div>
-            </div>
-            <div onClick={handleShareScreen} className="control">
-                <div className="control__btn-container">
-                    <i className="fas fa-shield-alt" />
-                    <span>Share Screen</span>
-                </div>
-            </div>
-            <div onClick={leaveMeeting} className="control">
-                <div className="control__btn-container">
-                    <span className="leave_meeting">Leave Meeting</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <div className="chat col s2 p0">
-        <div className="chat__header">
-            <h6>Chat</h6>
-        </div>
-        <div className="chat__msg-container">
-            <ul className="messages">
-                {messages.map((message, index) => (
-                    <p key={index}>{message.name}({message.username}):{message.message}</p>
-                ))}
-            </ul>
-        </div>
-        <form  onSubmit={handleSendMessage} className="chat__msg-send-container">
-            <input ref={messageRef} type="text" placeholder="Type message here..." />
-            <i onClick={handleSendMessage} className="fa fa-paper-plane" />
-        </form>
-    </div>
-</div>
-  )
-}
-
-export default MeetingsPage
+export default MeetingsPage;

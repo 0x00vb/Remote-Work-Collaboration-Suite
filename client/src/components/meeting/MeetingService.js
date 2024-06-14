@@ -5,9 +5,7 @@ import { addPeer, createPeer } from '../../utils/MeetingsUtils'
 const MeetingsService = {
     connectToSocketAndWebcamStream: async (token) => {
       const socket = io.connect('http://localhost:4444', {
-        query: {
-          token: token
-        }
+        query: { token }
       });
   
       const webcamStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
@@ -40,20 +38,10 @@ const MeetingsService = {
   
         //a new user joined at same room send signal,callerId(simple-peer) and stream to server and server give it to
         //us to create peer between two peer and connect
-        socket.on("userJoined", payload => {
-          let peer;
-          if(screenCaptureStream) peer = addPeer(payload.signal, payload.callerId, screenCaptureStream, socket);
-          else peer = addPeer(payload.signal, payload.callerId, webcamStream, socket);
-          currentPeers.push({
-            peerId: payload.callerId,
-            peer
-          });
-          const peerObj = {
-            peer,
-            peerId: payload.callerId,
-          };
-  
-          setPeers(users => [...users, peerObj]);
+        socket.on("userJoined", (payload) => {
+          const peer = addPeer(payload.signal, payload.callerId, webcamStream, socket);
+          currentPeers.push({ peerId: payload.callerId, peer });
+          setPeers([...currentPeers]);
         });
   
         //receiving signal of other peer who is trying to connect and adding its signal at peersRef
