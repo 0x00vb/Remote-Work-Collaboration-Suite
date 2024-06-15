@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { UseSelector, useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components'
 import ProgressBar from "@ramonak/react-progress-bar";
@@ -99,10 +99,10 @@ const UserImage = styled.img`
 `
 
 const Dashboard = ({ activeProject, loading }) => {
-    if (loading) {
-        // If activeProject data is not available, render a loading indicator or placeholder
-        return <div>Loading...</div>;
-    }
+    // if (loading) {
+    //     // If activeProject data is not available, render a loading indicator or placeholder
+    //     return <div>Loading...</div>;
+    // }
   return (
     <Container>
         <MainSection>

@@ -32,7 +32,6 @@ const Main = (props) => {
   const [currentSection, setCurrentSection] = useState('Dashboard');
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
-  
   const [createProject, setCreateProject] = useState(false);
 
   useEffect(() => {
