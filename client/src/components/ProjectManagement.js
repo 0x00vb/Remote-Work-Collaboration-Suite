@@ -118,7 +118,7 @@ const UserContainer = styled.div`
 `
 
 const UserUsername = styled.p`
-    color: ${({ theme }) => theme.primaryText};
+    color: #212121;
 `
 
 const UserImg = styled.img`
@@ -169,21 +169,19 @@ const ProjectManagement = ({activeProject}) => {
         }
     }, [searchInput])
 
-    const handleCreateTask = async (title, description, assignee, dueDate) => {
-        console.log(1)
+    const handleCreateTask = async (taskTitle, description, assignee, dueDate) => {
         try{
             const projectId = activeProject.id;
             const response = await createTask(
-                title,
+                taskTitle,
                 description,
                 assignee,
                 dueDate,
                 projectId
             );
             
-            console.log(response);
             toast.success(response.message);
-            const [title, setTitle] = useState("");
+            setTitle("");
             setDescription("");
             setAssignee("");
             setSearchInput("");
