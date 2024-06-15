@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
 import { Calendar, momentLocalizer } from 'react-big-calendar'
 import 'react-big-calendar/lib/css/react-big-calendar.css';
@@ -20,9 +20,23 @@ const Container = styled.div`
     background-color: #f7f7f7;
 `
 
-const CalendarPage = () => {
+const CalendarPage = ({ activeProject, activeUser }) => {
+  const currentUserTasks = activeProject.tasks.filter(task => task.assignee != activeUser.username);
   const theme = useTheme()
   const [myEvents, setMyEvents] = useState([])
+
+  useEffect(() => {
+    if(currentUserTasks){
+      const events = currentUserTasks.map(task => ({
+        title: task.title,
+        start: new Date(task.createdAt),
+        end: new Date(task.due_date),
+        allDay: true,
+      }));
+      setMyEvents(events);
+    }
+  }, [])
+
 
   return (
     <Container> 

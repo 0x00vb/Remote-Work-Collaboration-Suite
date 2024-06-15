@@ -69,7 +69,7 @@ const Main = (props) => {
       case 'chat':
         return <ChatPage activeProject={activeProject}/>;
       case 'calendar':
-        return <CalendarPage activeProject={activeProject}/>;
+        return <CalendarPage activeProject={activeProject} activeUser={activeUser}/>;
       case 'meetings':
         return <MeetingsPage activeProject={activeProject}/>
       case 'projectManagement':

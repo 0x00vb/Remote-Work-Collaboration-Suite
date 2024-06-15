@@ -170,6 +170,7 @@ const ProjectManagement = ({activeProject}) => {
     }, [searchInput])
 
     const handleCreateTask = async (title, description, assignee, dueDate) => {
+        console.log(1)
         try{
             const projectId = activeProject.id;
             const response = await createTask(
